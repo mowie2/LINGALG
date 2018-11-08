@@ -7,27 +7,27 @@ Vector::Vector()
 {
 }
 
-Vector::Vector(const int xCor, const int yCor)
+Vector::Vector(const float xCor, const float yCor)
 	: xCor(xCor), yCor(yCor)
 {
 }
 
-void Vector::setXCor(const int xCor)
+void Vector::setXCor(const float xCor)
 {
 	this->xCor = xCor;
 }
 
-void Vector::setYCor(const int yCor)
+void Vector::setYCor(const float yCor)
 {
 	this->yCor = yCor;
 }
 
-int Vector::getXCor() const
+float Vector::getXCor() const
 {
 	return xCor;
 }
 
-int Vector::getYCor() const
+float Vector::getYCor() const
 {
 	return yCor;
 }

@@ -2,18 +2,18 @@
 class Vector
 {
 private:
-	int xCor, yCor;
+	float xCor, yCor;
 
 public:
 	//constructors
 	Vector();
-	Vector(const int xCor,const int yCor);
+	Vector(const float xCor,const float yCor);
 
 	//functions
-	void setXCor(const int xCor);
-	void setYCor(const int yCor);
-	int getXCor() const;
-	int getYCor() const;
+	void setXCor(const float xCor);
+	void setYCor(const float yCor);
+	float getXCor() const;
+	float getYCor() const;
 	float getLength() const;
 	Vector normalize() const;
 
