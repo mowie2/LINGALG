@@ -5,7 +5,7 @@
 class Window
 {
 public:
-	Window();
+	Window(const int width, const int height);
 	~Window();
 	void Draw();
 	void CloseWindow();
@@ -16,8 +16,8 @@ public:
 
 private:
 	//Screen dimension constants
-	const int SCREEN_WIDTH = 1000;
-	const int SCREEN_HEIGHT = 1000;
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
 
 	//The window we'll be rendering to
 	SDL_Window* window;

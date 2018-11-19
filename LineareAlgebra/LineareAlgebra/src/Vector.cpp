@@ -57,6 +57,11 @@ Vector Vector::operator*(const int &multiplier) const
 	return Vector(this->xCor*multiplier, this->yCor*multiplier);
 }
 
+float Vector::operator*(const Vector & otherVector) const
+{
+	return this->xCor*otherVector.xCor + this->yCor*otherVector.yCor;
+}
+
 
 Vector::~Vector()
 {

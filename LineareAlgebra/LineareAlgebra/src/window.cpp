@@ -1,8 +1,10 @@
 #include "../include/window.h"
 #include <stdio.h>
 
-Window::Window()
+Window::Window(const int width, const int height)
 {
+	this->SCREEN_WIDTH = width;
+	this->SCREEN_HEIGHT = height;
 	Init();
 }
 
