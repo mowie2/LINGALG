@@ -2,67 +2,91 @@
 #include <cmath>
 
 
-
 Vector::Vector()
 {
-}
-
-Vector::Vector(const float xCor, const float yCor)
-	: xCor(xCor), yCor(yCor)
-{
-}
-
-void Vector::setXCor(const float xCor)
-{
-	this->xCor = xCor;
-}
-
-void Vector::setYCor(const float yCor)
-{
-	this->yCor = yCor;
-}
-
-float Vector::getXCor() const
-{
-	return xCor;
-}
-
-float Vector::getYCor() const
-{
-	return yCor;
-}
-
-float Vector::getLength() const
-{
-	return sqrt(pow(this->xCor, 2) + pow(this->yCor, 2));
-}
-
-Vector Vector::normalize() const
-{
-	return Vector(this->xCor/this->getLength(), this->yCor/this->getLength());
-}
-
-Vector Vector::operator+(Vector const &obj) const
-{
-	return Vector(this->xCor + obj.getXCor(), this->yCor + obj.getYCor());
-}
-
-Vector Vector::operator-(Vector const &obj) const
-{
-	return Vector(this->xCor - obj.getXCor(), this->yCor - obj.getYCor());
-}
-
-Vector Vector::operator*(const int &multiplier) const
-{
-	return Vector(this->xCor*multiplier, this->yCor*multiplier);
-}
-
-float Vector::operator*(const Vector & otherVector) const
-{
-	return this->xCor*otherVector.xCor + this->yCor*otherVector.yCor;
 }
 
 
 Vector::~Vector()
 {
+}
+
+unsigned int Vector::getRows() const
+{
+	return vector.size();
+}
+
+void Vector::addNumber(float number)
+{
+	vector.push_back(number);
+}
+
+void Vector::normalize()
+{
+	float length = getLength();
+	if (length != 0) {
+		for (auto &i : vector) {
+			i = i / length;
+		}
+	}
+}
+
+float Vector::operator[](unsigned index) const
+{
+	if (index < vector.size() && index >= 0) {
+		return vector[index];
+	}
+	return NULL;
+}
+
+float Vector::operator*(const Vector & other) const
+{
+	if (other.vector.size() == vector.size()) {
+		float f = 0.0;
+		for (int i = 0; i < vector.size();i++) {
+			f += vector[i] * other.vector[i];
+		}
+		return f;
+	}
+	return NULL;
+}
+
+float Vector::getLength() const
+{
+	float f = 0;
+	for (const auto &i : vector) {
+		f += i * i;
+	}
+	return std::sqrt(f);
+}
+
+Vector Vector::operator+(const Vector & other) const
+{
+	Vector newVector;
+	if (getRows() == other.getRows()) {
+		for (int i = 0; i < getRows();i++) {
+			newVector.addNumber(vector[i] + other.vector[i]);
+		}
+	}
+	return newVector;
+}
+
+Vector Vector::operator-(const Vector & other) const
+{
+	Vector newVector;
+	if (getRows() == other.getRows()) {
+		for (int i = 0; i < getRows();i++) {
+			newVector.addNumber(vector[i] - other.vector[i]);
+		}
+	}
+	return newVector;
+}
+
+Vector Vector::operator*(float number) const
+{
+	Vector newVector;
+	for (int i = 0; i < getRows();i++) {
+		newVector.addNumber(vector[i] * number);
+	}
+	return newVector;
 }

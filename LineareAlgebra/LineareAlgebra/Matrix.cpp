@@ -2,9 +2,9 @@
 
 Matrix::Matrix(unsigned int rows) : _rows(rows){}
 
-void Matrix::AddVector(Vector && vector)
+void Matrix::AddVector(const Vector & vector)
 {
-	if (vector.getSize() == _rows) {
+	if (vector.getRows() == _rows) {
 		matrix.push_back(std::move(vector));
 		_columns++;
 	}
@@ -15,7 +15,7 @@ Matrix Matrix::operator+(const Matrix & other) const
 	Matrix m = Matrix(this->_rows);
 	if (other._columns == this->_columns && other._rows == this->_rows) {
 		for (int i = 0;i < matrix.size();i++) {
-			m.AddVector(this->matrix[i] + other.matrix[i]);
+			m.AddVector(matrix[i] + other.matrix[i]);
 		}
 	}
 	return m;
@@ -43,15 +43,17 @@ Matrix Matrix::operator*(const Matrix & other) const
 {
 	Matrix m = Matrix(this->_rows);
 	
-
 	if (other._rows == this->_columns) {
-		for (int c = 0;c < other._columns;c++) {
-			Vector v;
-			for (int r = 0;r < _rows;r++) {
-				
-				//TODO grotere vectoren
-
+		for (int c1 = 0;c1 < other._columns;c1++) {
+			Vector v1;
+			for (int r = 0;r < other._rows;r++) {
+				Vector v2;
+				for (int c2 = 0;c2 < _columns;c2++) {
+					v2.addNumber(this->matrix[c2][r]);
+				}
+				v1.addNumber(v2*other.matrix[c1]);
 			}
+			m.AddVector(v1);
 		}
 	}
 	return m;

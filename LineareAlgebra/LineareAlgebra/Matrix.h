@@ -23,7 +23,7 @@ public:
 		AddVector(std::forward<Vector>(fs)...);
 	}*/
 
-	void AddVector(Vector && vector);
+	void AddVector(const Vector & vector);
 
 	Matrix operator+ (const Matrix &other) const;
 	Matrix operator- (const Matrix &other) const;

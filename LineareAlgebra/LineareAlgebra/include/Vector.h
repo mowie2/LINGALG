@@ -1,29 +1,20 @@
 #pragma once
+#include <vector>
 class Vector
 {
-private:
-	float xCor, yCor;
-
 public:
-	//constructors
 	Vector();
-	Vector(const float xCor,const float yCor);
-
-	//functions
-	void setXCor(const float xCor);
-	void setYCor(const float yCor);
-	float getXCor() const;
-	float getYCor() const;
+	~Vector();
+	unsigned int getRows() const;
+	void addNumber(float number);
+	void normalize();
+	float operator[](unsigned index) const;
+	float operator*(const Vector &other) const;
 	float getLength() const;
-	Vector normalize() const;
-	unsigned int getSize() const { return 2; }
-
-	//operator overloads
-	Vector operator+ (Vector const &obj) const;
-	Vector operator- (Vector const &obj) const;
-	Vector operator* (const int &multiplier) const;
-	float operator* (Vector const &otherVector) const;
-
-	virtual ~Vector();
+	Vector operator+(const Vector &other) const;
+	Vector operator-(const Vector &other) const;
+	Vector operator*(float number) const;
+private:
+	std::vector<float> vector;
 };
 

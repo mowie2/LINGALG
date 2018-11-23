@@ -15,9 +15,15 @@ Window::~Window()
 void Window::Draw()
 {
 	// Vectors
-	Vector startPoint1 = Vector(0,0);
-	Vector direction = Vector(9, 5);
-	Vector startPoint2 = Vector(1, 0);
+	Vector startPoint1;
+	startPoint1.addNumber(0);
+	startPoint1.addNumber(0);
+	Vector direction;
+	direction.addNumber(9);
+	direction.addNumber(5);
+	Vector startPoint2;
+	startPoint2.addNumber(1);
+	startPoint2.addNumber(0);
 
 
 	//Main loop flag
@@ -133,8 +139,8 @@ void Window::DrawPoint(Vector point)
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
-	auto pointx = point.getXCor() * scale / 2;
-	auto pointy = point.getYCor() * scale *-1 / 2;
+	auto pointx = point[0] * scale / 2;
+	auto pointy = point[1] * scale *-1 / 2;
 
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawPoint(gRenderer, centerX + pointx, centerY + pointy);
@@ -146,11 +152,11 @@ void Window::DrawVector(Vector origin, Vector direction)
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
-	auto originX = origin.getXCor() * scale / 2;
-	auto OriginY = origin.getYCor() * scale *-1 / 2;
+	auto originX = origin[0] * scale / 2;
+	auto OriginY = origin[1] * scale *-1 / 2;
 
-	auto directionX = direction.getXCor() * scale / 2;
-	auto DirectionY = direction.getYCor() * scale *-1 / 2;
+	auto directionX = direction[0] * scale / 2;
+	auto DirectionY = direction[1] * scale *-1 / 2;
 
 	
 	auto deltaX = originX + directionX;
