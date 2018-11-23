@@ -1,14 +1,18 @@
 #include "Matrix.h"
+#include <map>
+
+
 
 Matrix::Matrix(unsigned int rows) : _rows(rows){}
 
+/*
 void Matrix::AddVector(const Vector & vector)
 {
 	if (vector.getRows() == _rows) {
 		matrix.push_back(std::move(vector));
 		_columns++;
 	}
-}
+}*/
 
 Matrix Matrix::operator+(const Matrix & other) const
 {

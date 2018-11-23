@@ -19,24 +19,20 @@ int main(int argc, char* args[])
 	Vector v1;
 	v1.addNumber(1);
 	v1.addNumber(1);
-	m1.AddVector(v1);
-
 	Vector v2;
 	v2.addNumber(2);
 	v2.addNumber(2);
-	m1.AddVector(v2);
-
+	//m1.AddVector(v1,v2);
+	m1.AddVector(v1, v2);
 
 	Matrix m2 = Matrix(2);
 	Vector v3;
 	v3.addNumber(4);
 	v3.addNumber(4);
-	m2.AddVector(v3);
-
 	Vector v4;
 	v4.addNumber(5);
 	v4.addNumber(5);
-	m2.AddVector(v4);
+	m2.AddVector(v3, v4);
 
 	Matrix k = m1*m2;
 

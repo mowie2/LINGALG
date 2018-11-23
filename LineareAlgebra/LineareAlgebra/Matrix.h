@@ -5,10 +5,10 @@ class Matrix
 {
 public:
 	Matrix(unsigned int rows);
-	/*
+	
 	template <typename F, typename... Vector>
 	void AddVector(F &&f) {
-		if (f.getSize() != _rows){
+		if (f.getRows() == _rows){
 			matrix.push_back(std::move(f));
 			_columns++;
 		}
@@ -16,14 +16,14 @@ public:
 
 	template <typename F, typename... Vector>
 	void AddVector(F &&f, Vector &&... fs) {
-		if (f.getSize() != _rows && typeid(f) == typeid(Vector)) {
+		if (f.getRows() == _rows) {
 			matrix.push_back(std::move(f));
 			_columns++;
 		}
 		AddVector(std::forward<Vector>(fs)...);
-	}*/
-
-	void AddVector(const Vector & vector);
+	}
+	
+	//void AddVector(const Vector & vector);
 
 	Matrix operator+ (const Matrix &other) const;
 	Matrix operator- (const Matrix &other) const;
