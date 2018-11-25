@@ -32,7 +32,7 @@ public:
 	void addNumber(float number);
 	
 	void normalize();
-	float operator[](unsigned index);
+	float operator[](unsigned index) const;
 	float operator*(const Vector &other) const;
 	float getLength() const;
 	Vector operator+(const Vector &other) const;

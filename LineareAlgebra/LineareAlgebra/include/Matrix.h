@@ -28,8 +28,8 @@ public:
 	Matrix operator+ (const Matrix &other) const;
 	Matrix operator- (const Matrix &other) const;
 	Matrix operator* (const Matrix &other) const;
-	Matrix operator* (int scalar) const;
-	Vector operator[] (unsigned int index);
+	Matrix operator* (float scalar) const;
+	Vector operator[] (unsigned int index) const;
 	unsigned int getRows() const;
 	unsigned int getColumns() const;
 

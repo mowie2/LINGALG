@@ -5,15 +5,6 @@
 
 Matrix::Matrix(unsigned int rows) : _rows(rows){}
 
-/*
-void Matrix::AddVector(const Vector & vector)
-{
-	if (vector.getRows() == _rows) {
-		matrix.push_back(std::move(vector));
-		_columns++;
-	}
-}*/
-
 Matrix Matrix::operator+(const Matrix & other) const
 {
 	Matrix m = Matrix(this->_rows);
@@ -21,8 +12,9 @@ Matrix Matrix::operator+(const Matrix & other) const
 		for (int i = 0;i < matrix.size();i++) {
 			m.AddVector(matrix[i] + other.matrix[i]);
 		}
+		return m;
 	}
-	return m;
+	throw std::invalid_argument("invalid");
 }
 
 Matrix Matrix::operator-(const Matrix & other) const
@@ -32,16 +24,11 @@ Matrix Matrix::operator-(const Matrix & other) const
 		for (int i = 0;i < matrix.size();i++) {
 			m.AddVector(this->matrix[i] + other.matrix[i]);
 		}
+		return m;
 	}
-	return m;
+	throw std::invalid_argument("invalid");
 }
-/*
-Matrix Matrix::operator*(const Vector & other) const
-{
-	if (this->_rows == other.getSize()) {
-		
-	}
-}*/
+
 
 Matrix Matrix::operator*(const Matrix & other) const
 {
@@ -59,11 +46,12 @@ Matrix Matrix::operator*(const Matrix & other) const
 			}
 			m.AddVector(v1);
 		}
+		return m;
 	}
-	return m;
+	throw std::invalid_argument("invalid");
 }
 
-Matrix Matrix::operator*(int scalar) const
+Matrix Matrix::operator*(float scalar) const
 {
 	Matrix m = Matrix(this->_rows);
 	for (int c = 0;c < _columns;c++) {
@@ -76,12 +64,12 @@ Matrix Matrix::operator*(int scalar) const
 	return m;
 }
 
-Vector Matrix::operator[](unsigned int index)
+Vector Matrix::operator[](unsigned int index) const
 {
 	if (index >= 0 && index < _columns) {
 		return matrix[index];
 	}
-	return Vector();
+	throw std::out_of_range("Out of range fuckhead");
 }
 
 unsigned int Matrix::getRows() const

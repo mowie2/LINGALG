@@ -31,12 +31,12 @@ void Vector::normalize()
 	}
 }
 
-float Vector::operator[](unsigned index)
+float Vector::operator[](unsigned index) const
 {
 	if (index < vector.size() && index >= 0) {
 		return vector[index];
 	}
-	return NULL;
+	throw std::out_of_range("Out of range fuckhead");
 }
 
 float Vector::operator*(const Vector & other) const
@@ -48,7 +48,7 @@ float Vector::operator*(const Vector & other) const
 		}
 		return f;
 	}
-	return NULL;
+	throw std::invalid_argument("invalid");
 }
 
 float Vector::getLength() const
@@ -67,8 +67,9 @@ Vector Vector::operator+(const Vector & other) const
 		for (int i = 0; i < getRows();i++) {
 			newVector.addNumber(vector[i] + other.vector[i]);
 		}
+		return newVector;
 	}
-	return newVector;
+	throw std::invalid_argument("invalid");
 }
 
 Vector Vector::operator-(const Vector & other) const
@@ -78,8 +79,9 @@ Vector Vector::operator-(const Vector & other) const
 		for (int i = 0; i < getRows();i++) {
 			newVector.addNumber(vector[i] - other.vector[i]);
 		}
+		return newVector;
 	}
-	return newVector;
+	throw std::invalid_argument("invalid");
 }
 
 Vector Vector::operator*(float number) const
