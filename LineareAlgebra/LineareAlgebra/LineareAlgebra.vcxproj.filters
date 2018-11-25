@@ -24,10 +24,10 @@
     <ClCompile Include="src\Vector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix.cpp">
+    <ClCompile Include="MyVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyVector.cpp">
+    <ClCompile Include="src\Matrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +38,10 @@
     <ClInclude Include="include\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.h">
+    <ClInclude Include="MyVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyVector.h">
+    <ClInclude Include="include\Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

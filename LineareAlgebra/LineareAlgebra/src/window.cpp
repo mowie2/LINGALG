@@ -12,7 +12,7 @@ Window::~Window()
 {
 }
 
-void Window::Draw()
+void Window::Draw(Matrix matrix)
 {
 	// Vectors
 	Vector startPoint1;
@@ -55,13 +55,13 @@ void Window::Draw()
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
 		SDL_RenderClear(gRenderer);
-
-
-		DrawPoint(startPoint1);
-		DrawPoint(direction);
-		DrawVector(startPoint1, direction);
-		DrawVector(startPoint2, direction);
 		DrawAxis();
+		for (int r = 0;r < matrix.getColumns() - 1;r++) {
+			//DrawPoint(matrix[r]);
+			DrawVector(matrix[r], matrix[r+1]);
+		}
+		DrawVector(matrix[0], matrix[matrix.getColumns()-1]);
+		
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -135,33 +135,39 @@ bool Window::Init()
 
 void Window::DrawPoint(Vector point)
 {
-	int scale = 100;
+	int tempXsize = 20;
+	int tempYsize = 10;
+
+	float scaleX = SCREEN_WIDTH / tempXsize;
+	float scaleY = SCREEN_HEIGHT / tempYsize;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
-	auto pointx = point[0] * scale / 2;
-	auto pointy = point[1] * scale *-1 / 2;
+	auto pointx = point[0] * scaleX + centerX;
+	auto pointy = point[1] * -1 * scaleY + centerY;
 
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawPoint(gRenderer, centerX + pointx, centerY + pointy);
+	SDL_RenderDrawPoint(gRenderer, pointx, pointy);
 }
 
 void Window::DrawVector(Vector origin, Vector direction)
 {
-	int scale = 100;
+	int tempXsize = 20;
+	int tempYsize = 10;
+	
+	float scaleX = SCREEN_WIDTH/tempXsize;
+	float scaleY = SCREEN_HEIGHT/tempYsize;
+	
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
-	auto originX = origin[0] * scale / 2;
-	auto OriginY = origin[1] * scale *-1 / 2;
+	auto originX = origin[0] * scaleX + centerX;
+	auto originY = origin[1] * -1 * scaleY + centerY;
 
-	auto directionX = direction[0] * scale / 2;
-	auto DirectionY = direction[1] * scale *-1 / 2;
-
-	
-	auto deltaX = originX + directionX;
-	auto deltaY = OriginY + DirectionY;
+	auto directionX = direction[0] * scaleX + centerX;
+	auto directionY = direction[1] * -1 * scaleY + centerY;
 
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawLine(gRenderer, centerX + originX, centerY + OriginY, centerX + deltaX, centerY + deltaY);
+	SDL_RenderDrawLine(gRenderer, originX, originY, directionX, directionY);
 }

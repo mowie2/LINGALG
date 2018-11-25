@@ -1,13 +1,14 @@
 #pragma once
 #include <SDL.h>
 #include "Vector.h"
+#include "../include/Matrix.h"
 
 class Window
 {
 public:
 	Window(const int width, const int height);
 	~Window();
-	void Draw();
+	void Draw(Matrix matrix);
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);

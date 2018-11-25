@@ -1,4 +1,4 @@
-#include "Matrix.h"
+#include "../include/Matrix.h"
 #include <map>
 
 
@@ -61,6 +61,37 @@ Matrix Matrix::operator*(const Matrix & other) const
 		}
 	}
 	return m;
+}
+
+Matrix Matrix::operator*(int scalar) const
+{
+	Matrix m = Matrix(this->_rows);
+	for (int c = 0;c < _columns;c++) {
+		Vector v;
+		for (int r = 0;r < _rows;r++) {
+			v.addNumber(matrix[c][r] * scalar);
+		}
+		m.AddVector(v);
+	}
+	return m;
+}
+
+Vector Matrix::operator[](unsigned int index)
+{
+	if (index >= 0 && index < _columns) {
+		return matrix[index];
+	}
+	return Vector();
+}
+
+unsigned int Matrix::getRows() const
+{
+	return _rows;
+}
+
+unsigned int Matrix::getColumns() const
+{
+	return _columns;
 }
 
 

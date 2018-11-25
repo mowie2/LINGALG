@@ -3,6 +3,7 @@
 class Vector
 {
 public:
+	/*
 	template <typename F, float... Fs>
 	void Vector(F f) {
 		if (f.getRows() == _rows) {
@@ -18,7 +19,7 @@ public:
 			_columns++;
 		}
 		AddVector(std::forward<float>(fs)...);
-	}
+	}*/
 
 	
 	Vector();
@@ -31,7 +32,7 @@ public:
 	void addNumber(float number);
 	
 	void normalize();
-	float operator[](unsigned index) const;
+	float operator[](unsigned index);
 	float operator*(const Vector &other) const;
 	float getLength() const;
 	Vector operator+(const Vector &other) const;

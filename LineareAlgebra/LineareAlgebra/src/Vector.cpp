@@ -31,7 +31,7 @@ void Vector::normalize()
 	}
 }
 
-float Vector::operator[](unsigned index) const
+float Vector::operator[](unsigned index)
 {
 	if (index < vector.size() && index >= 0) {
 		return vector[index];

@@ -1,5 +1,5 @@
 #pragma once
-#include "include/Vector.h"
+#include "../include/Vector.h"
 #include <vector>
 class Matrix
 {
@@ -28,6 +28,11 @@ public:
 	Matrix operator+ (const Matrix &other) const;
 	Matrix operator- (const Matrix &other) const;
 	Matrix operator* (const Matrix &other) const;
+	Matrix operator* (int scalar) const;
+	Vector operator[] (unsigned int index);
+	unsigned int getRows() const;
+	unsigned int getColumns() const;
+
 
 	~Matrix();
 private:
