@@ -33,12 +33,25 @@ int main(int argc, char* args[])
 	m1.AddVector(v1,v2,v3,v4);
 	m1[3][0] = 5;
 	
+	Matrix m2 = Matrix(4);
+	Vector v5;
+	v5.addNumber(1);
+	v5.addNumber(0);
+	v5.addNumber(0);
+	v5.addNumber(0);
 
-	Window window = Window(1000,500);
-	window.Draw(m1);
-	std::vector<float> k;
-	k.push_back(5);
-	k[0] = 7;
+	Vector v6;
+	v6.addNumber(0);
+	v6.addNumber(1);
+	v6.addNumber(0);
+	v6.addNumber(0);
+
+	m2.AddVector(v5, v6);
+
+
+	Matrix k = m1*m2;
 	
+	Window window = Window(1000,500);
+	window.Draw(m1);	
 	return 0;
 }

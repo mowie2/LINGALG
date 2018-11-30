@@ -37,7 +37,7 @@ Matrix Matrix::operator*(const Matrix & other) const
 	if (other._rows == this->_columns) {
 		for (int c1 = 0;c1 < other._columns;c1++) {
 			Vector v1;
-			for (int r = 0;r < other._rows;r++) {
+			for (int r = 0;r < _rows;r++) {
 				Vector v2;
 				for (int c2 = 0;c2 < _columns;c2++) {
 					v2.addNumber(this->matrix[c2][r]);
