@@ -31,7 +31,7 @@ int main(int argc, char* args[])
 
 	
 	m1.AddVector(v1,v2,v3,v4);
-	m1[3][0] = 5;
+	//m1[3][0] = 5;
 	
 	Matrix m2 = Matrix(4);
 	Vector v5;
