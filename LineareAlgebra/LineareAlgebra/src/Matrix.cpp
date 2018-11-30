@@ -72,6 +72,14 @@ Vector Matrix::operator[](unsigned int index) const
 	throw std::out_of_range("Out of range fuckhead");
 }
 
+Vector & Matrix::operator[](unsigned int index)
+{
+	if (index >= 0 && index < _columns) {
+		return matrix[index];
+	}
+	throw std::out_of_range("Out of range fuckhead");
+}
+
 unsigned int Matrix::getRows() const
 {
 	return _rows;

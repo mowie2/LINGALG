@@ -31,19 +31,9 @@ int main(int argc, char* args[])
 
 	
 	m1.AddVector(v1,v2,v3,v4);
-	m1[0][7];
-	/*
-	Matrix m2 = Matrix(2);
-	Vector v3;
-	v3.addNumber(4);
-	v3.addNumber(4);
-	Vector v4;
-	v4.addNumber(5);
-	v4.addNumber(5);
-	m2.AddVector(v3, v4);
+	m1[3][0] = 5;
+	
 
-	Matrix k = m1*m2;
-	*/
 	Window window = Window(1000,500);
 	window.Draw(m1);
 	std::vector<float> k;

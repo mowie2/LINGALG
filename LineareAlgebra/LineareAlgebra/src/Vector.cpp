@@ -36,7 +36,15 @@ float Vector::operator[](unsigned index) const
 	if (index < vector.size() && index >= 0) {
 		return vector[index];
 	}
-	//throw std::out_of_range("Out of range fuckhead");
+	throw std::out_of_range("Out of range fuckhead");
+}
+
+float & Vector::operator[](unsigned index)
+{
+	if (index < vector.size() && index >= 0) {
+		return vector[index];
+	}
+	throw std::out_of_range("Out of range fuckhead");
 }
 
 float Vector::operator*(const Vector & other) const

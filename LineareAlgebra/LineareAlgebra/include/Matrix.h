@@ -30,6 +30,7 @@ public:
 	Matrix operator* (const Matrix &other) const;
 	Matrix operator* (float scalar) const;
 	Vector operator[] (unsigned int index) const;
+	Vector& operator[] (unsigned int index);
 	unsigned int getRows() const;
 	unsigned int getColumns() const;
 
