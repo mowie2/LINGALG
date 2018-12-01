@@ -82,6 +82,37 @@ Matrix Matrix::operator*(float scalar) const
 	return m;
 }
 
+Matrix Matrix::subSet(unsigned int rows, unsigned int columns) const
+{
+	if (rows > 0 && rows <= getRows() && columns > 0 && columns <= getColumns()) {
+		Matrix m(rows,columns,false);
+		for (int r = 0;r < rows;r++) {
+			for (int c = 0;c < columns;c++) {
+				m[c][r] = matrix[c][r];
+			}
+		}
+		return m;
+	}
+	throw std::out_of_range("Out of range fuckhead");
+}
+
+Matrix Matrix::getTranslatable() const
+{
+	Matrix translable;
+	for (auto copyVector : matrix) {
+		copyVector.addNumber(1);
+		translable.AddVector(copyVector);
+	}
+	return translable;
+}
+
+Matrix Matrix::scale(float scalar) const
+{
+	Vector returnVector = getToOrginVector() * -1;
+	Matrix m = Matrix(getRows(), getRows(), true);
+	return (m*scalar*translateToOrgin()).translate(returnVector);
+}
+
 Vector Matrix::operator[](unsigned int index) const
 {
 	if (index >= 0 && index < columns) {
@@ -98,6 +129,20 @@ Vector & Matrix::operator[](unsigned int index)
 	throw std::out_of_range("Out of range fuckhead");
 }
 
+Vector Matrix::getToOrginVector() const
+{
+	Vector translation;
+	for (int r = 0; r < getRows(); r++) {
+		float avg = 0.0;
+		for (int c = 0; c < columns; c++) {
+			avg += matrix[c][r];
+		}
+		avg /= columns;
+		translation.addNumber(-1 * avg);
+	}
+	return translation;
+}
+
 unsigned int Matrix::getRows() const
 {
 	return rows;
@@ -111,37 +156,21 @@ unsigned int Matrix::getColumns() const
 Matrix Matrix::translate(const Vector& translation) const
 {
 	if (translation.getRows() == getRows()) {
-		Matrix currentMatrix;
-		for (auto copyVector : matrix) {
-			copyVector.addNumber(1);
-			currentMatrix.AddVector(copyVector);
-		}
+		Matrix currentMatrix = getTranslatable();
 
 		Matrix translationMatrix(getRows() + 1, getRows(), true);
 		auto translationCopy = translation;
 		translationCopy.addNumber(1);
 		translationMatrix.AddVector(translationCopy);
 
-		auto translatedMatrix = translationMatrix * currentMatrix;
-		
-
-
-		return translationMatrix * currentMatrix;
+		return (translationMatrix * currentMatrix).subSet(getRows(),getColumns());
 	}
 	throw std::out_of_range("Invalid");
 }
 
 Matrix Matrix::translateToOrgin() const
 {
-	Vector translation;
-	for (int r = 0; r < getRows(); r++) {
-		float avg = 0.0;
-		for (int c = 0; c < columns; c++) {
-			avg+=matrix[c][r];
-		}
-		avg /= columns;
-		translation.addNumber(-1*avg);
-	}
+	Vector translation = getToOrginVector();
 	return translate(translation);
 }
 

@@ -32,13 +32,20 @@ int main(int argc, char* args[])
 	
 	m1.AddVector(v1,v2,v3,v4);
 	
+	Matrix m2;
+	m2.AddVector(v1, v2, v3, v4);
+
 	Vector v;
 	v.addNumber(-1);
 	v.addNumber(-1);
-	Matrix k = m1.translateToOrgin();
-
+	//Matrix k1 = Matrix(2, 2, true);
+	//Matrix k = m1.translateToOrgin();
+	//Vector r = m1.getToOrginVector() * -1;
+	//Matrix k = (k1 * 1 * m1.translateToOrgin()).translate(r);
+	Matrix k = m1.scale(5);
 
 	Window window = Window(1000,500);
-	window.Draw(k);	
+	window.Draw(k);
+	window.Draw(m2);
 	return 0;
 }

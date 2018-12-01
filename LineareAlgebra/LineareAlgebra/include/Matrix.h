@@ -39,8 +39,12 @@ public:
 	Matrix operator- (const Matrix &other) const;
 	Matrix operator* (const Matrix &other) const;
 	Matrix operator* (float scalar) const;
+	Matrix subSet(unsigned int rows, unsigned int columns) const;
+	Matrix getTranslatable() const;
+	Matrix scale (float scalar) const;
 	Vector operator[] (unsigned int index) const;
 	Vector& operator[] (unsigned int index);
+	Vector getToOrginVector() const;
 	unsigned int getRows() const;
 	unsigned int getColumns() const;
 	
