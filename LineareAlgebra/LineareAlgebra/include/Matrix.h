@@ -4,21 +4,31 @@
 class Matrix
 {
 public:
-	Matrix(unsigned int rows);
-	
+	Matrix();
+	Matrix(unsigned int rows, unsigned int columns, bool eenheidsMatrix);
+
 	template <typename F, typename... Vector>
 	void AddVector(F &&f) {
-		if (f.getRows() == _rows){
+		if (rows == 0 || f.getRows() == getRows()){
+			rows = f.getRows();
 			matrix.push_back(std::move(f));
-			_columns++;
+			columns++;
+		}
+		else {
+			throw std::out_of_range("Invalid");
 		}
 	}
 
+	
 	template <typename F, typename... Vector>
 	void AddVector(F &&f, Vector &&... fs) {
-		if (f.getRows() == _rows) {
+		if (rows == 0 ||f.getRows() == getRows()) {
 			matrix.push_back(std::move(f));
-			_columns++;
+			columns++;
+			
+		}
+		else {
+			throw std::out_of_range("Invalid");
 		}
 		AddVector(std::forward<Vector>(fs)...);
 	}
@@ -33,12 +43,16 @@ public:
 	Vector& operator[] (unsigned int index);
 	unsigned int getRows() const;
 	unsigned int getColumns() const;
+	
 
+	Matrix translate(const Vector& translation) const;
+	Matrix translateToOrgin() const;
 
 	~Matrix();
 private:
-	unsigned int _rows = 0;
-	unsigned int _columns = 0;
+	
+	unsigned int rows = 0;
+	unsigned int columns = 0;
 	std::vector<Vector> matrix;
 };
 
