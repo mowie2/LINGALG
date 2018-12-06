@@ -1,13 +1,14 @@
 #pragma once
 #include <SDL.h>
 #include "Vector.h"
+#include "../include/Matrix.h"
 
 class Window
 {
 public:
-	Window();
+	Window(const int width, const int height);
 	~Window();
-	void Draw();
+	void Draw(Matrix matrix);
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);
@@ -16,8 +17,8 @@ public:
 
 private:
 	//Screen dimension constants
-	const int SCREEN_WIDTH = 1000;
-	const int SCREEN_HEIGHT = 1000;
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
 
 	//The window we'll be rendering to
 	SDL_Window* window;

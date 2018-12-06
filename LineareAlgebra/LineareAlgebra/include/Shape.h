@@ -1,17 +1,19 @@
 #pragma once
 #include <vector>
-class Vector;
+#include "../include/Vector.h"
+#include "../include/Matrix.h"
+
 class Shape
 {
 public:
 	Shape() = default;
-	Shape(std::vector<int> m);
+	Shape(std::vector<Matrix> m);
 	~Shape() = default;
-	void Translate();
+	void Translate(const Vector& vec);
 	void Rotate();
 	void Scale();
 
-
+	Vector position;
 private:
-	std::vector<int> matrices;
+	std::vector<Matrix> matrices;
 };

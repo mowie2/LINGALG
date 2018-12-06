@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Matrix.cpp" />
     <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\window.cpp" />
     <ClCompile Include="src\Vector.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="include\Shape.h" />
     <ClInclude Include="include\window.h" />
     <ClInclude Include="include\Vector.h" />
+    <ClInclude Include="include\Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

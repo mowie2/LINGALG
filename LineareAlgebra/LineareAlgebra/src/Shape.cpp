@@ -2,13 +2,14 @@
 
 
 
-Shape::Shape(std::vector<int> m)
+Shape::Shape(std::vector<Matrix> m)
 {
 	matrices = m;
 }
 
-void Shape::Translate()
+void Shape::Translate(const Vector& vec)
 {
+
 }
 
 void Shape::Rotate()
