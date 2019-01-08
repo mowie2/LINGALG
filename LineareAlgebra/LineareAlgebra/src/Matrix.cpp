@@ -191,6 +191,7 @@ Matrix Matrix::rotate(const Vector& rotate) const
 	{
 		
 	}
+	return *this;
 }
 
 

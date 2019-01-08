@@ -44,10 +44,6 @@ int main(int argc, char* args[])
 	//Matrix k = (k1 * 1 * m1.translateToOrgin()).translate(r);
 	Matrix k = m1.scale(5);
 
-	m2.AddVector(v5, v6);
-
-
-	Matrix k = m1*m2;
 	vectorMatrix.push_back(m2);
 	vectorMatrix.push_back(k);
 
