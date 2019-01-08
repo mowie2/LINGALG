@@ -56,7 +56,10 @@ public:
 	Matrix translateToOrgin() const;
 	void translateThis(const Vector& translation);
 
-	Matrix rotate(const Vector& rotate) const;
+	Matrix rotate3d(const Vector& rotate) const;
+	static Matrix getRotateXMatrix3d(float degrees);
+	static Matrix getRotateYMatrix3d(float degrees);
+	static Matrix getRotateZMatrix3d(float degrees);
 
 	~Matrix();
 private:
