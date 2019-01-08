@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "Vector.h"
 #include "../include/Matrix.h"
+#include "Shape.h"
 
 class Window
 {
@@ -9,6 +10,7 @@ public:
 	Window(const int width, const int height);
 	~Window();
 	void Draw(Matrix matrix);
+	void Draw(Shape shape);
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);

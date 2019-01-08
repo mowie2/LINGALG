@@ -12,8 +12,9 @@ public:
 	void Translate(const Vector& vec);
 	void Rotate();
 	void Scale();
+	std::vector<Matrix>& matrices();
 
 	Vector position;
 private:
-	std::vector<Matrix> matrices;
+	std::vector<Matrix> matrices_;
 };

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "include/window.h"
 #include "../LineareAlgebra/include/Matrix.h"
+#include <vector>
 
 
 #ifdef main
@@ -31,6 +32,9 @@ int main(int argc, char* args[])
 
 	
 	m1.AddVector(v1,v2,v3,v4);
+	std::vector<Matrix> vectorMatrix;
+	vectorMatrix.push_back(m1);
+
 	//m1[3][0] = 5;
 	
 	Matrix m2 = Matrix(4);
@@ -50,8 +54,12 @@ int main(int argc, char* args[])
 
 
 	Matrix k = m1*m2;
+	vectorMatrix.push_back(m2);
+	vectorMatrix.push_back(k);
+
+	Shape shape(vectorMatrix);
 	
 	Window window = Window(1000,500);
-	window.Draw(m1);	
+	window.Draw(shape);	
 	return 0;
 }

@@ -70,6 +70,16 @@ void Window::Draw(Matrix matrix)
 	//SDL_Delay(2000);
 
 }
+
+void Window::Draw(Shape shape)
+{
+	auto matrices = shape.matrices();
+	for (auto it = matrices.begin(); it != matrices.end(); it++)
+	{
+		Draw(*it);
+	}
+}
+
 void Window::DrawAxis() {
 
 
