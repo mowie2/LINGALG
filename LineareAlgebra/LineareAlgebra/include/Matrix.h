@@ -41,7 +41,10 @@ public:
 	Matrix operator* (float scalar) const;
 	Matrix subSet(unsigned int rows, unsigned int columns) const;
 	Matrix getTranslatable() const;
+
 	Matrix scale (float scalar) const;
+	void scaleThis(float scalar);
+
 	Vector operator[] (unsigned int index) const;
 	Vector& operator[] (unsigned int index);
 	Vector getToOrginVector() const;
@@ -51,6 +54,7 @@ public:
 
 	Matrix translate(const Vector& translation) const;
 	Matrix translateToOrgin() const;
+	void translateThis(const Vector& translation);
 
 	~Matrix();
 private:

@@ -113,6 +113,12 @@ Matrix Matrix::scale(float scalar) const
 	return (m*scalar*translateToOrgin()).translate(returnVector);
 }
 
+void Matrix::scaleThis(float scalar)
+{
+	const auto& newMatrix = scale(scalar);
+	matrix = newMatrix.matrix;
+}
+
 Vector Matrix::operator[](unsigned int index) const
 {
 	if (index >= 0 && index < columns) {
@@ -172,6 +178,12 @@ Matrix Matrix::translateToOrgin() const
 {
 	Vector translation = getToOrginVector();
 	return translate(translation);
+}
+
+void Matrix::translateThis(const Vector & translation)
+{
+	const auto newMatrix = translate(translation);
+	matrix = newMatrix.matrix;
 }
 
 
