@@ -11,6 +11,8 @@ public:
 	~Window();
 	void Draw(Matrix matrix);
 	void Draw(Shape shape);
+	void addToDraw(Shape shape);
+	void render();
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);
@@ -21,6 +23,7 @@ private:
 	//Screen dimension constants
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
+	std::vector<Shape> shapes_;
 
 	//The window we'll be rendering to
 	SDL_Window* window;

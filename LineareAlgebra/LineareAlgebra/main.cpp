@@ -60,6 +60,7 @@ int main(int argc, char* args[])
 	Shape shape(vectorMatrix);
 	
 	Window window = Window(1000,500);
-	window.Draw(shape);	
+	window.addToDraw(shape);
+	window.render();
 	return 0;
 }

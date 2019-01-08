@@ -26,7 +26,30 @@ void Window::Draw(Matrix matrix)
 	startPoint2.addNumber(0);
 
 
-	//Main loop flag
+	for (int r = 0; r < matrix.getColumns() - 1; r++) {
+		//DrawPoint(matrix[r]);
+		DrawVector(matrix[r], matrix[r + 1]);
+	}
+	//DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
+	
+}
+
+void Window::Draw(Shape shape)
+{
+	auto matrices = shape.matrices();
+	for (auto it = matrices.begin(); it != matrices.end(); it++)
+	{
+		Draw(*it);
+	}
+}
+
+void Window::addToDraw(Shape shape)
+{
+	shapes_.push_back(shape);
+}
+
+void Window::render()
+{//Main loop flag
 	bool quit = false;
 
 	//Event handler
@@ -56,12 +79,13 @@ void Window::Draw(Matrix matrix)
 		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
-		for (int r = 0;r < matrix.getColumns() - 1;r++) {
-			//DrawPoint(matrix[r]);
-			DrawVector(matrix[r], matrix[r+1]);
+
+		auto shapes = shapes_;
+		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw(*it);
 		}
-		DrawVector(matrix[0], matrix[matrix.getColumns()-1]);
-		
+
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -69,15 +93,6 @@ void Window::Draw(Matrix matrix)
 	//Wait two seconds
 	//SDL_Delay(2000);
 
-}
-
-void Window::Draw(Shape shape)
-{
-	auto matrices = shape.matrices();
-	for (auto it = matrices.begin(); it != matrices.end(); it++)
-	{
-		Draw(*it);
-	}
 }
 
 void Window::DrawAxis() {
