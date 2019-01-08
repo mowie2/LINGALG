@@ -6,6 +6,8 @@ Window::Window(const int width, const int height)
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
 	Init();
+
+	addToDraw(player.shape());
 }
 
 Window::~Window()
@@ -34,16 +36,16 @@ void Window::Draw(Matrix matrix)
 	
 }
 
-void Window::Draw(Shape shape)
+void Window::Draw(Shape* shape)
 {
-	auto matrices = shape.matrices();
+	auto matrices = shape->matrices();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)
 	{
 		Draw(*it);
 	}
 }
 
-void Window::addToDraw(Shape shape)
+void Window::addToDraw(Shape* shape)
 {
 	shapes_.push_back(shape);
 }
@@ -68,10 +70,30 @@ void Window::render()
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
+			//catch input
+
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_DOWN:
+					player.moveDown();
+					break;
+				case SDLK_UP:
+					player.moveUp();
+					break;
+				case SDLK_LEFT:
+					player.moveLeft();
+					break;
+				case SDLK_RIGHT:
+					player.moveRight();
+					break;
+				}
 			}
 		}
 

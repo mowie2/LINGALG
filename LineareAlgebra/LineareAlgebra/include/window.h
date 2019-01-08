@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "../include/Matrix.h"
 #include "Shape.h"
+#include "SpaceShip.h"
 
 class Window
 {
@@ -10,8 +11,8 @@ public:
 	Window(const int width, const int height);
 	~Window();
 	void Draw(Matrix matrix);
-	void Draw(Shape shape);
-	void addToDraw(Shape shape);
+	void Draw(Shape* shape);
+	void addToDraw(Shape* shape);
 	void render();
 	void CloseWindow();
 	bool Init();
@@ -23,7 +24,8 @@ private:
 	//Screen dimension constants
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
-	std::vector<Shape> shapes_;
+	std::vector<Shape*> shapes_;
+	SpaceShip player;
 
 	//The window we'll be rendering to
 	SDL_Window* window;

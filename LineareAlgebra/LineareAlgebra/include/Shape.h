@@ -13,6 +13,7 @@ public:
 	void Rotate();
 	void Scale();
 	std::vector<Matrix>& matrices();
+	void addMatix(Matrix matrix);
 
 	Vector position;
 private:
