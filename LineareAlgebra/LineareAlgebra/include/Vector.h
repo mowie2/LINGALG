@@ -3,23 +3,19 @@
 class Vector
 {
 public:
-	/*
-	template <typename F, float... Fs>
-	void Vector(F f) {
-		if (f.getRows() == _rows) {
-			matrix.push_back(std::move(f));
-			_columns++;
-		}
+	template <typename F>
+	void addNumber(F &&f) {
+		vector.push_back(f);
 	}
 
-	template <typename F, float... fs>
-	void Vector(F f, float ... fs) {
-		if (f.getRows() == _rows) {
-			matrix.push_back(std::move(f));
-			_columns++;
-		}
-		AddVector(std::forward<float>(fs)...);
-	}*/
+	template <typename F, typename... Float>
+	void addNumber(F &&f, Float&&... number) {
+		static_assert(std::is_same_v<F, float>, "First argument must be float");
+		static_assert((std::is_same_v<Float, float> && ...), "All arguments must be floats");
+		vector.push_back(std::move(f));
+
+		addNumber(std::forward<Float>(number)...);
+	}
 
 	
 	Vector();
@@ -29,7 +25,7 @@ public:
 	~Vector();
 	unsigned int getRows() const;
 	
-	void addNumber(float number);
+	//void addNumber(float number);
 	
 	void normalize();
 	float operator[](unsigned index) const;

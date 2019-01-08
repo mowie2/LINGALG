@@ -16,10 +16,10 @@ unsigned int Vector::getRows() const
 	return vector.size();
 }
 
-void Vector::addNumber(float number)
-{
-	vector.push_back(number);
-}
+//void Vector::addNumber(float number)
+//{
+//	vector.push_back(number);
+//}
 
 void Vector::normalize()
 {
