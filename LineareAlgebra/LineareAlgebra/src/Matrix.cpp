@@ -185,6 +185,13 @@ void Matrix::translateThis(const Vector & translation)
 	const auto newMatrix = translate(translation);
 	matrix = newMatrix.matrix;
 }
+Matrix Matrix::rotate(const Vector& rotate) const
+{
+	if(rotate.getRows() == getColumns())
+	{
+		
+	}
+}
 
 
 

@@ -56,6 +56,8 @@ public:
 	Matrix translateToOrgin() const;
 	void translateThis(const Vector& translation);
 
+	Matrix rotate(const Vector& rotate) const;
+
 	~Matrix();
 private:
 	
