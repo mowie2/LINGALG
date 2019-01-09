@@ -6,6 +6,37 @@ Window::Window(const int width, const int height)
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
 	Init();
+
+	Matrix m1;
+	Vector v1;
+	v1.addNumber(-1.f, -1.f);
+	Vector v2;
+	v2.addNumber(-1.f, -2.f);
+	Vector v3;
+	v3.addNumber(-2.f, -2.f);
+	Vector v4;
+	v4.addNumber(-2.f, -1.f);
+
+	m1.AddVector(v1, v2, v3, v4);
+	Shape* customshape = new Shape;
+	customshape->addMatix(m1);
+	addToShapes(customshape);
+
+
+	Matrix m2;
+	Vector v5;
+	v5.addNumber(-3.f, -3.f);
+	Vector v6;
+	v6.addNumber(-3.f, -4.f);
+	Vector v7;
+	v7.addNumber(-4.f, -4.f);
+	Vector v8;
+	v8.addNumber(-4.f, -3.f);
+
+	m2.AddVector(v5, v6, v7, v8);
+	Shape* customshape2 = new Shape;
+	customshape->addMatix(m2);
+	addToShapes(customshape2);
 }
 
 Window::~Window()
@@ -26,7 +57,39 @@ void Window::Draw(Matrix matrix)
 	startPoint2.addNumber(0);
 
 
-	//Main loop flag
+	for (int r = 0; r < matrix.getColumns() - 1; r++) {
+		//DrawPoint(matrix[r]);
+		DrawVector(matrix[r], matrix[r + 1]);
+	}
+	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
+	
+}
+
+void Window::Draw(Shape* shape)
+{
+	auto matrices = shape->matrices();
+	for (auto it = matrices.begin(); it != matrices.end(); it++)
+	{
+		Draw(*it);
+	}
+}
+
+void Window::addToShapes(Shape* shape)
+{
+	shapes_.push_back(shape);
+}
+
+void Window::moveShapes(const Vector & moveVector)
+{
+	auto shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->Translate(moveVector);
+	}
+}
+
+void Window::render()
+{//Main loop flag
 	bool quit = false;
 
 	//Event handler
@@ -45,10 +108,32 @@ void Window::Draw(Matrix matrix)
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
+			//catch input
+
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				Vector moveVector;
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_DOWN:
+					moveVector.addNumber(0.f, 1.f);
+					break;
+				case SDLK_UP:
+					moveVector.addNumber(0.f, -1.f);
+					break;
+				case SDLK_LEFT:
+					moveVector.addNumber(1.f, 0.f);
+					break;
+				case SDLK_RIGHT:
+					moveVector.addNumber(-1.f, 0.f);
+					break;
+				}
+				moveShapes(moveVector);
 			}
 		}
 
@@ -56,12 +141,15 @@ void Window::Draw(Matrix matrix)
 		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
-		for (int r = 0;r < matrix.getColumns() - 1;r++) {
-			//DrawPoint(matrix[r]);
-			DrawVector(matrix[r], matrix[r+1]);
+
+		Draw(player.shape());
+
+		auto shapes = shapes_;
+		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw(*it);
 		}
-		DrawVector(matrix[0], matrix[matrix.getColumns()-1]);
-		
+
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -70,6 +158,7 @@ void Window::Draw(Matrix matrix)
 	//SDL_Delay(2000);
 
 }
+
 void Window::DrawAxis() {
 
 
