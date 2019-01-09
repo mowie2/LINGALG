@@ -32,7 +32,7 @@ void Window::Draw(Matrix matrix)
 		//DrawPoint(matrix[r]);
 		DrawVector(matrix[r], matrix[r + 1]);
 	}
-	//DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
+	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
 	
 }
 

@@ -15,6 +15,7 @@ SpaceShip::SpaceShip()
 	v4.addNumber(2.f, 1.f);
 
 	m1.AddVector(v1, v2, v3, v4);
+	m1 = m1.scale(3);
 	shape_.addMatix(m1);
 }
 
