@@ -37,14 +37,17 @@ int main(int argc, char* args[])
 	//Matrix k = m1.translateToOrgin();
 	//Vector r = m1.getToOrginVector() * -1;
 	//Matrix k = (k1 * 1 * m1.translateToOrgin()).translate(r);
-	Matrix k = m1.scale(3);
-
-	
+	//Matrix k = m1.scale(3);
+	Matrix m;
+	m.AddVector(v1, v2, v3, v4);
+	Vector scale;
+	scale.addNumber(5.f, 2.f, 2.f);
+	m.scaleThis(scale);
 	//k.translateThis(k.getToOrginVector());
 
 	Window window = Window(1000,500);
 
-	window.Draw(k);
+	window.Draw(m);
 	
 	
 	//window.Draw(m2);

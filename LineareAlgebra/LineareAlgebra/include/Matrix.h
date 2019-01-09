@@ -42,8 +42,8 @@ public:
 	Matrix subSet(unsigned int rows, unsigned int columns) const;
 	Matrix getTranslatable() const;
 
-	Matrix scale (float scalar) const;
-	void scaleThis(float scalar);
+	Matrix scale (const Vector& vec) const;
+	void scaleThis(const Vector& vec);
 
 	Vector operator[] (unsigned int index) const;
 	Vector& operator[] (unsigned int index);

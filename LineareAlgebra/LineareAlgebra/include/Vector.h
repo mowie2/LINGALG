@@ -20,8 +20,6 @@ public:
 	
 	Vector();
 
-
-
 	~Vector();
 	unsigned int getRows() const;
 	

@@ -106,16 +106,19 @@ Matrix Matrix::getTranslatable() const
 	return translable;
 }
 
-Matrix Matrix::scale(float scalar) const
+Matrix Matrix::scale(const Vector& vec) const
 {
 	Vector returnVector = getToOrginVector() * -1;
 	Matrix m = Matrix(getRows(), getRows(), true);
-	return (m*scalar*translateToOrgin()).translate(returnVector).subSet(getRows(),getColumns());
+	m[0][0] = vec[0];
+	m[1][1] = vec[1];
+	m[2][2] = vec[2];
+	return (m*translateToOrgin()).translate(returnVector);
 }
 
-void Matrix::scaleThis(float scalar)
+void Matrix::scaleThis(const Vector& vec)
 {
-	const auto& newMatrix = scale(scalar);
+	const auto& newMatrix = scale(vec);
 	matrix = newMatrix.matrix;
 }
 
