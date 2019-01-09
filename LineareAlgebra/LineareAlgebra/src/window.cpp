@@ -105,6 +105,10 @@ void Window::render()
 			//While application is running
 	while (!quit)
 	{
+		Vector vector;
+		vector.addNumber(0.1f, -0.5f, 0.f);
+		player.shape()->Rotate(vector);
+
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{

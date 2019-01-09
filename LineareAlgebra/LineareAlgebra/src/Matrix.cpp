@@ -224,8 +224,8 @@ Matrix Matrix::getRotateZMatrix3d(float degrees)
 {
 	auto m = Matrix(4, 4, false);
 	m[0][0] = std::cos(degrees / 180 * M_PI);
-	m[0][1] = std::sin(degrees / 180 * M_PI);
-	m[1][0] = -1 * std::sin(degrees / 180 * M_PI);
+	m[0][1] = -1*std::sin(degrees / 180 * M_PI);
+	m[1][0] = std::sin(degrees / 180 * M_PI);
 	m[1][1] = std::cos(degrees / 180 * M_PI);
 	m[2][2] = 1;
 	m[3][3] = 1;
