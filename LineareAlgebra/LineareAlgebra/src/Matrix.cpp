@@ -1,7 +1,7 @@
 #include "../include/Matrix.h"
 #include <map>
 #include <algorithm>
-
+#include <SDL_stdinc.h>
 
 
 Matrix::Matrix()
@@ -110,7 +110,7 @@ Matrix Matrix::scale(float scalar) const
 {
 	Vector returnVector = getToOrginVector() * -1;
 	Matrix m = Matrix(getRows(), getRows(), true);
-	return (m*scalar*translateToOrgin()).translate(returnVector);
+	return (m*scalar*translateToOrgin()).translate(returnVector).subSet(getRows(),getColumns());
 }
 
 void Matrix::scaleThis(float scalar)
@@ -185,15 +185,52 @@ void Matrix::translateThis(const Vector & translation)
 	const auto newMatrix = translate(translation);
 	matrix = newMatrix.matrix;
 }
-Matrix Matrix::rotate(const Vector& rotate) const
+
+Matrix Matrix::rotate3d(const Vector & rotate) const
 {
-	if(rotate.getRows() == getColumns())
+	if (rotate.getRows() == 3)
 	{
-		
+
 	}
+	throw std::exception("invalid object");
 	return *this;
 }
 
+Matrix Matrix::getRotateXMatrix3d(float degrees)
+{
+	auto m = Matrix(4,4,false);
+	m[0][0] = 1;
+	m[1][1] = std::cos(degrees/180*M_PI);
+	m[1][2] = std::sin(degrees / 180 * M_PI);
+	m[2][1] = -1*std::sin(degrees / 180 * M_PI);
+	m[2][2] = std::cos(degrees / 180 * M_PI);
+	m[3][3] = 1;
+	return m;
+}
+
+Matrix Matrix::getRotateYMatrix3d(float degrees)
+{
+	auto m = Matrix(4, 4, false);
+	m[0][0] = std::cos(degrees / 180 * M_PI);
+	m[1][1] = 1;
+	m[2][0] = std::sin(degrees / 180 * M_PI);
+	m[0][2] = -1 * std::sin(degrees / 180 * M_PI);
+	m[2][2] = std::cos(degrees / 180 * M_PI);
+	m[3][3] = 1;
+	return m;
+}
+
+Matrix Matrix::getRotateZMatrix3d(float degrees)
+{
+	auto m = Matrix(4, 4, false);
+	m[0][0] = std::cos(degrees / 180 * M_PI);
+	m[0][1] = std::sin(degrees / 180 * M_PI);
+	m[1][0] = -1 * std::sin(degrees / 180 * M_PI);
+	m[1][1] = std::cos(degrees / 180 * M_PI);
+	m[2][2] = 1;
+	m[3][3] = 1;
+	return m;
+}
 
 
 Matrix::~Matrix()
