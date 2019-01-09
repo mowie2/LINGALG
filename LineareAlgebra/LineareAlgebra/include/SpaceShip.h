@@ -16,6 +16,5 @@ public:
 	~SpaceShip();
 
 	Shape* const shape() { return &shape_; }
-	void move(const Vector& moveVector);
 };
 

@@ -132,6 +132,7 @@ void Window::render()
 				case SDLK_RIGHT:
 					moveVector.addNumber(-1.f, 0.f);
 					break;
+
 				}
 				moveShapes(moveVector);
 			}
