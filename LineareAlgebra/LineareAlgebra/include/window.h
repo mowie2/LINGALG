@@ -12,7 +12,8 @@ public:
 	~Window();
 	void Draw(Matrix matrix);
 	void Draw(Shape* shape);
-	void addToDraw(Shape* shape);
+	void addToShapes(Shape* shape);
+	void moveShapes(const Vector& moveVector);
 	void render();
 	void CloseWindow();
 	bool Init();

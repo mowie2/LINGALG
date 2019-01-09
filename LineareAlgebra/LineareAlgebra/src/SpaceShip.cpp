@@ -24,30 +24,7 @@ SpaceShip::~SpaceShip()
 {
 }
 
-void SpaceShip::moveDown()
+void SpaceShip::move(const Vector & moveVector)
 {
-	Vector v1;
-	v1.addNumber(0.f, -1.f);
-	shape_.Translate(v1);
-}
-
-void SpaceShip::moveRight()
-{
-	Vector v1;
-	v1.addNumber(1.f, 0.f);
-	shape_.Translate(v1);
-}
-
-void SpaceShip::moveLeft()
-{
-	Vector v1;
-	v1.addNumber(-1.f, 0.f);
-	shape_.Translate(v1);
-}
-
-void SpaceShip::moveUp()
-{
-	Vector v1;
-	v1.addNumber(0.f, 1.f);
-	shape_.Translate(v1);
+	shape_.Translate(moveVector);
 }

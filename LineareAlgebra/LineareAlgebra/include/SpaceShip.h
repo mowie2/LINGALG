@@ -1,5 +1,6 @@
 #pragma once
 #include "Shape.h"
+#include "Vector.h"
 
 class SpaceShip
 {
@@ -15,9 +16,6 @@ public:
 	~SpaceShip();
 
 	Shape* const shape() { return &shape_; }
-	void moveDown();
-	void moveRight();
-	void moveLeft();
-	void moveUp();
+	void move(const Vector& moveVector);
 };
 

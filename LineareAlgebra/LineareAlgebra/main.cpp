@@ -38,7 +38,7 @@ int main(int argc, char* args[])
 	//Shape shape(vectorMatrix);
 	
 	Window window = Window(1000,500);
-	//window.addToDraw(shape);
+	//window.addToShapes(shape);
 	window.render();
 	return 0;
 }
