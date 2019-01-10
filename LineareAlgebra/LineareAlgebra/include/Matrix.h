@@ -61,6 +61,7 @@ public:
 	static Matrix getRotateXMatrix3d(float degrees);
 	static Matrix getRotateYMatrix3d(float degrees);
 	static Matrix getRotateZMatrix3d(float degrees);
+	float calculateInProduct(Vector& vec1, Vector& vec2);
 
 	static Matrix getIdentityMatrix(unsigned int dimensions);
 	~Matrix();

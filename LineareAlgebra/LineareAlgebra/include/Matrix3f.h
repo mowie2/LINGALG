@@ -39,6 +39,7 @@ public:
 	//Matrix3f scale();
 	Matrix getMatrix() const;
 
+
 	static Matrix3f getIdentityMatrix();
 private:
 	Matrix matrix_;

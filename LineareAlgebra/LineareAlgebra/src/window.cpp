@@ -1,5 +1,7 @@
 #include "../include/window.h"
 #include <stdio.h>
+#include "../include/CollisionDetector.h"
+#include "../include/Physics.h"
 
 Window::Window(const int width, const int height)
 {
@@ -52,7 +54,13 @@ Window::Window(const int width, const int height)
 	matrices.push_back(square5);
 	matrices.push_back(square6);*/
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	addToShapes(s);	
+	addToShapes(s);
+
+	Vector3f ves = Vector3f(-1, 0, 0);
+	Vector3f veb = Vector3f(1, 0, 0);
+
+	Physics ss;
+	auto x = ss.calculateAngle(ves, veb);
 }
 
 Window::~Window()
@@ -251,10 +259,10 @@ void Window::DrawVector(Vector origin, Vector direction)
 {
 	int tempXsize = 20;
 	int tempYsize = 10;
-	
-	float scaleX = SCREEN_WIDTH/tempXsize;
-	float scaleY = SCREEN_HEIGHT/tempYsize;
-	
+
+	float scaleX = SCREEN_WIDTH / tempXsize;
+	float scaleY = SCREEN_HEIGHT / tempYsize;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 

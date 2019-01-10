@@ -23,6 +23,7 @@ public:
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
 	void transform();
+	std::vector<Matrix3f> getMatrix() const { return matrices_; }
 private:
 	Vector3f position_;
 	std::vector<Matrix3f> matrices_;
