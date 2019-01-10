@@ -7,36 +7,52 @@ Window::Window(const int width, const int height)
 	this->SCREEN_HEIGHT = height;
 	Init();
 
-	Matrix m1;
-	Vector v1;
-	v1.addNumber(-1.f, -1.f);
-	Vector v2;
-	v2.addNumber(-1.f, -2.f);
-	Vector v3;
-	v3.addNumber(-2.f, -2.f);
-	Vector v4;
-	v4.addNumber(-2.f, -1.f);
+	Matrix3f square;
+	square.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(1, 0, 0),
+		Vector3f(1, 1, 0),
+		Vector3f(0, 1, 0));
+	Matrix3f square2;
+	square2.AddVector(
+		Vector3f(1, 0, 0),
+		Vector3f(1, 0, 1),
+		Vector3f(1, 1, 1),
+		Vector3f(1, 1, 0));
+	Matrix3f square3;
+	square3.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(0, 0, 1),
+		Vector3f(0, 1, 1),
+		Vector3f(0, 1, 0));
+	Matrix3f square4;
+	square4.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(1, 0, 0),
+		Vector3f(1, 0, 1),
+		Vector3f(0, 0, 1));
+	Matrix3f square5;
+	square5.AddVector(
+		Vector3f(0, 1, 0),
+		Vector3f(1, 1, 0),
+		Vector3f(1, 1, 1),
+		Vector3f(0, 1, 1));
+	Matrix3f square6;
+	square6.AddVector(
+		Vector3f(0, 0, 1),
+		Vector3f(1, 0, 1),
+		Vector3f(1, 1, 1),
+		Vector3f(0, 1, 1));
 
-	//m1.AddVector(v1, v2, v3, v4);
-	Shape* customshape = new Shape;
-	customshape->addMatix(m1);
-	addToShapes(customshape);
-
-
-	Matrix m2;
-	Vector v5;
-	v5.addNumber(-3.f, -3.f);
-	Vector v6;
-	v6.addNumber(-3.f, -4.f);
-	Vector v7;
-	v7.addNumber(-4.f, -4.f);
-	Vector v8;
-	v8.addNumber(-4.f, -3.f);
-
-	m2.AddVector(v5, v6, v7, v8);
-	Shape* customshape2 = new Shape;
-	customshape->addMatix(m2);
-	addToShapes(customshape2);
+	std::vector<Matrix3f> matrices;
+	matrices.push_back(square);
+	matrices.push_back(square2);
+	matrices.push_back(square3);
+	matrices.push_back(square4);
+	matrices.push_back(square5);
+	matrices.push_back(square6);
+	auto s = Shape(matrices, Vector3f(.5, .5, 0));
+	addToShapes(&s);	
 }
 
 Window::~Window()
@@ -45,34 +61,13 @@ Window::~Window()
 
 void Window::Draw(Matrix matrix)
 {
-	// Vectors
-	Vector startPoint1;
-	startPoint1.addNumber(0);
-	startPoint1.addNumber(0);
-	Vector direction;
-	direction.addNumber(9);
-	direction.addNumber(5);
-	Vector startPoint2;
-	startPoint2.addNumber(1);
-	startPoint2.addNumber(0);
-
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
-		//DrawPoint(matrix[r]);
 		DrawVector(matrix[r], matrix[r + 1]);
 	}
 	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
 }
 
 void Window::Draw(Shape* shape)
-{
-	auto matrices = shape->matrices();
-	for (auto it = matrices.begin(); it != matrices.end(); it++)
-	{
-		Draw(*it);
-	}
-}
-
-void Window::Draw2(Shape* shape)
 {
 	auto matrices = shape->projections();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)
@@ -81,22 +76,17 @@ void Window::Draw2(Shape* shape)
 	}
 }
 
-
-
-
-
-
 void Window::addToShapes(Shape* shape)
 {
 	shapes_.push_back(shape);
 }
 
-void Window::moveShapes(const Vector & moveVector)
+void Window::moveShapes(const Vector3f & moveVector)
 {
 	auto shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
-		(*it)->Translate(moveVector);
+		(*it)->translate(moveVector);
 	}
 }
 
@@ -119,7 +109,7 @@ void Window::render()
 	{
 		Vector vector;
 		vector.addNumber(0.1f, -0.5f, 0.f);
-		player.shape()->Rotate(vector);
+		player.shape()->rotate(vector);
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -133,20 +123,20 @@ void Window::render()
 			}
 			else if (e.type == SDL_KEYDOWN)
 			{
-				Vector moveVector;
+				auto moveVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_DOWN:
-					moveVector.addNumber(0.f, 1.f);
+					moveVector[1] += .5;
 					break;
 				case SDLK_UP:
-					moveVector.addNumber(0.f, -1.f);
+					moveVector[1] -= .5;
 					break;
 				case SDLK_LEFT:
-					moveVector.addNumber(1.f, 0.f);
+					moveVector[0] += .5;
 					break;
 				case SDLK_RIGHT:
-					moveVector.addNumber(-1.f, 0.f);
+					moveVector[0] -= .5;
 					break;
 
 				}
@@ -174,79 +164,6 @@ void Window::render()
 	//Wait two seconds
 	//SDL_Delay(2000);
 
-}
-
-void Window::render2()
-{
-	bool quit = false;
-
-	//Event handler
-	SDL_Event e;
-
-	//Get window surface
-	screenSurface = SDL_GetWindowSurface(window);
-
-	//Update the surface
-	SDL_UpdateWindowSurface(window);
-
-	//While application is running
-			//While application is running
-	while (!quit)
-	{
-		Vector vector;
-		vector.addNumber(0.1f, -0.5f, 0.f);
-		//player.shape()->Rotate(vector);
-
-		//Handle events on queue
-		while (SDL_PollEvent(&e) != 0)
-		{
-			//catch input
-
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				Vector moveVector;
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_DOWN:
-					moveVector.addNumber(0.f, 1.f);
-					break;
-				case SDLK_UP:
-					moveVector.addNumber(0.f, -1.f);
-					break;
-				case SDLK_LEFT:
-					moveVector.addNumber(1.f, 0.f);
-					break;
-				case SDLK_RIGHT:
-					moveVector.addNumber(-1.f, 0.f);
-					break;
-
-				}
-				moveShapes(moveVector);
-			}
-		}
-
-		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
-		SDL_RenderClear(gRenderer);
-		DrawAxis();
-
-		//Draw(player.shape());
-
-		auto shapes = shapes_;
-		for (auto it = shapes.begin(); it != shapes.end(); it++)
-		{
-			Draw2(*it);
-		}
-
-
-		//Update screen
-		SDL_RenderPresent(gRenderer);
-	}
 }
 
 void Window::DrawAxis() {
@@ -346,7 +263,6 @@ void Window::DrawVector(Vector origin, Vector direction)
 
 	auto directionX = direction[0] * scaleX + centerX;
 	auto directionY = direction[1] * -1 * scaleY + centerY;
-
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawLine(gRenderer, originX, originY, directionX, directionY);
 }

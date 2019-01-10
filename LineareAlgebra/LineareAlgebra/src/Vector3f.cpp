@@ -11,7 +11,8 @@ Vector3f::Vector3f(const Vector & original)
 {
 	if(original.getRows() == 3)
 	{
-		vector_ = original;
+		vector_.addNumber(0.f, 0.f, 0.f);
+		vector_ = Vector(original);
 	}
 	else{
 		throw std::invalid_argument("rows must be 3");

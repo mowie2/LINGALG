@@ -131,7 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\Matrix4x4.cpp" />
+    <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Matrix3f.cpp" />
     <ClCompile Include="src\SpaceShip.cpp" />

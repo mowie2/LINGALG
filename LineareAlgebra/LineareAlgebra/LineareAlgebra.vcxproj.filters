@@ -39,10 +39,10 @@
     <ClCompile Include="src\Vector3f.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Matrix4x4.cpp">
+    <ClCompile Include="src\Vector4f.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Vector4f.cpp">
+    <ClCompile Include="src\Matrix4x4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

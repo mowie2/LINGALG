@@ -1,28 +1,11 @@
 #include "../include/Shape.h"
-
-
-
-Shape::Shape(std::vector<Matrix> m)
-{
-	matrices_ = m;
-}
-
 Shape::Shape(std::vector<Matrix3f> m,const Vector3f& position)
 {
 	position_ = position;
-	matrices3D_ = m;
+	matrices_ = m;
 	projections_ = m;
 	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
 	translate(position);
-}
-
-void Shape::Translate(const Vector& vec)
-{
-	auto matrices = matrices_;
-	for (auto it = matrices_.begin(); it != matrices_.end(); it++)
-	{
-		it->translateThis(vec);
-	}
 }
 
 void Shape::translate(const Vector3f & vec)
@@ -33,42 +16,8 @@ void Shape::translate(const Vector3f & vec)
 	translateMatrix[3][1] = vec[1];
 	translateMatrix[3][2] = vec[2];
 	transformationMatrix_ = translateMatrix * transformationMatrix_;
-	
-	for (unsigned int i = 0;i < projections_.size();i++) {
-		projections_[i] = (transformationMatrix_*matrices3D_[i].getTranslatable()).getMatrix().subSet(3,matrices3D_[i].getColumns());
-	}
 }
 
-void Shape::Rotate(const Vector& vector)
-{
-	/*Vector toOrigin;
-	toOrigin.addNumber(0.f, 0.f, 0.f);
-	for (auto it = matrices_.begin(); it != matrices_.end(); it++)
-	{
-		toOrigin = toOrigin + it->getToOrginVector();
-	}
-	toOrigin * (1 / matrices_.size());
-	auto returnV = toOrigin * -1;*/
-
-	for (auto it = matrices_.begin(); it != matrices_.end(); it++)
-	{
-		*it = (Matrix::getRotateXMatrix3d(vector[0])* it->translate(position).getTranslatable()).subSet(it->getRows(), it->getColumns()).translate(position*-1);
-	}
-	for (auto it = matrices_.begin(); it != matrices_.end(); it++)
-	{
-		*it = (Matrix::getRotateYMatrix3d(vector[1])* it->translate(position).getTranslatable()).subSet(it->getRows(), it->getColumns()).translate(position*-1);
-	}
-	for (auto it = matrices_.begin(); it != matrices_.end(); it++)
-	{
-		*it = (Matrix::getRotateZMatrix3d(vector[2])* it->translate(position).getTranslatable()).subSet(it->getRows(), it->getColumns()).translate(position*-1);
-	}
-
-	//auto toOrgin = (m1.getToOrginVector() + m2.getToOrginVector()) * .5f;
-	//auto returnV = toOrgin * -1;
-	//
-	//m1 = (Matrix::getRotateYMatrix3d(45)* m1.translate(toOrgin).getTranslatable()).subSet(m1.getRows(), m1.getColumns()).translate(returnV);
-	//m2 = (Matrix::getRotateYMatrix3d(45)* m2.translate(toOrgin).getTranslatable()).subSet(m2.getRows(), m2.getColumns()).translate(returnV);
-}
 
 Matrix4x4f Shape::getToOrignMatrix() const
 {
@@ -105,29 +54,21 @@ void Shape::scale(const Vector3f & vec)
 	transformationMatrix_ = getToPositionMatrix()*scalar*getToOrignMatrix()*transformationMatrix_;
 }
 
-void Shape::Scale()
-{
-}
-
-std::vector<Matrix>& Shape::matrices()
-{
-	return matrices_;
-}
-
 std::vector<Matrix3f>& Shape::projections()
 {
-	for (unsigned int i = 0;i < projections_.size();i++) {
-		projections_[i] = (transformationMatrix_*matrices3D_[i].getTranslatable()).getMatrix().subSet(3, matrices3D_[i].getColumns());
+	for (auto i = 0;i < projections_.size();i++) {
+		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).getMatrix().subSet(3, matrices_[i].getColumns());
+		projections_[i] = k;
 	}
 	return projections_;
 }
 
-void Shape::addMatix(Matrix matrix)
+void Shape::addMatix(Matrix3f matrix)
 {
 	matrices_.push_back(matrix);
 }
 
-void Shape::setPos(const Vector & pos)
+void Shape::setPos(const Vector3f & pos)
 {
-	position = pos;
+	position_ = pos;
 }

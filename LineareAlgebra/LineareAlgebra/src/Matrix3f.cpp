@@ -83,11 +83,7 @@ Matrix4x4f Matrix3f::getTranslatable() const
 {
 	return Matrix4x4f(matrix_.getTranslatable());
 }
-/*
-Matrix3f Matrix3f::translate(const Vector3f& vec) const
-{
-	return matrix_.translate(vec.getVector());
-}*/
+
 
 Matrix Matrix3f::getMatrix() const
 {
