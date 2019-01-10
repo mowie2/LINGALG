@@ -52,7 +52,7 @@ Window::Window(const int width, const int height)
 	matrices.push_back(square5);
 	matrices.push_back(square6);*/
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	//addToShapes(s);	
+	addToShapes(s);	
 }
 
 Window::~Window()
@@ -83,11 +83,11 @@ void Window::addToShapes(const Shape& shape)
 
 void Window::moveShapes(const Vector3f & moveVector)
 {
-	//auto shapes = shapes_;
-	//for (auto it = shapes_.begin(); it != shapes_.end(); it++)
-	//{
-	//	(*it)->translate(moveVector);
-	//}
+	auto& shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->translate(moveVector);
+	}
 }
 
 void Window::render()
@@ -108,7 +108,7 @@ void Window::render()
 	while (!quit)
 	{
 		Vector vector;
-		vector.addNumber(0.1f, -0.5f, 0.f);
+		vector.addNumber(0.f, -1.0f, -1.f);
 		player.shape().rotate(vector);
 
 		//Handle events on queue
