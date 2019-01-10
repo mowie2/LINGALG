@@ -94,10 +94,15 @@ void Shape::rotate(const Vector3f & vec)
 	const auto y = Matrix4x4f::getYRotationMatrix(vec[1]);
 	const auto z = Matrix4x4f::getZRotationMatrix(vec[2]);
 	transformationMatrix_ = getToPositionMatrix()*x*y*z*getToOrignMatrix()*transformationMatrix_;
+}
 
-	for (unsigned int i = 0;i < projections_.size();i++) {
-		projections_[i] = (transformationMatrix_*matrices3D_[i].getTranslatable()).getMatrix().subSet(3, matrices3D_[i].getColumns());
-	}
+void Shape::scale(const Vector3f & vec)
+{
+	auto scalar = Matrix4x4f::getIdentityMatrix();
+	scalar[0][0] = vec[0];
+	scalar[1][1] = vec[1];
+	scalar[2][2] = vec[2];
+	transformationMatrix_ = getToPositionMatrix()*scalar*getToOrignMatrix()*transformationMatrix_;
 }
 
 void Shape::Scale()
@@ -111,6 +116,9 @@ std::vector<Matrix>& Shape::matrices()
 
 std::vector<Matrix3f>& Shape::projections()
 {
+	for (unsigned int i = 0;i < projections_.size();i++) {
+		projections_[i] = (transformationMatrix_*matrices3D_[i].getTranslatable()).getMatrix().subSet(3, matrices3D_[i].getColumns());
+	}
 	return projections_;
 }
 

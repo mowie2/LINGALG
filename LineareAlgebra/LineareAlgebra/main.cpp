@@ -94,6 +94,7 @@ int main(int argc, char* args[])
 	s.translate(Vector3f(1, 1, 0));
 	Shape s2(s);
 	s.rotate(Vector3f(45, 45, 45));
+	s.scale(Vector3f(2, 2, 2));
 	s.translate(Vector3f(1, 1, 0));
 	//s.rotate(Vector3f(0, 45, 45));
 	//s2.translate(Vector3f(1, 1, 0));
