@@ -16,6 +16,7 @@ public:
 
 	void rotate(const Vector3f& vec);
 	void scale(const Vector3f& vec);
+	void rotateOrigin(const Vector3f& vec);
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
@@ -24,6 +25,7 @@ public:
 	void setPos(const Vector3f& pos);
 	void transform();
 private:
+	Vector3f heading_;
 	Vector3f position_;
 	std::vector<Matrix3f> matrices_;
 	std::vector<Matrix3f> projections_;
