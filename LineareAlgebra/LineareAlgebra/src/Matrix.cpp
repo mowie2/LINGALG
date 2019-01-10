@@ -98,17 +98,17 @@ Matrix Matrix::subSet(unsigned int rows, unsigned int columns) const
 
 Matrix Matrix::getTranslatable() const
 {
-	Matrix translable;
+	Matrix translatable;
 	for (auto copyVector : matrix) {
 		copyVector.addNumber(1);
-		translable.AddVector(copyVector);
+		translatable.AddVector(copyVector);
 	}
-	return translable;
+	return translatable;
 }
 
 Matrix Matrix::scale(float scalar) const
 {
-	Vector returnVector = getToOrginVector() * -1;
+	const Vector returnVector = getToOrginVector() * -1;
 	Matrix m = Matrix(getRows(), getRows(), true);
 	return (m*scalar*translateToOrgin()).translate(returnVector).subSet(getRows(),getColumns());
 }

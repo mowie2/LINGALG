@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "include/Vector.h"
 
 class Vector3f
 {
@@ -13,8 +14,9 @@ public:
 	Vector3f operator+(const Vector3f& other);
 	Vector3f operator-(const Vector3f& other);
 	float operator*(const Vector3f& other);
+	Vector getVector() const;
 
 private:
-	std::vector<float> vector_;
+	Vector vector_;
 };
 
