@@ -56,11 +56,11 @@ Window::Window(const int width, const int height)
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
 	addToShapes(s);
 
-	Vector3f ves = Vector3f(-1, 0, 0);
-	Vector3f veb = Vector3f(1, 0, 0);
+	Vector3f ves = Vector3f(1, 1, 1);
+	Vector3f veb = Vector3f(1, 1, 1);
 
 	Physics ss;
-	auto x = ss.calculateAngle(ves, veb);
+	auto x = ss.calculateOutProduct(ves, veb);
 }
 
 Window::~Window()
