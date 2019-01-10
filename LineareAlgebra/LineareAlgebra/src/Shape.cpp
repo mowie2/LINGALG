@@ -47,9 +47,7 @@ void Shape::rotate(const Vector3f & vec)
 	const auto x = Matrix4x4f::getXRotationMatrix(vec[0]);
 	const auto y = Matrix4x4f::getYRotationMatrix(vec[1]);
 	const auto z = Matrix4x4f::getZRotationMatrix(vec[2]);
-	transformationMatrix_ = getToPositionMatrix()*x*getToOrignMatrix()*transformationMatrix_;
-	transformationMatrix_ = getToPositionMatrix()*y*getToOrignMatrix()*transformationMatrix_;
-	transformationMatrix_ = getToPositionMatrix()*z*getToOrignMatrix()*transformationMatrix_;
+	transformationMatrix_ = getToPositionMatrix()*x*y*z*getToOrignMatrix()*transformationMatrix_;
 	transform();
 }
 

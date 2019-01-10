@@ -108,7 +108,7 @@ void Window::render()
 	while (!quit)
 	{
 		Vector vector;
-		vector.addNumber(1.f, -1.f, -0.f);
+		vector.addNumber(1.f, 2.f, 1.f);
 		player.shape().rotate(vector);
 
 		//Handle events on queue
