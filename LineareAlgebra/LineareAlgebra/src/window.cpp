@@ -47,12 +47,12 @@ Window::Window(const int width, const int height)
 	std::vector<Matrix3f> matrices;
 	matrices.push_back(square);
 	matrices.push_back(square2);
-	matrices.push_back(square3);
+	/*matrices.push_back(square3);
 	matrices.push_back(square4);
 	matrices.push_back(square5);
-	matrices.push_back(square6);
+	matrices.push_back(square6);*/
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	addToShapes(&s);	
+	//addToShapes(s);	
 }
 
 Window::~Window()
@@ -67,27 +67,27 @@ void Window::Draw(Matrix matrix)
 	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
 }
 
-void Window::Draw(Shape* shape)
+void Window::Draw(const Shape& shape)
 {
-	auto matrices = shape->projections();
+	auto matrices = shape.projections();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)
 	{
 		Draw((*it).getMatrix());
 	}
 }
 
-void Window::addToShapes(Shape* shape)
+void Window::addToShapes(const Shape& shape)
 {
-	shapes_.push_back(shape);
+	shapes_.push_back(std::make_unique<Shape>(shape));
 }
 
 void Window::moveShapes(const Vector3f & moveVector)
 {
-	auto shapes = shapes_;
-	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
-	{
-		(*it)->translate(moveVector);
-	}
+	//auto shapes = shapes_;
+	//for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	//{
+	//	(*it)->translate(moveVector);
+	//}
 }
 
 void Window::render()
@@ -109,7 +109,7 @@ void Window::render()
 	{
 		Vector vector;
 		vector.addNumber(0.1f, -0.5f, 0.f);
-		player.shape()->rotate(vector);
+		player.shape().rotate(vector);
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -151,10 +151,10 @@ void Window::render()
 
 		Draw(player.shape());
 
-		auto shapes = shapes_;
+		auto& shapes = shapes_;
 		for (auto it = shapes.begin(); it != shapes.end(); it++)
 		{
-			Draw(*it);
+			Draw(*(*it));
 		}
 
 

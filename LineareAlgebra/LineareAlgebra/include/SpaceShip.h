@@ -15,6 +15,6 @@ public:
 	SpaceShip& operator=(SpaceShip&& other) = delete;
 	~SpaceShip();
 
-	Shape* const shape() { return &shape_; }
+	Shape& const shape() { return shape_; }
 };
 

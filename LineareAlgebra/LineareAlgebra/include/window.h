@@ -4,16 +4,24 @@
 #include "../include/Matrix.h"
 #include "Shape.h"
 #include "SpaceShip.h"
+#include <memory>
 
 class Window
 {
 public:
 	Window(const int width, const int height);
+	Window(const Window& other) = delete;
+	Window& operator=(const Window& other) = delete;
+	Window(Window&& other) = delete;
+	Window& operator=(Window&& other) = delete;
+
+
+
 	~Window();
 	void Draw(Matrix matrix);
-	void Draw(Shape* shape);
+	void Draw(const Shape& shape);
 
-	void addToShapes(Shape* shape);
+	void addToShapes(const Shape& shape);
 	void moveShapes(const Vector3f& moveVector);
 	
 	void render();
@@ -28,7 +36,10 @@ private:
 	//Screen dimension constants
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
-	std::vector<Shape*> shapes_;
+	std::vector<std::unique_ptr<Shape>> shapes_;
+	
+	//std::vector<Shape*> shapes_;
+
 	SpaceShip player;
 
 	//The window we'll be rendering to

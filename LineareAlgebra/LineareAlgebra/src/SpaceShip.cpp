@@ -53,5 +53,4 @@ SpaceShip::SpaceShip()
 
 
 SpaceShip::~SpaceShip()
-{
-}
+= default;

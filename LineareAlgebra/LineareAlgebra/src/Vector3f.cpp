@@ -32,6 +32,14 @@ Vector3f::~Vector3f()
 {
 }
 
+Vector3f & Vector3f::operator=(const Vector3f & other)
+{
+	if (other.vector_.getRows()) {
+		vector_ = other.vector_;
+	}
+	return *this;
+}
+
 float & Vector3f::operator[](unsigned int index)
 {
 	return vector_[index];

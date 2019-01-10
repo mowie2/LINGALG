@@ -6,7 +6,7 @@
 class Shape
 {
 public:
-	Shape() = default;
+	Shape();
 	Shape(std::vector<Matrix3f> m,const Vector3f& position);
 	~Shape() = default;
 	void translate(const Vector3f& vec);
@@ -18,8 +18,11 @@ public:
 	void scale(const Vector3f& vec);
 
 	std::vector<Matrix3f>& projections();
+	std::vector<Matrix3f> projections() const;
+	
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
+	void transform();
 private:
 	Vector3f position_;
 	std::vector<Matrix3f> matrices_;
