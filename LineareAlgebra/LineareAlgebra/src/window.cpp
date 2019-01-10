@@ -109,8 +109,8 @@ void Window::render()
 	{
 		Vector vector;
 		vector.addNumber(0.1f, -0.5f, 0.f);
-		player.shape()->rotate(vector);
-		player.shape()->rotateOrigin(vector);
+		//player.shape().rotate(vector);
+		player.shape().rotateOrigin(vector);
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -152,11 +152,11 @@ void Window::render()
 
 		Draw(player.shape());
 
-		auto& shapes = shapes_;
-		for (auto it = shapes.begin(); it != shapes.end(); it++)
-		{
-			Draw(*(*it));
-		}
+		//auto& shapes = shapes_;
+		//for (auto it = shapes.begin(); it != shapes.end(); it++)
+		//{
+		//	Draw(*(*it));
+		//}
 
 
 		//Update screen
