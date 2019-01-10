@@ -1,11 +1,12 @@
 #pragma once
 #include <vector>
-#include "include/Vector.h"
+#include "Vector.h"
 
 class Vector3f
 {
 public:
 	Vector3f();
+	Vector3f(const Vector& original);
 	Vector3f(float x,float y, float z);
 	~Vector3f();
 

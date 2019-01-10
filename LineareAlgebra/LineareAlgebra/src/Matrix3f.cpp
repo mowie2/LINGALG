@@ -1,4 +1,4 @@
-#include "Matrix3f.h"
+#include "../include/Matrix3f.h"
 
 
 Matrix3f::Matrix3f(const Matrix & original)
@@ -6,12 +6,15 @@ Matrix3f::Matrix3f(const Matrix & original)
 	if(original.getRows() == 3)
 	{
 		matrix_ = original;
+	} else
+	{
+		throw std::invalid_argument("rows must be 3");
 	}
 }
 
 Matrix3f::Matrix3f(unsigned int columns)
 {
-	matrix_ = Matrix(3,columns,false);
+	matrix_ = Matrix(3,columns);
 }
 
 Vector Matrix3f::get_row(unsigned int row) const
@@ -24,9 +27,14 @@ Vector Matrix3f::get_row(unsigned int row) const
 	return rowVector;
 }
 
-Vector Matrix3f::get_column(unsigned int column) const
+Vector3f Matrix3f::get_column(unsigned int column) const
 {
-	return matrix_[column];
+	return Vector3f(matrix_[column]);
+}
+
+unsigned int Matrix3f::getColumns() const
+{
+	return matrix_.getColumns();
 }
 
 Vector & Matrix3f::operator[](unsigned int index)
@@ -71,18 +79,22 @@ Matrix Matrix3f::operator*(const Matrix & other) const
 	return matrix_*other;
 }
 
+Matrix4x4f Matrix3f::getTranslatable() const
+{
+	return Matrix4x4f(matrix_.getTranslatable());
+}
+/*
 Matrix3f Matrix3f::translate(const Vector3f& vec) const
 {
 	return matrix_.translate(vec.getVector());
+}*/
+
+Matrix Matrix3f::getMatrix() const
+{
+	return matrix_;
 }
 
-Matrix3f Matrix3f::get_identity_matrix()
+Matrix3f Matrix3f::getIdentityMatrix()
 {
-	auto m = Matrix3f(3);
-	for(auto i = 0;i<3;i++)
-	{
-		//m[i][i] = 1;
-	}
-	return m;
-
+	return Matrix3f(Matrix::getIdentityMatrix(3));
 }

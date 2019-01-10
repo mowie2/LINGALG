@@ -7,17 +7,13 @@
 Matrix::Matrix()
 = default;
 
-Matrix::Matrix(unsigned int rows, unsigned int columns, bool eenheidsMatrix)
+Matrix::Matrix(unsigned int rows, unsigned int columns)
 {
 	this->rows = rows;
 	this->columns = columns;
 	for (int c = 0; c < this->columns;c++) {
 		Vector v;
-		for (int r = 0; r < rows;r++) {
-			if (eenheidsMatrix && c == r) {
-				v.addNumber(1);
-				continue;
-			}
+		for (unsigned int r = 0; r < rows;r++) {
 			v.addNumber(0);
 		}
 		matrix.push_back(v);
@@ -28,7 +24,7 @@ Matrix Matrix::operator+(const Matrix & other) const
 {
 	Matrix m;
 	if (other.columns == this->columns && other.getRows() == this->getRows()) {
-		for (int i = 0;i < matrix.size();i++) {
+		for (unsigned int i = 0;i < matrix.size();i++) {
 			m.AddVector(matrix[i] + other.matrix[i]);
 		}
 		return m;
@@ -40,7 +36,7 @@ Matrix Matrix::operator-(const Matrix & other) const
 {
 	Matrix m;
 	if (other.columns == this->columns && other.getRows() == this->getRows()) {
-		for (int i = 0;i < matrix.size();i++) {
+		for (unsigned int i = 0;i < matrix.size();i++) {
 			m.AddVector(this->matrix[i] + other.matrix[i]);
 		}
 		return m;
@@ -53,11 +49,11 @@ Matrix Matrix::operator*(const Matrix & other) const
 {
 	if (other.getRows() == this->columns) {
 		Matrix m;
-		for (int c1 = 0;c1 < other.columns;c1++) {
+		for (unsigned int c1 = 0;c1 < other.columns;c1++) {
 			Vector v1;
-			for (int r = 0;r < getRows();r++) {
+			for (unsigned int r = 0;r < getRows();r++) {
 				Vector v2;
-				for (int c2 = 0;c2 < columns;c2++) {
+				for (unsigned int c2 = 0;c2 < columns;c2++) {
 					v2.addNumber(this->matrix[c2][r]);
 				}
 				v1.addNumber(v2*other.matrix[c1]);
@@ -72,12 +68,8 @@ Matrix Matrix::operator*(const Matrix & other) const
 Matrix Matrix::operator*(float scalar) const
 {
 	Matrix m;
-	for (int c = 0;c < columns;c++) {
-		Vector v;
-		for (int r = 0;r < getRows();r++) {
-			v.addNumber(matrix[c][r] * scalar);
-		}
-		m.AddVector(v);
+	for (unsigned int c = 0;c < columns;c++) {
+		m.AddVector(matrix[c] * scalar);
 	}
 	return m;
 }
@@ -85,9 +77,9 @@ Matrix Matrix::operator*(float scalar) const
 Matrix Matrix::subSet(unsigned int rows, unsigned int columns) const
 {
 	if (rows > 0 && rows <= getRows() && columns > 0 && columns <= getColumns()) {
-		Matrix m(rows,columns,false);
-		for (int r = 0;r < rows;r++) {
-			for (int c = 0;c < columns;c++) {
+		Matrix m(rows,columns);
+		for (unsigned int r = 0;r < rows;r++) {
+			for (unsigned int c = 0;c < columns;c++) {
 				m[c][r] = matrix[c][r];
 			}
 		}
@@ -109,7 +101,7 @@ Matrix Matrix::getTranslatable() const
 Matrix Matrix::scale(float scalar) const
 {
 	const Vector returnVector = getToOrginVector() * -1;
-	Matrix m = Matrix(getRows(), getRows(), true);
+	const Matrix m = getIdentityMatrix(getRows());
 	return (m*scalar*translateToOrgin()).translate(returnVector).subSet(getRows(),getColumns());
 }
 
@@ -138,9 +130,9 @@ Vector & Matrix::operator[](unsigned int index)
 Vector Matrix::getToOrginVector() const
 {
 	Vector translation;
-	for (int r = 0; r < getRows(); r++) {
+	for (unsigned int r = 0; r < getRows(); r++) {
 		float avg = 0.0;
-		for (int c = 0; c < columns; c++) {
+		for (unsigned int c = 0; c < columns; c++) {
 			avg += matrix[c][r];
 		}
 		avg /= columns;
@@ -164,10 +156,11 @@ Matrix Matrix::translate(const Vector& translation) const
 	if (translation.getRows() == getRows()) {
 		Matrix currentMatrix = getTranslatable();
 
-		Matrix translationMatrix(getRows() + 1, getRows(), true);
+		Matrix translationMatrix = getIdentityMatrix(getRows()+1); (getRows() + 1, getRows(), true);
+
 		auto translationCopy = translation;
 		translationCopy.addNumber(1);
-		translationMatrix.AddVector(translationCopy);
+		translationMatrix[getRows()] = translationCopy;
 
 		return (translationMatrix * currentMatrix).subSet(getRows(),getColumns());
 	}
@@ -198,7 +191,7 @@ Matrix Matrix::rotate3d(const Vector & rotate) const
 
 Matrix Matrix::getRotateXMatrix3d(float degrees)
 {
-	auto m = Matrix(4,4,false);
+	auto m = Matrix(4,4);
 	m[0][0] = 1;
 	m[1][1] = std::cos(degrees/180*M_PI);
 	m[1][2] = std::sin(degrees / 180 * M_PI);
@@ -210,7 +203,7 @@ Matrix Matrix::getRotateXMatrix3d(float degrees)
 
 Matrix Matrix::getRotateYMatrix3d(float degrees)
 {
-	auto m = Matrix(4, 4, false);
+	auto m = Matrix(4, 4);
 	m[0][0] = std::cos(degrees / 180 * M_PI);
 	m[1][1] = 1;
 	m[2][0] = std::sin(degrees / 180 * M_PI);
@@ -222,7 +215,7 @@ Matrix Matrix::getRotateYMatrix3d(float degrees)
 
 Matrix Matrix::getRotateZMatrix3d(float degrees)
 {
-	auto m = Matrix(4, 4, false);
+	auto m = Matrix(4, 4);
 	m[0][0] = std::cos(degrees / 180 * M_PI);
 	m[0][1] = -1*std::sin(degrees / 180 * M_PI);
 	m[1][0] = std::sin(degrees / 180 * M_PI);
@@ -232,6 +225,23 @@ Matrix Matrix::getRotateZMatrix3d(float degrees)
 	return m;
 }
 
+
+Matrix Matrix::getIdentityMatrix(unsigned int dimensions)
+{
+	Matrix m;
+	for (unsigned int c = 0; c < dimensions;c++) {
+		Vector v;
+		for (unsigned r = 0; r < dimensions;r++) {
+			if (c == r) {
+				v.addNumber(1);
+				continue;
+			}
+			v.addNumber(0);
+		}
+		m.AddVector(v);
+	}
+	return m;
+}
 
 Matrix::~Matrix()
 {

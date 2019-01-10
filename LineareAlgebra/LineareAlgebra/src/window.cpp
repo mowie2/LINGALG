@@ -17,7 +17,7 @@ Window::Window(const int width, const int height)
 	Vector v4;
 	v4.addNumber(-2.f, -1.f);
 
-	m1.AddVector(v1, v2, v3, v4);
+	//m1.AddVector(v1, v2, v3, v4);
 	Shape* customshape = new Shape;
 	customshape->addMatix(m1);
 	addToShapes(customshape);
@@ -56,13 +56,11 @@ void Window::Draw(Matrix matrix)
 	startPoint2.addNumber(1);
 	startPoint2.addNumber(0);
 
-
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
 		//DrawPoint(matrix[r]);
 		DrawVector(matrix[r], matrix[r + 1]);
 	}
 	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
-	
 }
 
 void Window::Draw(Shape* shape)
@@ -73,6 +71,20 @@ void Window::Draw(Shape* shape)
 		Draw(*it);
 	}
 }
+
+void Window::Draw2(Shape* shape)
+{
+	auto matrices = shape->projections();
+	for (auto it = matrices.begin(); it != matrices.end(); it++)
+	{
+		Draw((*it).getMatrix());
+	}
+}
+
+
+
+
+
 
 void Window::addToShapes(Shape* shape)
 {
@@ -162,6 +174,79 @@ void Window::render()
 	//Wait two seconds
 	//SDL_Delay(2000);
 
+}
+
+void Window::render2()
+{
+	bool quit = false;
+
+	//Event handler
+	SDL_Event e;
+
+	//Get window surface
+	screenSurface = SDL_GetWindowSurface(window);
+
+	//Update the surface
+	SDL_UpdateWindowSurface(window);
+
+	//While application is running
+			//While application is running
+	while (!quit)
+	{
+		Vector vector;
+		vector.addNumber(0.1f, -0.5f, 0.f);
+		//player.shape()->Rotate(vector);
+
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//catch input
+
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				Vector moveVector;
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_DOWN:
+					moveVector.addNumber(0.f, 1.f);
+					break;
+				case SDLK_UP:
+					moveVector.addNumber(0.f, -1.f);
+					break;
+				case SDLK_LEFT:
+					moveVector.addNumber(1.f, 0.f);
+					break;
+				case SDLK_RIGHT:
+					moveVector.addNumber(-1.f, 0.f);
+					break;
+
+				}
+				moveShapes(moveVector);
+			}
+		}
+
+		//Clear screen
+		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
+		SDL_RenderClear(gRenderer);
+		DrawAxis();
+
+		//Draw(player.shape());
+
+		auto shapes = shapes_;
+		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw2(*it);
+		}
+
+
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+	}
 }
 
 void Window::DrawAxis() {

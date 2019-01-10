@@ -12,9 +12,13 @@ public:
 	~Window();
 	void Draw(Matrix matrix);
 	void Draw(Shape* shape);
+	void Draw2(Shape* shape);
 	void addToShapes(Shape* shape);
 	void moveShapes(const Vector& moveVector);
+	
 	void render();
+	void render2();
+
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);

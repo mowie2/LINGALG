@@ -5,32 +5,33 @@ class Matrix
 {
 public:
 	Matrix();
-	Matrix(unsigned int rows, unsigned int columns, bool eenheidsMatrix);
+	Matrix(unsigned int rows, unsigned int columns);
 
-	template <typename F, typename... Vector>
+	template <typename F, typename... Vec>
 	void AddVector(F &&f) {
 		if (rows == 0 || f.getRows() == getRows()){
 			rows = f.getRows();
-			matrix.push_back(std::move(f));
+			matrix.push_back(f);
 			columns++;
 		}
 		else {
-			throw std::out_of_range("Invalid");
+			throw std::invalid_argument("Rows must be the same");
 		}
 	}
 
 	
-	template <typename F, typename... Vector>
-	void AddVector(F &&f, Vector &&... fs) {
+	template <typename F, typename... Vec>
+	void AddVector(F &&f, Vec&&... vectors) {
+		static_assert(std::is_same_v<F, Vector&>, "First argument must be Vector");
+		static_assert((std::is_same_v<Vec, Vector&> && ...), "All arguments must be Vector");
 		if (rows == 0 ||f.getRows() == getRows()) {
 			matrix.push_back(std::move(f));
 			columns++;
-			
 		}
 		else {
-			throw std::out_of_range("Invalid");
+			throw std::invalid_argument("Rows must be the same");
 		}
-		AddVector(std::forward<Vector>(fs)...);
+		AddVector(std::forward<Vec>(vectors)...);
 	}
 	
 	//void AddVector(const Vector & vector);
@@ -61,6 +62,7 @@ public:
 	static Matrix getRotateYMatrix3d(float degrees);
 	static Matrix getRotateZMatrix3d(float degrees);
 
+	static Matrix getIdentityMatrix(unsigned int dimensions);
 	~Matrix();
 private:
 	

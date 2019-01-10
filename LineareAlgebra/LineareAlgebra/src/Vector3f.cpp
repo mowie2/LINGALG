@@ -1,11 +1,21 @@
-#include "Vector3f.h"
-#include <exception>
 #include <stdexcept>
+#include "..\include\Vector3f.h"
 
 
 Vector3f::Vector3f()
 {
+	vector_.addNumber(0.f,0.f,0.f);
+}
 
+Vector3f::Vector3f(const Vector & original)
+{
+	if(original.getRows() == 3)
+	{
+		vector_ = original;
+	}
+	else{
+		throw std::invalid_argument("rows must be 3");
+	}
 }
 
 Vector3f::Vector3f(float x, float y, float z)

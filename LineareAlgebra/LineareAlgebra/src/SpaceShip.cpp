@@ -43,8 +43,8 @@ SpaceShip::SpaceShip()
 
 	
 
-	m1.AddVector(v1, v2, v3, v4);
-	m2.AddVector(v5, v6, v7, v8);
+	//m1.AddVector(v1, v2, v3, v4);
+	//m2.AddVector(v5, v6, v7, v8);
 	//m1 = m1.scale(1);
 	//
 	auto toOrgin = (m1.getToOrginVector() + m2.getToOrginVector()) * .5f;
