@@ -56,11 +56,30 @@ Window::Window(const int width, const int height)
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
 	addToShapes(s);
 
-	Vector3f ves = Vector3f(1, 1, 1);
-	Vector3f veb = Vector3f(1, 1, 1);
+	Vector3f ves = Vector3f(2,-2,5);
+	Vector3f veb = Vector3f(1, 0, 1);
 
+	Shape t;
+	Matrix3f tm;
+	Vector3f vm1 = Vector3f(1, 1, 0);
+	Vector3f vm2 = Vector3f(1, 2, 0);
+	Vector3f vm3 = Vector3f(2, 2, 0);
+	Vector3f vm4 = Vector3f(2, 1, 0);
+
+	tm.AddVector(vm1, vm2, vm3, vm4);
+	t.addMatix(tm);
+	Shape r;
+
+	Matrix3f rm;
+	Vector3f rm1 = Vector3f(1.5, 1.5, 0);
+	Vector3f rm2 = Vector3f(1.5, 2, 0);
+	Vector3f rm3 = Vector3f(1.5, 2, 0);
+	Vector3f rm4 = Vector3f(1.5, 1, 0);
+
+	rm.AddVector(rm1, rm2, rm3, rm4);
+	r.addMatix(rm);
 	Physics ss;
-	auto x = ss.calculateOutProduct(ves, veb);
+	auto x = ss.calculateIntersection(t , r);
 }
 
 Window::~Window()
