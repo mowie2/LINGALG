@@ -15,7 +15,8 @@ Matrix4x4f Camera::getTranformationMatrix() const
 {
 	auto k = getPerspectiveMatrix();
 	auto k1 = getTranslationMatrix();
-	auto k3 = k * k1;
+	//auto k3 = k * k1;
+	auto k3 = k;
 	return k3;
 }
 
@@ -44,9 +45,9 @@ Matrix4x4f Camera::getTranslationMatrix() const
 	m[2][2] = direction[2];
 
 	auto m1 = Matrix4x4f::getIdentityMatrix();
-	m1[3][0] = position_[0];
-	m1[3][1] = position_[1];
-	m1[3][2] = position_[2];
+	m1[3][0] = -1*position_[0];
+	m1[3][1] = -1*position_[1];
+	m1[3][2] = -1*position_[2];
 	return m * m1;
 }
 

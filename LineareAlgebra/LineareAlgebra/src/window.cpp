@@ -3,7 +3,7 @@
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -2.5), Vector3f(0, 0, 0), 0.5f, 15.0f, 90.f))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -1.5), Vector3f(0, 0, 0), 0.5f, 15.0f, 90.f))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -75,51 +75,34 @@ void Window::Draw(Matrix matrix)
 	auto y = 1;
 
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
-		auto m1 = matrix[r];
-		auto v1 = matrix[r];
+		if (matrix[r][3] > 0 && matrix[r+1][3] > 0) {
+			auto m1 = matrix[r];
+			auto v1 = matrix[r];
 
-		auto m2 = matrix[r + 1];
-		auto v2 = matrix[r + 1];
+			auto m2 = matrix[r + 1];
+			auto v2 = matrix[r + 1];
 
-		//v1[0] = (matrix[r][0] / matrix[r][3]);
-		//v1[1] = (matrix[r][1] / matrix[r][3]);
+			v1[0] = matrix[r][0] / matrix[r][3];
+			v1[1] = matrix[r][1] / matrix[r][3];
 
-		//v2[0] = (matrix[r+1][0] / matrix[r+1][3]);
-		//v2[1] = (matrix[r+1][1] / matrix[r+1][3]);
-
-		//v1[0] = x + (matrix[r][0] / (matrix[r][3] * x));
-		//v1[1] = y + (matrix[r][1] / (matrix[r][3] * y));
-
-		//v2[0] = x + (matrix[r+1][0] / (matrix[r+1][3] * x));
-		//v2[1] = y + (matrix[r+1][1] / (matrix[r+1][3] * y));
-
-		v1[0] = 1 + matrix[r][0] / matrix[r][3];
-		v1[1] = 1 + matrix[r][1] / matrix[r][3];
-
-		v2[0] = 1 + matrix[r + 1][0] / matrix[r + 1][3];
-		v2[1] = 1 + matrix[r + 1][1] / matrix[r + 1][3];
-		//if (v2[3] > 0) {
+			v2[0] = matrix[r + 1][0] / matrix[r + 1][3];
+			v2[1] = matrix[r + 1][1] / matrix[r + 1][3];
 			DrawVector(v1, v2);
-		//}
+		}
 	}
-	auto v1 = matrix[0];
 	const auto last = matrix.getColumns() - 1;
-	auto v2 = matrix[last];
+	if (matrix[last][3] > 0 && matrix[0][3] > 0) {
+		auto v1 = matrix[0];
+		auto v2 = matrix[last];
 
-	//v1[0] = x + (matrix[0][0]/ (matrix[0][3] * x));
-	//v1[1] = y + (matrix[0][1]/ (matrix[0][3] * y));
+		v1[0] = matrix[0][0] / matrix[0][3];
+		v1[1] = matrix[0][1] / matrix[0][3];
 
-	//v2[0] = x + (matrix[last][0] / (matrix[last][3] * x));
-	//v2[1] = y + (matrix[last][1] / (matrix[last][3] * y));
-
-	v1[0] = 1 + matrix[0][0] / matrix[0][3];
-	v1[1] = 1 + matrix[0][1] / matrix[0][3];
-
-	v2[0] = 1 + matrix[last][0] / matrix[last][3];
-	v2[1] = 1 + matrix[last][1] / matrix[last][3];
-	//if (v2[3] > 0) {
+		v2[0] = matrix[last][0] / matrix[last][3];
+		v2[1] = matrix[last][1] / matrix[last][3];
 		DrawVector(v1, v2);
-	//}
+	}
+
 }
 
 void Window::Draw(const Shape& shape)
@@ -127,8 +110,19 @@ void Window::Draw(const Shape& shape)
 	auto matrices = shape.projections();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)
 	{
-		auto k = camera_.getTranformationMatrix() * (*it).getMatrix().getTranslatable();
-		Draw(k);
+		auto k1 = (*it).getTranslatable();
+		//auto k2 = camera_.getTranformationMatrix();
+		auto k2 = camera_.getTranslationMatrix();
+		auto k3 = camera_.getPerspectiveMatrix();
+
+		//auto k3 = Matrix4x4f::getIdentityMatrix() * k2;
+		//auto k = camera_.getTranformationMatrix() * (*it).getTranslatable();
+		//auto k = (*it).getMatrix().getTranslatable();
+		//const auto ll = Vector3f(1, 1, 1);
+		//shape.translate(ll.getVector());
+		auto k4 = k2 * k1;
+		auto k5 = k3 * k4;
+		Draw(k3*k2*k1);
 	}
 }
 
