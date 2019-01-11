@@ -3,7 +3,7 @@
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 
-Window::Window(const int width, const int height)
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -1), Vector3f(0, 0, 0), 5.f, 15.0f, 45.f))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -54,13 +54,13 @@ Window::Window(const int width, const int height)
 	matrices.push_back(square5);
 	matrices.push_back(square6);*/
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	addToShapes(s);
+	//addToShapes(s);
 
-	Vector3f ves = Vector3f(1, 1, 1);
-	Vector3f veb = Vector3f(1, 1, 1);
+	//Vector3f ves = Vector3f(1, 1, 1);
+	//Vector3f veb = Vector3f(1, 1, 1);
 
-	Physics ss;
-	auto x = ss.calculateOutProduct(ves, veb);
+	//Physics ss;
+	//auto x = ss.calculateOutProduct(ves, veb);
 }
 
 Window::~Window()
@@ -69,10 +69,48 @@ Window::~Window()
 
 void Window::Draw(Matrix matrix)
 {
+	auto x = SCREEN_WIDTH / 2.f;
+	auto y = SCREEN_HEIGHT / 2.f;
+	//auto x = 1;
+	//auto y = 1;
+
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
-		DrawVector(matrix[r], matrix[r + 1]);
+		auto m1 = matrix[r];
+		auto v1 = matrix[r];
+
+		auto m2 = matrix[r + 1];
+		auto v2 = matrix[r + 1];
+
+		//v1[0] = (matrix[r][0] / matrix[r][3]);
+		//v1[1] = (matrix[r][1] / matrix[r][3]);
+
+		//v2[0] = (matrix[r+1][0] / matrix[r+1][3]);
+		//v2[1] = (matrix[r+1][1] / matrix[r+1][3]);
+
+		v1[0] = x + (matrix[r][0] / (matrix[r][3] * x));
+		v1[1] = y + (matrix[r][1] / (matrix[r][3] * y));
+
+		v2[0] = x + (matrix[r+1][0] / (matrix[r+1][3] * x));
+		v2[1] = y + (matrix[r+1][1] / (matrix[r+1][3] * y));
+		DrawVector(v1, v2);
 	}
-	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
+	auto v1 = matrix[0];
+	const auto last = matrix.getColumns() - 1;
+	auto v2 = matrix[last];
+	//v1[0] = (matrix[0][0] / matrix[0][3]);
+	//v1[1] = (matrix[0][1] / matrix[0][3]);
+
+	v1[0] = x + (matrix[0][0]/ (matrix[0][3] * x));
+	v1[1] = y + (matrix[0][1]/ (matrix[0][3] * y));
+
+	
+	//v2[0] = (matrix[last][0] / matrix[last][3]);
+	//v2[1] = (matrix[last][1] / matrix[last][3]);
+
+	v2[0] = x + (matrix[last][0] / (matrix[last][3] * x));
+	v2[1] = y + (matrix[last][1] / (matrix[last][3] * y));
+
+	DrawVector(v1,v2);
 }
 
 void Window::Draw(const Shape& shape)
@@ -80,7 +118,8 @@ void Window::Draw(const Shape& shape)
 	auto matrices = shape.projections();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)
 	{
-		Draw((*it).getMatrix());
+		auto k = camera_.getTranformationMatrix() * (*it).getMatrix().getTranslatable();
+		Draw(k);
 	}
 }
 
@@ -116,7 +155,7 @@ void Window::render()
 	while (!quit)
 	{
 		Vector vector;
-		vector.addNumber(0.1f, -0.1f, 0.f);
+		vector.addNumber(1.0f, 0.0f, 0.0f);
 		//player.shape().rotate(vector);
 		player.shape().rotateOrigin(vector);
 
@@ -160,11 +199,11 @@ void Window::render()
 
 		Draw(player.shape());
 
-		//auto& shapes = shapes_;
-		//for (auto it = shapes.begin(); it != shapes.end(); it++)
-		//{
-		//	Draw(*(*it));
-		//}
+		auto& shapes = shapes_;
+		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw(*(*it));
+		}
 
 
 		//Update screen

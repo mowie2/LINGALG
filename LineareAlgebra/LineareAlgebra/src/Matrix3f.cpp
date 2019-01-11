@@ -80,9 +80,9 @@ Matrix Matrix3f::operator*(const Matrix & other) const
 	return matrix_ * other;
 }
 
-Matrix4x4f Matrix3f::getTranslatable() const
+Matrix Matrix3f::getTranslatable() const
 {
-	return Matrix4x4f(matrix_.getTranslatable());
+	return matrix_.getTranslatable();
 }
 
 

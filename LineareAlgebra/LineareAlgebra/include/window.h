@@ -5,6 +5,7 @@
 #include "Shape.h"
 #include "SpaceShip.h"
 #include <memory>
+#include "Camera.h"
 
 class Window
 {
@@ -58,5 +59,7 @@ private:
 
 	//The image we will load and show on the screen
 	SDL_Surface* gHelloWorld = NULL;
+
+	Camera camera_;
 };
 

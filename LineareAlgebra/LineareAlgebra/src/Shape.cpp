@@ -192,7 +192,7 @@ void Shape::setPos(const Vector3f & pos)
 void Shape::transform()
 {
 	for (auto i = 0;i < projections_.size();i++) {
-		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).getMatrix().subSet(3, matrices_[i].getColumns());
+		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).subSet(3, matrices_[i].getColumns());
 		projections_[i] = k;
 	}
 }

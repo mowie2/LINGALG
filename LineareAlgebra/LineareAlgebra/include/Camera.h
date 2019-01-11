@@ -6,9 +6,9 @@ class Camera
 {
 public:
 	Camera(Vector3f position, Vector3f lookat ,float nearPlane, float farPlane,float fovy);
-	Matrix4x4f getTranformationMAtrix() const;
-	Matrix4x4f getTranslationMAtrix() const;
-	Matrix4x4f getperspectiveMAtrix() const;
+	Matrix4x4f getTranformationMatrix() const;
+	Matrix4x4f getTranslationMatrix() const;
+	Matrix4x4f getPerspectiveMatrix() const;
 	~Camera() = default;
 private:
 	Vector3f position_;
