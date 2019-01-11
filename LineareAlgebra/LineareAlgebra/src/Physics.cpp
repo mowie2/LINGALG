@@ -107,23 +107,29 @@ bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 		{
 			auto vec = p2[i];
 
-			if (vec[0] > minx && vec[0] < maxx)
+			if (vec[0] >= minx && vec[0] <= maxx)
 			{
 				x = true;
 			}
-			if (vec[1] > miny && vec[1] < maxy)
+			if (vec[1] >= miny && vec[1] <= maxy)
 			{
 				y = true;
 			}
-			if (vec[2] > minz && vec[2] < maxz)
+			if (vec[2] >= minz && vec[2] <= maxz)
 			{
 				z = true;
 			}
 		}
 	}
+
 	if (x && y && z)
 	{
 		return  true;
+	}
+
+	if(calculateIntersection(shape2, shape1))
+	{
+		return true;
 	}
 	return false;
 }
