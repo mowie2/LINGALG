@@ -3,7 +3,7 @@
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -1), Vector3f(0, 0, 0), 5.f, 15.0f, 45.f))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -2.5), Vector3f(0, 0, 0), 0.5f, 15.0f, 90.f))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -69,10 +69,10 @@ Window::~Window()
 
 void Window::Draw(Matrix matrix)
 {
-	auto x = SCREEN_WIDTH / 2.f;
-	auto y = SCREEN_HEIGHT / 2.f;
-	//auto x = 1;
-	//auto y = 1;
+	//auto x = SCREEN_WIDTH / 2.f;
+	//auto y = SCREEN_HEIGHT / 2.f;
+	auto x = 1;
+	auto y = 1;
 
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
 		auto m1 = matrix[r];
@@ -87,30 +87,39 @@ void Window::Draw(Matrix matrix)
 		//v2[0] = (matrix[r+1][0] / matrix[r+1][3]);
 		//v2[1] = (matrix[r+1][1] / matrix[r+1][3]);
 
-		v1[0] = x + (matrix[r][0] / (matrix[r][3] * x));
-		v1[1] = y + (matrix[r][1] / (matrix[r][3] * y));
+		//v1[0] = x + (matrix[r][0] / (matrix[r][3] * x));
+		//v1[1] = y + (matrix[r][1] / (matrix[r][3] * y));
 
-		v2[0] = x + (matrix[r+1][0] / (matrix[r+1][3] * x));
-		v2[1] = y + (matrix[r+1][1] / (matrix[r+1][3] * y));
-		DrawVector(v1, v2);
+		//v2[0] = x + (matrix[r+1][0] / (matrix[r+1][3] * x));
+		//v2[1] = y + (matrix[r+1][1] / (matrix[r+1][3] * y));
+
+		v1[0] = 1 + matrix[r][0] / matrix[r][3];
+		v1[1] = 1 + matrix[r][1] / matrix[r][3];
+
+		v2[0] = 1 + matrix[r + 1][0] / matrix[r + 1][3];
+		v2[1] = 1 + matrix[r + 1][1] / matrix[r + 1][3];
+		//if (v2[3] > 0) {
+			DrawVector(v1, v2);
+		//}
 	}
 	auto v1 = matrix[0];
 	const auto last = matrix.getColumns() - 1;
 	auto v2 = matrix[last];
-	//v1[0] = (matrix[0][0] / matrix[0][3]);
-	//v1[1] = (matrix[0][1] / matrix[0][3]);
 
-	v1[0] = x + (matrix[0][0]/ (matrix[0][3] * x));
-	v1[1] = y + (matrix[0][1]/ (matrix[0][3] * y));
+	//v1[0] = x + (matrix[0][0]/ (matrix[0][3] * x));
+	//v1[1] = y + (matrix[0][1]/ (matrix[0][3] * y));
 
-	
-	//v2[0] = (matrix[last][0] / matrix[last][3]);
-	//v2[1] = (matrix[last][1] / matrix[last][3]);
+	//v2[0] = x + (matrix[last][0] / (matrix[last][3] * x));
+	//v2[1] = y + (matrix[last][1] / (matrix[last][3] * y));
 
-	v2[0] = x + (matrix[last][0] / (matrix[last][3] * x));
-	v2[1] = y + (matrix[last][1] / (matrix[last][3] * y));
+	v1[0] = 1 + matrix[0][0] / matrix[0][3];
+	v1[1] = 1 + matrix[0][1] / matrix[0][3];
 
-	DrawVector(v1,v2);
+	v2[0] = 1 + matrix[last][0] / matrix[last][3];
+	v2[1] = 1 + matrix[last][1] / matrix[last][3];
+	//if (v2[3] > 0) {
+		DrawVector(v1, v2);
+	//}
 }
 
 void Window::Draw(const Shape& shape)
@@ -282,8 +291,11 @@ void Window::DrawPoint(Vector point)
 	int tempXsize = 20;
 	int tempYsize = 10;
 
-	float scaleX = SCREEN_WIDTH / tempXsize;
-	float scaleY = SCREEN_HEIGHT / tempYsize;
+	//float scaleX = SCREEN_WIDTH / tempXsize;
+	//float scaleY = SCREEN_HEIGHT / tempYsize;
+
+	float scaleX = 1;
+	float scaleY = 1;
 
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
@@ -303,6 +315,9 @@ void Window::DrawVector(Vector origin, Vector direction)
 	float scaleX = SCREEN_WIDTH / tempXsize;
 	float scaleY = SCREEN_HEIGHT / tempYsize;
 
+	//float scaleX = 1;
+	//float scaleY = 1;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
@@ -313,4 +328,5 @@ void Window::DrawVector(Vector origin, Vector direction)
 	auto directionY = direction[1] * -1 * scaleY + centerY;
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawLine(gRenderer, originX, originY, directionX, directionY);
+	//SDL_RenderDrawLine(gRenderer, origin[0], origin[1], direction[0], direction[1]);
 }
