@@ -69,3 +69,8 @@ Vector Vector3f::getVector() const
 {
 	return vector_;
 }
+
+void Vector3f::normalize()
+{
+	vector_.normalize();
+}

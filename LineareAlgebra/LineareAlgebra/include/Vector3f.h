@@ -19,6 +19,7 @@ public:
 	float operator*(const Vector3f& other);
 	Vector getVector() const;
 
+	void normalize();
 private:
 	Vector vector_;
 };
