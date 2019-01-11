@@ -66,7 +66,7 @@ void Shape::scale(const Vector3f & vec)
 
 void Shape::rotateOrigin(const Vector3f & vec)
 {
-	auto heading_2 = Vector3f(1.f, 1.f, 0.f);
+	auto heading_2 = Vector3f(1.f, 1.f, 1.f);
 	//auto heading_2 = position_;
 	///step 1
 	auto zx = heading_2[2] / heading_2[0];
@@ -75,9 +75,10 @@ void Shape::rotateOrigin(const Vector3f & vec)
 
 	auto yx = heading_2[1] / heading_2[0];
 	yx = atan(yx) / M_PI * 180;
-	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
+	auto 
+	step2M = Matrix4x4f::getZRotationMatrix(yx);
 
-	auto step3M = Matrix4x4f::getXRotationMatrix(.5*M_PI);
+	auto step3M = Matrix4x4f::getZRotationMatrix(-.5*M_PI);
 
 	auto step4M = step2M;
 	step4M[1][0] = step2M[1][0] * -1;

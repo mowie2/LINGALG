@@ -108,7 +108,7 @@ void Window::render()
 	while (!quit)
 	{
 		Vector vector;
-		vector.addNumber(0.1f, -0.5f, 0.f);
+		vector.addNumber(0.1f, -0.1f, 0.f);
 		//player.shape().rotate(vector);
 		player.shape().rotateOrigin(vector);
 
