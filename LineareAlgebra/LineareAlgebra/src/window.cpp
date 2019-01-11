@@ -1,5 +1,6 @@
 #include "../include/window.h"
 #include <stdio.h>
+#include "../include/Objects.h"
 
 Window::Window(const int width, const int height)
 {
@@ -7,52 +8,11 @@ Window::Window(const int width, const int height)
 	this->SCREEN_HEIGHT = height;
 	Init();
 
-	Matrix3f square;
-	square.AddVector(
-		Vector3f(0, 0, 0),
-		Vector3f(1, 0, 0),
-		Vector3f(1, 1, 0),
-		Vector3f(0, 1, 0));
-	Matrix3f square2;
-	square2.AddVector(
-		Vector3f(1, 0, 0),
-		Vector3f(1, 0, 1),
-		Vector3f(1, 1, 1),
-		Vector3f(1, 1, 0));
-	Matrix3f square3;
-	square3.AddVector(
-		Vector3f(0, 0, 0),
-		Vector3f(0, 0, 1),
-		Vector3f(0, 1, 1),
-		Vector3f(0, 1, 0));
-	Matrix3f square4;
-	square4.AddVector(
-		Vector3f(0, 0, 0),
-		Vector3f(1, 0, 0),
-		Vector3f(1, 0, 1),
-		Vector3f(0, 0, 1));
-	Matrix3f square5;
-	square5.AddVector(
-		Vector3f(0, 1, 0),
-		Vector3f(1, 1, 0),
-		Vector3f(1, 1, 1),
-		Vector3f(0, 1, 1));
-	Matrix3f square6;
-	square6.AddVector(
-		Vector3f(0, 0, 1),
-		Vector3f(1, 0, 1),
-		Vector3f(1, 1, 1),
-		Vector3f(0, 1, 1));
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 3,3,3 }), Vector3f{ 3,3,3 }));
+	shapes_.at(0)->rotate(Vector3f{ 0,0,45 });
 
-	std::vector<Matrix3f> matrices;
-	matrices.push_back(square);
-	matrices.push_back(square2);
-	/*matrices.push_back(square3);
-	matrices.push_back(square4);
-	matrices.push_back(square5);
-	matrices.push_back(square6);*/
-	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	addToShapes(s);	
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
+	shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
 
 Window::~Window()
@@ -157,11 +117,11 @@ void Window::render()
 
 		Draw(player.shape());
 
-		//auto& shapes = shapes_;
-		//for (auto it = shapes.begin(); it != shapes.end(); it++)
-		//{
-		//	Draw(*(*it));
-		//}
+		auto& shapes = shapes_;
+		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw(*(*it));
+		}
 
 
 		//Update screen

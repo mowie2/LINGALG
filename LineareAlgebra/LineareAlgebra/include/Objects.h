@@ -5,6 +5,6 @@
 class Objects
 {
 public:
-	static std::vector<Matrix3f> cube();
+	static std::vector<Matrix3f> cube(const Vector3f& vec);
 };
 
