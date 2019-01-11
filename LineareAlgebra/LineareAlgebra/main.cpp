@@ -2,20 +2,21 @@
 #include <SDL.h>
 #include <stdio.h>
 #include "include/window.h"
+#include "../LineareAlgebra/include/Matrix.h"
+#include <vector>
+
 
 #ifdef main
 #undef main
 #endif /* main */
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1;
+const int SCREEN_HEIGHT = 1;
 
 int main(int argc, char* args[])
 {
-	Window window = Window();
-	window.Draw();
-	
-	
+	Window window = Window(1000,500);
+	window.render();
 	return 0;
 }

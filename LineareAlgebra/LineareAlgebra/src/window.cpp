@@ -1,24 +1,99 @@
 #include "../include/window.h"
 #include <stdio.h>
+#include "../include/CollisionDetector.h"
+#include "../include/Physics.h"
 
-Window::Window()
+Window::Window(const int width, const int height)
 {
+	this->SCREEN_WIDTH = width;
+	this->SCREEN_HEIGHT = height;
 	Init();
+
+	Matrix3f square;
+	square.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(1, 0, 0),
+		Vector3f(1, 1, 0),
+		Vector3f(0, 1, 0));
+	Matrix3f square2;
+	square2.AddVector(
+		Vector3f(1, 0, 0),
+		Vector3f(1, 0, 1),
+		Vector3f(1, 1, 1),
+		Vector3f(1, 1, 0));
+	Matrix3f square3;
+	square3.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(0, 0, 1),
+		Vector3f(0, 1, 1),
+		Vector3f(0, 1, 0));
+	Matrix3f square4;
+	square4.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(1, 0, 0),
+		Vector3f(1, 0, 1),
+		Vector3f(0, 0, 1));
+	Matrix3f square5;
+	square5.AddVector(
+		Vector3f(0, 1, 0),
+		Vector3f(1, 1, 0),
+		Vector3f(1, 1, 1),
+		Vector3f(0, 1, 1));
+	Matrix3f square6;
+	square6.AddVector(
+		Vector3f(0, 0, 1),
+		Vector3f(1, 0, 1),
+		Vector3f(1, 1, 1),
+		Vector3f(0, 1, 1));
+
+	std::vector<Matrix3f> matrices;
+	matrices.push_back(square);
+	matrices.push_back(square2);
+	/*matrices.push_back(square3);
+	matrices.push_back(square4);
+	matrices.push_back(square5);
+	matrices.push_back(square6);*/
+	auto s = Shape(matrices, Vector3f(.5, .5, 0));
+	addToShapes(s);
 }
 
 Window::~Window()
 {
 }
 
-void Window::Draw()
+void Window::Draw(Matrix matrix)
 {
-	// Vectors
-	Vector startPoint1 = Vector(0,0);
-	Vector direction = Vector(9, 5);
-	Vector startPoint2 = Vector(1, 0);
+	for (int r = 0; r < matrix.getColumns() - 1; r++) {
+		DrawVector(matrix[r], matrix[r + 1]);
+	}
+	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
+}
 
+void Window::Draw(const Shape& shape)
+{
+	auto matrices = shape.projections();
+	for (auto it = matrices.begin(); it != matrices.end(); it++)
+	{
+		Draw((*it).getMatrix());
+	}
+}
 
-	//Main loop flag
+void Window::addToShapes(const Shape& shape)
+{
+	shapes_.push_back(std::make_unique<Shape>(shape));
+}
+
+void Window::moveShapes(const Vector3f & moveVector)
+{
+	auto& shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->translate(moveVector);
+	}
+}
+
+void Window::render()
+{//Main loop flag
 	bool quit = false;
 
 	//Event handler
@@ -34,26 +109,56 @@ void Window::Draw()
 			//While application is running
 	while (!quit)
 	{
+		Vector vector;
+		vector.addNumber(1.f, -1.f, -0.f);
+		player.shape().rotate(vector);
+
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
+			//catch input
+
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				auto moveVector = Vector3f();
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_DOWN:
+					moveVector[1] += .5;
+					break;
+				case SDLK_UP:
+					moveVector[1] -= .5;
+					break;
+				case SDLK_LEFT:
+					moveVector[0] += .5;
+					break;
+				case SDLK_RIGHT:
+					moveVector[0] -= .5;
+					break;
+
+				}
+				moveShapes(moveVector);
 			}
 		}
 
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
 		SDL_RenderClear(gRenderer);
-
-
-		DrawPoint(startPoint1);
-		DrawPoint(direction);
-		DrawVector(startPoint1, direction);
-		DrawVector(startPoint2, direction);
 		DrawAxis();
+
+		Draw(player.shape());
+
+		auto& shapes = shapes_;
+		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw(*(*it));
+		}
+
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -62,6 +167,7 @@ void Window::Draw()
 	//SDL_Delay(2000);
 
 }
+
 void Window::DrawAxis() {
 
 
@@ -127,33 +233,38 @@ bool Window::Init()
 
 void Window::DrawPoint(Vector point)
 {
-	int scale = 100;
+	int tempXsize = 20;
+	int tempYsize = 10;
+
+	float scaleX = SCREEN_WIDTH / tempXsize;
+	float scaleY = SCREEN_HEIGHT / tempYsize;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
-	auto pointx = point.getXCor() * scale / 2;
-	auto pointy = point.getYCor() * scale *-1 / 2;
+	auto pointx = point[0] * scaleX + centerX;
+	auto pointy = point[1] * -1 * scaleY + centerY;
 
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawPoint(gRenderer, centerX + pointx, centerY + pointy);
+	SDL_RenderDrawPoint(gRenderer, pointx, pointy);
 }
 
 void Window::DrawVector(Vector origin, Vector direction)
 {
-	int scale = 100;
+	int tempXsize = 20;
+	int tempYsize = 10;
+
+	float scaleX = SCREEN_WIDTH / tempXsize;
+	float scaleY = SCREEN_HEIGHT / tempYsize;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
-	auto originX = origin.getXCor() * scale / 2;
-	auto OriginY = origin.getYCor() * scale *-1 / 2;
+	auto originX = origin[0] * scaleX + centerX;
+	auto originY = origin[1] * -1 * scaleY + centerY;
 
-	auto directionX = direction.getXCor() * scale / 2;
-	auto DirectionY = direction.getYCor() * scale *-1 / 2;
-
-	
-	auto deltaX = originX + directionX;
-	auto deltaY = OriginY + DirectionY;
-
+	auto directionX = direction[0] * scaleX + centerX;
+	auto directionY = direction[1] * -1 * scaleY + centerY;
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-	SDL_RenderDrawLine(gRenderer, centerX + originX, centerY + OriginY, centerX + deltaX, centerY + deltaY);
+	SDL_RenderDrawLine(gRenderer, originX, originY, directionX, directionY);
 }

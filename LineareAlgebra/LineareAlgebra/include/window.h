@@ -1,13 +1,31 @@
 #pragma once
 #include <SDL.h>
 #include "Vector.h"
+#include "../include/Matrix.h"
+#include "Shape.h"
+#include "SpaceShip.h"
+#include <memory>
 
 class Window
 {
 public:
-	Window();
+	Window(const int width, const int height);
+	Window(const Window& other) = delete;
+	Window& operator=(const Window& other) = delete;
+	Window(Window&& other) = delete;
+	Window& operator=(Window&& other) = delete;
+
+
+
 	~Window();
-	void Draw();
+	void Draw(Matrix matrix);
+	void Draw(const Shape& shape);
+
+	void addToShapes(const Shape& shape);
+	void moveShapes(const Vector3f& moveVector);
+	
+	void render();
+	
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);
@@ -16,8 +34,13 @@ public:
 
 private:
 	//Screen dimension constants
-	const int SCREEN_WIDTH = 1000;
-	const int SCREEN_HEIGHT = 1000;
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
+	std::vector<std::unique_ptr<Shape>> shapes_;
+	
+	//std::vector<Shape*> shapes_;
+
+	SpaceShip player;
 
 	//The window we'll be rendering to
 	SDL_Window* window;

@@ -1,63 +1,113 @@
 #include "../include/Vector.h"
 #include <cmath>
 
+Vector::Vector(unsigned int rows)
+{
+	for (unsigned int i = 0;i < rows;i++) {
+		vector_.push_back(0);
+	}
+}
 
-
-Vector::Vector()
+Vector::~Vector()
 {
 }
 
-Vector::Vector(const float xCor, const float yCor)
-	: xCor(xCor), yCor(yCor)
+unsigned int Vector::getRows() const
 {
+	return vector_.size();
 }
 
-void Vector::setXCor(const float xCor)
+//void Vector::addNumber(float number)
+//{
+//	vector.push_back(number);
+//}
+
+void Vector::normalize()
 {
-	this->xCor = xCor;
+	const float length = getLength();
+	if (length != 0) {
+		for (auto &i : vector_) {
+			i = i / length;
+		}
+	}
 }
 
-void Vector::setYCor(const float yCor)
+float Vector::operator[](unsigned index) const
 {
-	this->yCor = yCor;
+	if (index < vector_.size() && index >= 0) {
+		return vector_[index];
+	}
+	throw std::out_of_range("Out of range fuckhead");
 }
 
-float Vector::getXCor() const
+float & Vector::operator[](unsigned index)
 {
-	return xCor;
+	if (index < vector_.size() && index >= 0) {
+		return vector_[index];
+	}
+	throw std::out_of_range("Out of range fuckhead");
 }
 
-float Vector::getYCor() const
+Vector & Vector::operator=(const Vector & other)
 {
-	return yCor;
+	if(other.getRows() == getRows())
+	{
+		vector_ = other.vector_;
+		return *this;
+	}
+	throw std::invalid_argument("the vector is not of the same size");
+}
+
+float Vector::operator*(const Vector & other) const
+{
+	if (other.vector_.size() == vector_.size()) {
+		float f = 0.0;
+		for (int i = 0; i < vector_.size();i++) {
+			f += vector_[i] * other.vector_[i];
+		}
+		return f;
+	}
+	throw std::invalid_argument("invalid");
 }
 
 float Vector::getLength() const
 {
-	return sqrt(pow(this->xCor, 2) + pow(this->yCor, 2));
+	float f = 0;
+	for (const auto &i : vector_) {
+		f += i * i;
+	}
+	return std::sqrt(f);
 }
 
-Vector Vector::normalize() const
+Vector Vector::operator+(const Vector & other) const
 {
-	return Vector(this->xCor/this->getLength(), this->yCor/this->getLength());
+	Vector newVector;
+	if (getRows() == other.getRows()) {
+		for (int i = 0; i < getRows();i++) {
+			newVector.addNumber(vector_[i] + other.vector_[i]);
+		}
+		return newVector;
+	}
+	throw std::invalid_argument("invalid");
 }
 
-Vector Vector::operator+(Vector const &obj) const
+Vector Vector::operator-(const Vector & other) const
 {
-	return Vector(this->xCor + obj.getXCor(), this->yCor + obj.getYCor());
+	Vector newVector;
+	if (getRows() == other.getRows()) {
+		for (int i = 0; i < getRows();i++) {
+			newVector.addNumber(vector_[i] - other.vector_[i]);
+		}
+		return newVector;
+	}
+	throw std::invalid_argument("invalid");
 }
 
-Vector Vector::operator-(Vector const &obj) const
+Vector Vector::operator*(float number) const
 {
-	return Vector(this->xCor - obj.getXCor(), this->yCor - obj.getYCor());
-}
-
-Vector Vector::operator*(const int &multiplier) const
-{
-	return Vector(this->xCor*multiplier, this->yCor*multiplier);
-}
-
-
-Vector::~Vector()
-{
+	Vector newVector;
+	for (int i = 0; i < getRows();i++) {
+		newVector.addNumber(vector_[i] * number);
+	}
+	return newVector;
 }
