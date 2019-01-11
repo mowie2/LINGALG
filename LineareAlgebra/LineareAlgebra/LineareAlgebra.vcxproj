@@ -134,6 +134,7 @@
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Matrix3f.cpp" />
+    <ClCompile Include="src\Objects.cpp" />
     <ClCompile Include="src\SpaceShip.cpp" />
     <ClCompile Include="src\Matrix.cpp" />
     <ClCompile Include="src\Shape.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="include\Matrix3f.h" />
     <ClInclude Include="include\Vector3f.h" />
     <ClInclude Include="include\SpaceShip.h" />
+    <ClInclude Include="include\Objects.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
