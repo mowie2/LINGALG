@@ -3,7 +3,7 @@
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -1.5), Vector3f(0, 0, 0), 0.5f, 15.0f, 90.f))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -1.5), Vector3f(0, 0, 0), 1.0f, 20.0f, 90.f))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -47,14 +47,16 @@ Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0
 		Vector3f(0, 1, 1));
 
 	std::vector<Matrix3f> matrices;
-	matrices.push_back(square);
+	//matrices.push_back(square);
 	matrices.push_back(square2);
-	/*matrices.push_back(square3);
-	matrices.push_back(square4);
-	matrices.push_back(square5);
-	matrices.push_back(square6);*/
-	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	//addToShapes(s);
+	//matrices.push_back(square3);
+	//matrices.push_back(square4);
+	//matrices.push_back(square5);
+	//matrices.push_back(square6);
+	auto s = Shape(matrices, Vector3f(.5, .5, .5));
+	s.translate(Vector3f (-.5, -.5, -.5));
+	s.translate(Vector3f(5,0,0));
+	addToShapes(s);
 
 	//Vector3f ves = Vector3f(1, 1, 1);
 	//Vector3f veb = Vector3f(1, 1, 1);
@@ -122,6 +124,7 @@ void Window::Draw(const Shape& shape)
 		//shape.translate(ll.getVector());
 		auto k4 = k2 * k1;
 		auto k5 = k3 * k4;
+
 		Draw(k3*k2*k1);
 	}
 }
@@ -200,7 +203,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
 
-		Draw(player.shape());
+		//Draw(player.shape());
 
 		auto& shapes = shapes_;
 		for (auto it = shapes.begin(); it != shapes.end(); it++)
