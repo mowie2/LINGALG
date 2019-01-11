@@ -14,8 +14,8 @@ public:
 
 	float& operator[](unsigned int index);
 	float operator[](unsigned int index) const;
-	Vector3f operator+(const Vector3f& other);
-	Vector3f operator-(const Vector3f& other);
+	Vector3f operator+(const Vector3f& other) const;
+	Vector3f operator-(const Vector3f& other) const;
 	float operator*(const Vector3f& other);
 	Vector getVector() const;
 

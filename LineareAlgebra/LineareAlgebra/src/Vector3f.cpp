@@ -50,12 +50,12 @@ float Vector3f::operator[](unsigned int index) const
 	return vector_[index];
 }
 
-Vector3f Vector3f::operator+(const Vector3f & other)
+Vector3f Vector3f::operator+(const Vector3f & other) const
 {
 	return Vector3f(vector_[0] + other.vector_[0], vector_[1] + other.vector_[1], vector_[2] + other.vector_[2]);
 }
 
-Vector3f Vector3f::operator-(const Vector3f & other)
+Vector3f Vector3f::operator-(const Vector3f & other) const
 {
 	return Vector3f(vector_[0] - other.vector_[0], vector_[1] - other.vector_[1], vector_[2] - other.vector_[2]);
 }

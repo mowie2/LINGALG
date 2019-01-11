@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Matrix3f.cpp" />
@@ -152,7 +153,7 @@
     <ClInclude Include="include\Matrix3f.h" />
     <ClInclude Include="include\Vector3f.h" />
     <ClInclude Include="include\SpaceShip.h" />
-    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="include\Camera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
