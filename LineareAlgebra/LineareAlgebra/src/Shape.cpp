@@ -66,7 +66,7 @@ void Shape::scale(const Vector3f & vec)
 
 void Shape::rotateOrigin(const Vector3f & vec)
 {
-	auto heading_2 = Vector3f(1.f, 1.f, 0.f);
+	auto heading_2 = Vector3f(0.f, 1.f, 2.f);
 	//auto heading_2 = position_;
 	///step 1
 	auto zx = heading_2[2] / heading_2[0];
@@ -77,7 +77,11 @@ void Shape::rotateOrigin(const Vector3f & vec)
 	yx = atan(yx) / M_PI * 180;
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
-	auto step3M = Matrix4x4f::getXRotationMatrix(.5*M_PI);
+
+	auto step3M = Matrix4x4f::getXRotationMatrix(vec[0]*M_PI);
+	step3M = step3M * Matrix4x4f::getYRotationMatrix(vec[1] * M_PI);
+	step3M = step3M * Matrix4x4f::getZRotationMatrix(vec[2] * M_PI);
+
 
 	auto step4M = step2M;
 	step4M[1][0] = step2M[1][0] * -1;
@@ -90,71 +94,6 @@ void Shape::rotateOrigin(const Vector3f & vec)
 
 	transformationMatrix_ = getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * getToOrignMatrix() * transformationMatrix_;
 	transform();
-
-
-
-	/*
-	///step 1 rotateY
-	heading_ = Vector3f(0.f, 5.f, 0.f);
-	float tanR1 = atan(heading_[2] - heading_[0]);
-	auto test = Matrix4x4f::getYRotationMatrix(tanR1);
-
-	///alternative rotateY
-	float cos = heading_[0] / 
-		(sqrt(pow(heading_[0], 2) + 
-			pow(heading_[2], 2)));
-
-	float sin = heading_[2]/ 
-		(sqrt(pow(heading_[0] , 2) + 
-			pow(heading_[2], 2)));
-	Matrix4x4f step1Matrix;
-	step1Matrix[0][0] = cos;
-	step1Matrix[0][2] = sin;
-	step1Matrix[1][1] = 1;
-	step1Matrix[2][2] = cos;
-	step1Matrix[2][0] = -sin;
-	step1Matrix[3][3] = 1;
-
-	float cos2 = sqrt(pow(heading_[0], 2) + 
-		pow(heading_[2], 2)) / 
-		sqrt(pow(heading_[0], 2) + 
-			pow(heading_[1] , 2) + 
-			pow(heading_[2] , 2));
-	float sin2 = heading_[1]/ 
-		sqrt(pow(heading_[0], 2) + 
-			pow(heading_[1] , 2) + 
-			pow(heading_[2] , 2));
-	Matrix4x4f step2Matrix;
-	step2Matrix[0][0] = cos2;
-	step2Matrix[0][1] = sin2;
-	step2Matrix[1][0] = -sin2;
-	step2Matrix[1][1] = cos2;
-	step2Matrix[2][2] = 1;
-	step2Matrix[3][3] = 1;
-
-	Matrix4x4f step3Matrix = Matrix4x4f::getXRotationMatrix(10.f);
-
-	Matrix4x4f step4Matrix;
-	step4Matrix[0][0] = cos2;
-	step4Matrix[0][1] = -sin2;
-	step4Matrix[1][0] = sin2;
-	step4Matrix[1][1] = cos2;
-	step4Matrix[2][2] = 1;
-	step4Matrix[3][3] = 1;
-
-
-	Matrix4x4f step5Matrix;
-	step5Matrix[0][0] = cos;
-	step5Matrix[0][2] = -sin;
-	step5Matrix[1][1] = 1;
-	step5Matrix[2][2] = cos;
-	step5Matrix[2][0] = sin;
-	step5Matrix[3][3] = 1;
-
-	Matrix4x4f total = (step5Matrix * step4Matrix*step3Matrix*step2Matrix*step1Matrix)*transformationMatrix_;
-	//auto pause = 0;
-	transformationMatrix_ = total;
-	transform();*/
 }
 
 std::vector<Matrix3f>& Shape::projections()

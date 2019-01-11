@@ -108,9 +108,9 @@ void Window::render()
 	while (!quit)
 	{
 		Vector vector;
-		vector.addNumber(0.1f, -0.5f, 0.f);
+		vector.addNumber(0.1f, 0.2f, 0.2f);
 		//player.shape().rotate(vector);
-		player.shape().rotateOrigin(vector);
+		//player.shape().rotateOrigin(vector);
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -127,19 +127,24 @@ void Window::render()
 				auto moveVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
-				case SDLK_DOWN:
-					moveVector[1] += .5;
+				case SDLK_s:
+					player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
 					break;
-				case SDLK_UP:
-					moveVector[1] -= .5;
+				case SDLK_w:
+					player.shape().rotateOrigin(Vector3f(0.f, 0.f, -0.5f));
 					break;
-				case SDLK_LEFT:
-					moveVector[0] += .5;
+				case SDLK_a:
+					player.shape().rotateOrigin(Vector3f(0.5f, 0.f, 0.f));
 					break;
-				case SDLK_RIGHT:
-					moveVector[0] -= .5;
+				case SDLK_d:
+					player.shape().rotateOrigin(Vector3f(-0.5f, 0.f, 0.f));
 					break;
-
+				case SDLK_q:
+					player.shape().rotateOrigin(Vector3f(0.f, -0.5f, 0.f));
+					break;
+				case SDLK_e:
+					player.shape().rotateOrigin(Vector3f(0.f, 0.5f, 0.f));
+					break;
 				}
 				moveShapes(moveVector);
 			}
