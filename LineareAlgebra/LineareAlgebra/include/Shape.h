@@ -15,6 +15,7 @@ public:
 	Matrix4x4f getToPositionMatrix() const;
 
 	void rotate(const Vector3f& vec);
+	void rotateAround(Shape const & object, Vector3f const & vec);
 	void scale(const Vector3f& vec);
 	void rotateOrigin(const Vector3f& vec);
 
@@ -30,4 +31,6 @@ private:
 	std::vector<Matrix3f> matrices_;
 	std::vector<Matrix3f> projections_;
 	Matrix4x4f transformationMatrix_;
+
+	Matrix4x4f const get7RotationMatrix(Shape const & object, Vector3f const & vec);
 };

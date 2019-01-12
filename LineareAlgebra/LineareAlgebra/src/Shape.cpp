@@ -64,13 +64,19 @@ void Shape::scale(const Vector3f & vec)
 	transform();
 }
 
-void Shape::rotateOrigin(const Vector3f & vec)
+void Shape::rotateAround(Shape const & object, Vector3f const & vec)
+{
+	transformationMatrix_ = get7RotationMatrix(object, vec);
+	transform();
+}
+
+Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const & vec)
 {
 	auto heading_2 = Vector3f(0.f, 1.f, 2.f);
 	//auto heading_2 = position_;
 	///step 1
 	auto zx = heading_2[2] / heading_2[0];
-	zx = atan(zx) / M_PI*180;
+	zx = atan(zx) / M_PI * 180;
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
 	auto yx = heading_2[1] / heading_2[0];
@@ -78,7 +84,7 @@ void Shape::rotateOrigin(const Vector3f & vec)
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
 
-	auto step3M = Matrix4x4f::getXRotationMatrix(vec[0]*M_PI);
+	auto step3M = Matrix4x4f::getXRotationMatrix(vec[0] * M_PI);
 	step3M = step3M * Matrix4x4f::getYRotationMatrix(vec[1] * M_PI);
 	step3M = step3M * Matrix4x4f::getZRotationMatrix(vec[2] * M_PI);
 
@@ -91,8 +97,14 @@ void Shape::rotateOrigin(const Vector3f & vec)
 	step5M[2][0] = step1M[2][0] * -1;
 	step5M[0][2] = step1M[0][2] * -1;
 
-
-	transformationMatrix_ = getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * getToOrignMatrix() * transformationMatrix_;
+	auto returnMatrix = object.getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * object.getToOrignMatrix() * transformationMatrix_;
+	return returnMatrix;
+}
+//transformationMatrix_ =
+//transform();
+void Shape::rotateOrigin(const Vector3f & vec)
+{
+	transformationMatrix_ = get7RotationMatrix(*this, vec);
 	transform();
 }
 
