@@ -69,16 +69,16 @@ void Shape::rotateOrigin(const Vector3f & vec)
 	auto heading_2 = Vector3f(1.f, 1.f, 1.f);
 	//auto heading_2 = position_;
 	///step 1
-	float zx = 0;
-	if (heading_2[0] > 0) {
+	float zx = 90;
+	if (heading_2[0] != 0) {
 		zx = heading_2[2] / heading_2[0];
 		zx = atan(zx) / M_PI * 180;
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
 	///step2
-	float yx = 0;
-	if (heading_2[0] > 0) {
+	float yx = 90;
+	if (heading_2[0] != 0) {
 		yx = heading_2[1] / heading_2[0];
 		yx = atan(yx) / M_PI * 180;
 	}

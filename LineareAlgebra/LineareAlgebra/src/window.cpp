@@ -3,7 +3,7 @@
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0, -1.5), Vector3f(0, 0, 0), 1.0f, 20.0f, 90.f))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 0, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -47,15 +47,18 @@ Window::Window(const int width, const int height) : camera_(Camera(Vector3f(0, 0
 		Vector3f(0, 1, 1));
 
 	std::vector<Matrix3f> matrices;
-	//matrices.push_back(square);
+	matrices.push_back(square);
 	matrices.push_back(square2);
-	//matrices.push_back(square3);
-	//matrices.push_back(square4);
-	//matrices.push_back(square5);
-	//matrices.push_back(square6);
+	matrices.push_back(square3);
+	matrices.push_back(square4);
+	matrices.push_back(square5);
+	matrices.push_back(square6);
 	auto s = Shape(matrices, Vector3f(.5, .5, .5));
 	s.translate(Vector3f (-.5, -.5, -.5));
-	s.translate(Vector3f(5,0,0));
+	s.rotate(Vector3f(45, 0, 0));
+	s.rotate(Vector3f(0, 45, 0));
+	s.translate(Vector3f(1, 1, 1));
+	//s.translate(Vector3f(15,0,0));
 	addToShapes(s);
 
 	//Vector3f ves = Vector3f(1, 1, 1);
@@ -161,10 +164,11 @@ void Window::render()
 	while (!quit)
 	{
 		Vector vector;
-		vector.addNumber(1.0f, 0.0f, 0.0f);
+		vector.addNumber(0.0f, 1.0f, 0.0f);
+		shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
 		//player.shape().rotate(vector);
-		player.shape().rotateOrigin(vector);
-
+		//player.shape().rotateOrigin(vector);
+		//camera_.rotate(Vector3f(0, 1, 0));
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -178,23 +182,29 @@ void Window::render()
 			else if (e.type == SDL_KEYDOWN)
 			{
 				auto moveVector = Vector3f();
+				auto rotateVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_DOWN:
-					moveVector[1] += .5;
+					moveVector[1] -= .5;
+					rotateVector[0] -= .5;
 					break;
 				case SDLK_UP:
-					moveVector[1] -= .5;
+					moveVector[1] += .5;
+					rotateVector[0] += .5;
 					break;
 				case SDLK_LEFT:
-					moveVector[0] += .5;
+					moveVector[0] -= .5;
+					rotateVector[1] -= .5;
 					break;
 				case SDLK_RIGHT:
-					moveVector[0] -= .5;
+					moveVector[0] += .5;
+					rotateVector[1] += .5;
 					break;
-
 				}
-				moveShapes(moveVector);
+
+				camera_.rotate2(rotateVector);
+				//player.shape().translate(moveVector);
 			}
 		}
 
@@ -203,7 +213,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
 
-		//Draw(player.shape());
+		Draw(player.shape());
 
 		auto& shapes = shapes_;
 		for (auto it = shapes.begin(); it != shapes.end(); it++)

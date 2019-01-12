@@ -50,9 +50,9 @@ SpaceShip::SpaceShip()
 	matrices.push_back(square6);
 	shape_ = Shape(matrices, Vector3f(.5, .5, .5));
 	shape_.translate(Vector3f(-.5, -.5, -.5));
-	shape_.rotate(Vector3f(45, 0, 0));
-	shape_.rotate(Vector3f(0, 45, 0));
-	shape_.translate(Vector3f(1, 1, 1));
+	//shape_.rotate(Vector3f(45, 0, 0));
+	//shape_.rotate(Vector3f(0, 45, 0));
+	//shape_.translate(Vector3f(1, 1, 1));
 	//shape_.scale(Vector3f(5, 5, 5));
 }
 
