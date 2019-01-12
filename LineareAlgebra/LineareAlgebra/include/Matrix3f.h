@@ -34,6 +34,7 @@ public:
 	Matrix3f operator+(const Matrix3f&other) const;
 	Matrix3f operator-(const Matrix3f&other) const;
 	Matrix operator*(const Matrix&other) const;
+	Vector3f operator*(const Vector3f&other) const;
 	Matrix getTranslatable() const;
 	//Matrix3f translate(const Vector3f& vec) const;
 	//Matrix3f scale();

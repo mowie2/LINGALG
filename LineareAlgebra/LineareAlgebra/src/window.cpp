@@ -186,24 +186,33 @@ void Window::render()
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_DOWN:
-					moveVector[1] -= .5;
-					rotateVector[0] -= .5;
+					//moveVector[1] -= .5;
+					rotateVector[0] -= 5;
 					break;
 				case SDLK_UP:
-					moveVector[1] += .5;
-					rotateVector[0] += .5;
+					//moveVector[1] += .5;
+					rotateVector[0] += 5;
 					break;
 				case SDLK_LEFT:
-					moveVector[0] -= .5;
-					rotateVector[1] -= .5;
+					//moveVector[0] -= .5;
+					rotateVector[1] -= 5;
 					break;
 				case SDLK_RIGHT:
-					moveVector[0] += .5;
-					rotateVector[1] += .5;
+					//moveVector[0] += .5;
+					rotateVector[1] += 5;
+					break;
+				case SDLK_w:
+					//todo movevecto = heading * acceleration
+					moveVector[2] += .5;
+					break;
+				case SDLK_s:
+					//todo movevecto = heading * acceleration
+					moveVector[2] -= .5;
 					break;
 				}
-
+				camera_.move(moveVector);
 				camera_.rotate2(rotateVector);
+				
 				//player.shape().translate(moveVector);
 			}
 		}
