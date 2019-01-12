@@ -50,6 +50,15 @@ void Window::moveShapes(const Vector3f & moveVector)
 	}
 }
 
+void Window::rotateShapes(const Vector3f & rotateVector)
+{
+	auto& shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->rotateAround(player.shape(), rotateVector);
+	}
+}
+
 void Window::render()
 {//Main loop flag
 	bool quit = false;
@@ -88,22 +97,28 @@ void Window::render()
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_s:
-					player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
+					rotateShapes(Vector3f(0.f, 0.f, 0.5f));
+					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
 					break;
 				case SDLK_w:
-					player.shape().rotateOrigin(Vector3f(0.f, 0.f, -0.5f));
+					rotateShapes(Vector3f(0.f, 0.f, -0.5f));
+					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, -0.5f));
 					break;
 				case SDLK_a:
-					player.shape().rotateOrigin(Vector3f(0.5f, 0.f, 0.f));
+					rotateShapes(Vector3f(0.5f, 0.f, 0.f));
+					//player.shape().rotateOrigin(Vector3f(0.5f, 0.f, 0.f));
 					break;
 				case SDLK_d:
-					player.shape().rotateOrigin(Vector3f(-0.5f, 0.f, 0.f));
+					rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
+					//player.shape().rotateOrigin(Vector3f(-0.5f, 0.f, 0.f));
 					break;
 				case SDLK_q:
-					player.shape().rotateOrigin(Vector3f(0.f, -0.5f, 0.f));
+					rotateShapes(Vector3f(0.f, -0.5f, 0.f));
+					//player.shape().rotateOrigin(Vector3f(0.f, -0.5f, 0.f));
 					break;
 				case SDLK_e:
-					player.shape().rotateOrigin(Vector3f(0.f, 0.5f, 0.f));
+					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
+					//player.shape().rotateOrigin(Vector3f(0.f, 0.5f, 0.f));
 					break;
 				}
 				moveShapes(moveVector);
