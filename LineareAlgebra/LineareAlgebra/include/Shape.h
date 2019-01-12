@@ -18,13 +18,16 @@ public:
 	void rotateAround(Shape const & object, Vector3f const & vec);
 	void scale(const Vector3f& vec);
 	void rotateOrigin(const Vector3f& vec);
+	void transform();
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
 	
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
-	void transform();
+	std::vector<Matrix3f> getMatrix() const { return matrices_; }
+
+	void pulseSize(float dt, float speed, float size);
 	Vector3f& heading();
 	void heading(Vector3f newHeading);
 private:
@@ -35,4 +38,5 @@ private:
 	Matrix4x4f transformationMatrix_;
 
 	Matrix4x4f const get7RotationMatrix(Shape const & object, Vector3f const & vec);
+	float sinValue = 0;
 };

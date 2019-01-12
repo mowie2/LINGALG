@@ -5,6 +5,7 @@
 #include "Shape.h"
 #include "SpaceShip.h"
 #include <memory>
+#include <chrono>
 
 class Window
 {
@@ -15,18 +16,19 @@ public:
 	Window(Window&& other) = delete;
 	Window& operator=(Window&& other) = delete;
 
-
+	void start();
 
 	~Window();
 	void Draw(Matrix matrix);
 	void Draw(const Shape& shape);
 
 	void addToShapes(const Shape& shape);
-	void moveShapes(const Vector3f& movevector);
 	void rotateShapes(const Vector3f& rotateVector);
-	
+	void moveShapes(const Vector3f& moveVector);
+
+	void Update(float dt);
 	void render();
-	
+
 	void CloseWindow();
 	bool Init();
 	void DrawPoint(Vector point);
@@ -38,7 +40,7 @@ private:
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
 	std::vector<std::unique_ptr<Shape>> shapes_;
-	
+
 	//std::vector<Shape*> shapes_;
 
 	SpaceShip player;
@@ -59,5 +61,11 @@ private:
 
 	//The image we will load and show on the screen
 	SDL_Surface* gHelloWorld = NULL;
+
+	std::chrono::time_point<std::chrono::system_clock> lastTime;
+	std::chrono::time_point<std::chrono::system_clock> startTime;
+	std::chrono::duration<long long, std::ratio<1, 1000000>> deltaTime;
+	float dt;
+	double sinValue = 0;
 };
 

@@ -3,10 +3,11 @@
 
 Matrix3f::Matrix3f(const Matrix & original)
 {
-	if(original.getRows() == 3)
+	if (original.getRows() == 3)
 	{
 		matrix_ = original;
-	} else
+	}
+	else
 	{
 		throw std::invalid_argument("rows must be 3");
 	}
@@ -14,13 +15,13 @@ Matrix3f::Matrix3f(const Matrix & original)
 
 Matrix3f::Matrix3f(unsigned int columns)
 {
-	matrix_ = Matrix(3,columns);
+	matrix_ = Matrix(3, columns);
 }
 
 Vector Matrix3f::get_row(unsigned int row) const
 {
 	Vector rowVector;
-	for(unsigned int i = 0;i<matrix_.getColumns();i++)
+	for (unsigned int i = 0; i < matrix_.getColumns(); i++)
 	{
 		rowVector.addNumber(matrix_[i][row]);
 	}
@@ -44,10 +45,10 @@ Vector & Matrix3f::operator[](unsigned int index)
 
 Matrix3f Matrix3f::operator+(const Matrix3f & other) const
 {
-	if(matrix_.getColumns() == other.matrix_.getColumns())
+	if (matrix_.getColumns() == other.matrix_.getColumns())
 	{
 		Matrix3f m(matrix_.getColumns());
-		for(int i = 0; i< matrix_.getColumns();i++)
+		for (int i = 0; i < matrix_.getColumns(); i++)
 		{
 			m[i][0] = matrix_[i][0] + other.matrix_[i][0];
 			m[i][1] = matrix_[i][1] + other.matrix_[i][1];
@@ -63,7 +64,7 @@ Matrix3f Matrix3f::operator-(const Matrix3f & other) const
 	if (matrix_.getColumns() == other.matrix_.getColumns())
 	{
 		Matrix3f m(matrix_.getColumns());
-		for (int i = 0; i < matrix_.getColumns();i++)
+		for (int i = 0; i < matrix_.getColumns(); i++)
 		{
 			m[i][0] = matrix_[i][0] - other.matrix_[i][0];
 			m[i][1] = matrix_[i][1] - other.matrix_[i][1];
@@ -76,7 +77,7 @@ Matrix3f Matrix3f::operator-(const Matrix3f & other) const
 
 Matrix Matrix3f::operator*(const Matrix & other) const
 {
-	return matrix_*other;
+	return matrix_ * other;
 }
 
 Matrix4x4f Matrix3f::getTranslatable() const
@@ -90,7 +91,10 @@ Matrix Matrix3f::getMatrix() const
 	return matrix_;
 }
 
+
+
 Matrix3f Matrix3f::getIdentityMatrix()
 {
 	return Matrix3f(Matrix::getIdentityMatrix(3));
 }
+

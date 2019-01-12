@@ -1,6 +1,9 @@
 #include "../include/window.h"
 #include <stdio.h>
 #include "../include/Objects.h"
+#include "../include/CollisionDetector.h"
+#include "../include/Physics.h"
+#include <iostream>
 
 Window::Window(const int width, const int height)
 {
@@ -14,6 +17,7 @@ Window::Window(const int width, const int height)
 	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
 	shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
+
 
 Window::~Window()
 {
@@ -59,9 +63,15 @@ void Window::rotateShapes(const Vector3f & rotateVector)
 	}
 }
 
+void Window::Update(float dt)
+{
+	
+}
+
 void Window::render()
 {//Main loop flag
 	bool quit = false;
+	lastTime = std::chrono::system_clock::now();
 
 	//Event handler
 	SDL_Event e;
@@ -76,10 +86,15 @@ void Window::render()
 			//While application is running
 	while (!quit)
 	{
+		startTime = std::chrono::system_clock::now();
+		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(startTime - lastTime);
+
+		//deltaTime /= 10000.f;
+		dt = deltaTime.count() / 1000000.f;
+		lastTime = startTime;
 		Vector vector;
-		vector.addNumber(0.1f, 0.2f, 0.2f);
+		vector.addNumber(1.f, -1.f, -0.f);
 		//player.shape().rotate(vector);
-		//player.shape().rotateOrigin(vector);
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -128,6 +143,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
 
+		Update(dt);
 		Draw(player.shape());
 
 		auto& shapes = shapes_;
@@ -230,10 +246,10 @@ void Window::DrawVector(Vector origin, Vector direction)
 {
 	int tempXsize = 20;
 	int tempYsize = 10;
-	
-	float scaleX = SCREEN_WIDTH/tempXsize;
-	float scaleY = SCREEN_HEIGHT/tempYsize;
-	
+
+	float scaleX = SCREEN_WIDTH / tempXsize;
+	float scaleY = SCREEN_HEIGHT / tempYsize;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
