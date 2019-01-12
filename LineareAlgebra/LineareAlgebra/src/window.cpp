@@ -11,11 +11,67 @@ Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 
 	this->SCREEN_HEIGHT = height;
 	Init();
 
-	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 3,3,3 }), Vector3f{ 3,3,3 }));
-	shapes_.at(0)->rotate(Vector3f{ 0,0,45 });
+	Matrix3f m1;
+	m1.AddVector(
+		Vector3f(0, 0, 0),
+		Vector3f(1, 0, 0),
+		Vector3f(1, 1, 0),
+		Vector3f(0, 1, 0)
+	);
+	Matrix3f m2;
+	m2.AddVector(
+		Vector3f(1, 0, 0),
+		Vector3f(1, 0, 1),
+		Vector3f(1, 1, 1),
+		Vector3f(1, 1, 0)
+	);
+	Matrix3f m3;
+	m3.AddVector(
+		Vector3f(1, 0, 1),
+		Vector3f(0, 0, 1),
+		Vector3f(0, 1, 1),
+		Vector3f(1, 1, 1)
+	);
+	Matrix3f m4;
+	m4.AddVector(
+		Vector3f(0, 0, 1),
+		Vector3f(0, 0, 0),
+		Vector3f(0, 1, 0),
+		Vector3f(0, 1, 1)
+	);
+	Matrix3f m5;
+	m5.AddVector(
+		Vector3f(0, 1, 0),
+		Vector3f(1, 1, 0),
+		Vector3f(1, 1, 1),
+		Vector3f(0, 1, 1)
+	);
+	Matrix3f m6;
+	m6.AddVector(
+		Vector3f(1, 0, 0),
+		Vector3f(0, 0, 0),
+		Vector3f(0, 0, 1),
+		Vector3f(1, 0, 1)
+	);
+	std::vector<Matrix3f> matrices;
+	matrices.push_back(m1);
+	matrices.push_back(m2);
+	matrices.push_back(m3);
+	matrices.push_back(m4);
+	matrices.push_back(m5);
+	matrices.push_back(m6);
+	Shape s(matrices,Vector3f(.5,.5,.5));
+	s.rotate(Vector3f(45,45,0));
+	shapes_.push_back(std::make_unique<Shape>(s));
 
-	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
-	shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
+	//shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 }));
+	//shapes_.at(0)->translate(Vector3f(.5, .5, .5));
+	//shapes_.at(0)->rotate(Vector3f{ 0,45,0 });
+	//shapes_.at(0)->rotate(Vector3f{ -45,0,0 });
+	//shapes_.at(0)->heading(Vector3f(1, 1, 1));
+
+	//shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
+	//shapes_.at(1)->rotate(Vector3f{ 0,45,0 });
 }
 
 
@@ -113,11 +169,11 @@ void Window::rotateShapes(const Vector3f & rotateVector)
 
 void Window::Update(float dt)
 {
-	auto& shapes = shapes_;
-	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
-	{
-		(*it)->moveForward(dt);
-	}
+	//auto& shapes = shapes_;
+	//for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	//{
+	//	(*it)->moveForward(dt);
+	//}
 }
 
 void Window::render()
@@ -190,10 +246,10 @@ void Window::render()
 					moveVector[2] -= .5;
 					break;
 				case SDLK_q:
-					rotateShapes(Vector3f(0.f, -0.5f, 0.f));
+					//rotateShapes(Vector3f(0.f, -0.5f, 0.f));
 					break;
 				case SDLK_e:
-					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
+					//rotateShapes(Vector3f(0.f, 0.5f, 0.f));
 					break;
 				case SDLK_y:
 					//addToShapes(player.shoot());

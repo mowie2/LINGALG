@@ -7,7 +7,7 @@ class SpaceShip
 {
 private:
 	Shape shape_;
-
+	float accel_ = .1f;
 public:
 	SpaceShip();
 	SpaceShip(const SpaceShip& other) = delete;

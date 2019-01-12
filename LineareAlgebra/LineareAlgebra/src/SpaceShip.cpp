@@ -5,6 +5,13 @@
 SpaceShip::SpaceShip()
 {
 	shape_ = Shape(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 });
+	Matrix3f m;
+	m.AddVector(
+		Vector3f(-.5, -.5, .5),
+		Vector3f(0, 0, 1),
+		Vector3f(.5, -.5, .5)
+	);
+	shape_.addMatix(m);
 	shape_.heading(Vector3f(0.f, 0.f, 1.f));
 	//shape_.translate(Vector3f(-.5, -.5, -.5));
 	//shape_.rotate(Vector3f(0, 0, 45));
