@@ -101,8 +101,19 @@ void Camera::rotate(Vector3f vec)
 
 void Camera::rotate2(Vector3f vec)
 {
+	auto heading_2 = lookat_ - position_;
+	
+	float xz = 90;
+	if(heading_2[2] != 0)
+	{
+		xz = heading_2[0] / heading_2[2];
+		xz = atan()
+	}
 
-	auto heading_2 = position_ - lookat_;
+	
+	/*
+	//todo lookat change
+	auto heading_2 = lookat_- position_;
 	Matrix3f m;
 	m.AddVector(position_, right_, up_);
 	//auto heading_2 = position_;
@@ -114,23 +125,10 @@ void Camera::rotate2(Vector3f vec)
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
-	///step2
-	//float yx = 0;
-	//if (heading_2[0] != 0 && heading_2[1] != 0) {
-	//	yx = heading_2[1] / heading_2[0];
-	//	yx = atan(yx) / M_PI * 180;
-	//}
-	//auto step2M = Matrix4x4f::getZRotationMatrix(yx);
-
 	///step3
 	auto step3M = Matrix4x4f::getIdentityMatrix();// = Matrix4x4f::getXRotationMatrix(vec[0]);
 	step3M = Matrix4x4f::getYRotationMatrix(vec[1]) * step3M;
 	step3M = Matrix4x4f::getZRotationMatrix(vec[0]) * step3M;
-
-	///step4
-	//auto step4M = step2M;
-	//step4M[1][0] = step2M[1][0] * -1;
-	//step4M[0][1] = step2M[0][1] * -1;
 
 	///step5
 	auto step5M = step1M;
@@ -142,6 +140,7 @@ void Camera::rotate2(Vector3f vec)
 	position_ = rotation[0];
 	right_ = rotation[1];
 	up_ = rotation[2];
+	*/
 }
 
 void Camera::move(Vector3f vec)
