@@ -26,7 +26,6 @@ void Shape::translate(const Vector3f & vec)
 	transform();
 }
 
-
 Matrix4x4f Shape::getToOrignMatrix() const
 {
 	auto m = Matrix4x4f::getIdentityMatrix();
@@ -134,4 +133,14 @@ void Shape::transform()
 		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).getMatrix().subSet(3, matrices_[i].getColumns());
 		projections_[i] = k;
 	}
+}
+
+Vector3f& Shape::heading()
+{
+	return heading_;
+}
+
+void Shape::heading(Vector3f newHeading)
+{
+	heading_ = newHeading;
 }

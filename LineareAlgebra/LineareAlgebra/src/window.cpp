@@ -41,12 +41,12 @@ void Window::addToShapes(const Shape& shape)
 	shapes_.push_back(std::make_unique<Shape>(shape));
 }
 
-void Window::moveShapes(const Vector3f & moveVector)
+void Window::moveShapes()
 {
 	auto& shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
-		(*it)->translate(moveVector);
+		(*it)->translate(player.shape().heading());
 	}
 }
 
@@ -115,9 +115,11 @@ void Window::render()
 				case SDLK_e:
 					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
 					break;
+				case SDLK_y:
+					//player.moveForward();
 					break;
 				}
-				moveShapes(moveVector);
+				//moveShapes(moveVector);
 			}
 		}
 

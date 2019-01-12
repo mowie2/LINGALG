@@ -25,6 +25,8 @@ public:
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
 	void transform();
+	Vector3f& heading();
+	void heading(Vector3f newHeading);
 private:
 	Vector3f heading_;
 	Vector3f position_;
