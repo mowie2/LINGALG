@@ -1,5 +1,6 @@
 #include "../include/window.h"
 #include <stdio.h>
+#include "../include/Objects.h"
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 #include <iostream>
@@ -10,52 +11,11 @@ Window::Window(const int width, const int height)
 	this->SCREEN_HEIGHT = height;
 	Init();
 
-	Matrix3f square;
-	square.AddVector(
-		Vector3f(0, 0, 0),
-		Vector3f(1, 0, 0),
-		Vector3f(1, 1, 0),
-		Vector3f(0, 1, 0));
-	Matrix3f square2;
-	square2.AddVector(
-		Vector3f(1, 0, 0),
-		Vector3f(1, 0, 1),
-		Vector3f(1, 1, 1),
-		Vector3f(1, 1, 0));
-	Matrix3f square3;
-	square3.AddVector(
-		Vector3f(0, 0, 0),
-		Vector3f(0, 0, 1),
-		Vector3f(0, 1, 1),
-		Vector3f(0, 1, 0));
-	Matrix3f square4;
-	square4.AddVector(
-		Vector3f(0, 0, 0),
-		Vector3f(1, 0, 0),
-		Vector3f(1, 0, 1),
-		Vector3f(0, 0, 1));
-	Matrix3f square5;
-	square5.AddVector(
-		Vector3f(0, 1, 0),
-		Vector3f(1, 1, 0),
-		Vector3f(1, 1, 1),
-		Vector3f(0, 1, 1));
-	Matrix3f square6;
-	square6.AddVector(
-		Vector3f(0, 0, 1),
-		Vector3f(1, 0, 1),
-		Vector3f(1, 1, 1),
-		Vector3f(0, 1, 1));
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 3,3,3 }), Vector3f{ 3,3,3 }));
+	shapes_.at(0)->rotate(Vector3f{ 0,0,45 });
 
-	std::vector<Matrix3f> matrices;
-	matrices.push_back(square);
-	matrices.push_back(square2);
-	/*matrices.push_back(square3);
-	matrices.push_back(square4);
-	matrices.push_back(square5);
-	matrices.push_back(square6);*/
-	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	//addToShapes(s);
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
+	shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
 
 
@@ -85,12 +45,21 @@ void Window::addToShapes(const Shape& shape)
 	shapes_.push_back(std::make_unique<Shape>(shape));
 }
 
-void Window::moveShapes(const Vector3f & moveVector)
+void Window::moveShapes(const Vector3f& movevector)
 {
 	auto& shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
-		(*it)->translate(moveVector);
+		(*it)->translate(movevector);
+	}
+}
+
+void Window::rotateShapes(const Vector3f & rotateVector)
+{
+	auto& shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->rotateAround(player.shape(), rotateVector);
 	}
 }
 
@@ -142,21 +111,30 @@ void Window::render()
 				auto moveVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
-				case SDLK_DOWN:
-					moveVector[1] += .5;
+				case SDLK_s:
+					rotateShapes(Vector3f(0.f, 0.f, 0.5f));
+					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
 					break;
-				case SDLK_UP:
-					moveVector[1] -= .5;
+				case SDLK_w:
+					rotateShapes(Vector3f(0.f, 0.f, -0.5f));
 					break;
-				case SDLK_LEFT:
-					moveVector[0] += .5;
+				case SDLK_a:
+					rotateShapes(Vector3f(0.5f, 0.f, 0.f));
 					break;
-				case SDLK_RIGHT:
-					moveVector[0] -= .5;
+				case SDLK_d:
+					rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
 					break;
-
+				case SDLK_q:
+					rotateShapes(Vector3f(0.f, -0.5f, 0.f));
+					break;
+				case SDLK_e:
+					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
+					break;
+				case SDLK_y:
+					//player.moveForward();
+					break;
 				}
-				moveShapes(moveVector);
+				//moveShapes(moveVector);
 			}
 		}
 
