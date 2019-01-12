@@ -41,12 +41,12 @@ void Window::addToShapes(const Shape& shape)
 	shapes_.push_back(std::make_unique<Shape>(shape));
 }
 
-void Window::moveShapes()
+void Window::moveShapes(const Vector3f& movevector)
 {
 	auto& shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
-		(*it)->translate(player.shape().heading());
+		(*it)->translate(movevector);
 	}
 }
 
