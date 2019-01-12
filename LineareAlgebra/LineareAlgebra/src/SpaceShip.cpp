@@ -49,6 +49,7 @@ SpaceShip::SpaceShip()
 	matrices.push_back(square5);
 	matrices.push_back(square6);
 	shape_ = Shape(matrices, Vector3f(.5, .5, 0));
+	shape_.rotate(Vector3f(45, 45, 0));
 }
 
 

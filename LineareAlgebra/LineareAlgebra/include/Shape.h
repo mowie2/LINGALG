@@ -16,17 +16,20 @@ public:
 
 	void rotate(const Vector3f& vec);
 	void scale(const Vector3f& vec);
+	void transform();
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
 	
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
-	void transform();
 	std::vector<Matrix3f> getMatrix() const { return matrices_; }
+
+	void pulseSize(float dt, float speed, float size);
 private:
 	Vector3f position_;
 	std::vector<Matrix3f> matrices_;
 	std::vector<Matrix3f> projections_;
 	Matrix4x4f transformationMatrix_;
+	float sinValue = 0;
 };

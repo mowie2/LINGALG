@@ -83,6 +83,14 @@ void Shape::setPos(const Vector3f & pos)
 	position_ = pos;
 }
 
+void Shape::pulseSize(float dt, float speed, float size)
+{
+	sinValue += dt * speed;
+
+	Vector3f pulsVec = Vector3f(sin(sinValue) / (100 * size) +1, sin(sinValue) / (100 * size) + 1, sin(sinValue) / (100 * size) + 1);
+	this->scale(pulsVec);
+}
+
 void Shape::transform()
 {
 	for (auto i = 0;i < projections_.size();i++) {
