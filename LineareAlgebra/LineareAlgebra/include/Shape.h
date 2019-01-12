@@ -28,6 +28,8 @@ public:
 	std::vector<Matrix3f> getMatrix() const { return matrices_; }
 
 	void pulseSize(float dt, float speed, float size);
+	void moveForward(float dt);
+
 	Vector3f& heading();
 	void heading(Vector3f newHeading);
 private:

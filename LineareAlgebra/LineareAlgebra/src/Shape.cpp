@@ -135,6 +135,13 @@ void Shape::pulseSize(float dt, float speed, float size)
 	this->scale(pulsVec);
 }
 
+void Shape::moveForward(float dt)
+{
+	if (heading_[0] == 0 && heading_[1] == 0 && heading_[2] == 0)
+		return;
+	translate(Vector3f(heading_[0]*dt, heading_[1]*dt, heading_[2]*dt));
+}
+
 void Shape::transform()
 {
 	for (auto i = 0;i < projections_.size();i++) {

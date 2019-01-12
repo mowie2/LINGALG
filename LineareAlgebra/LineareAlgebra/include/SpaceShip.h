@@ -1,6 +1,7 @@
 #pragma once
 #include "Shape.h"
 #include "Vector.h"
+#include <memory>
 
 class SpaceShip
 {
@@ -17,5 +18,6 @@ public:
 
 	Shape& const shape() { return shape_; }
 	void moveForward();
+	/*std::unique_ptr<Shape> shoot();*/
 };
 
