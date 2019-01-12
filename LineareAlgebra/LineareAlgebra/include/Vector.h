@@ -34,6 +34,7 @@ public:
 	Vector operator+(const Vector &other) const;
 	Vector operator-(const Vector &other) const;
 	Vector operator*(float number) const;
+	Vector subset(unsigned int from, unsigned int to) const;
 private:
 	std::vector<float> vector_;
 };

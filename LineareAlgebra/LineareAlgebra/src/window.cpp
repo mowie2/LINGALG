@@ -5,7 +5,7 @@
 #include "../include/Physics.h"
 #include <iostream>
 
-Window::Window(const int width, const int height)
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 0, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -25,10 +25,40 @@ Window::~Window()
 
 void Window::Draw(Matrix matrix)
 {
+	//auto x = SCREEN_WIDTH / 2.f;
+	//auto y = SCREEN_HEIGHT / 2.f;
+	auto x = 1;
+	auto y = 1;
+
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
-		DrawVector(matrix[r], matrix[r + 1]);
+		if (matrix[r][3] > 0 && matrix[r+1][3] > 0) {
+			auto m1 = matrix[r];
+			auto v1 = matrix[r];
+
+			auto m2 = matrix[r + 1];
+			auto v2 = matrix[r + 1];
+
+			v1[0] = matrix[r][0] / matrix[r][3];
+			v1[1] = matrix[r][1] / matrix[r][3];
+
+			v2[0] = matrix[r + 1][0] / matrix[r + 1][3];
+			v2[1] = matrix[r + 1][1] / matrix[r + 1][3];
+			DrawVector(v1, v2);
+		}
 	}
-	DrawVector(matrix[0], matrix[matrix.getColumns() - 1]);
+	const auto last = matrix.getColumns() - 1;
+	if (matrix[last][3] > 0 && matrix[0][3] > 0) {
+		auto v1 = matrix[0];
+		auto v2 = matrix[last];
+
+		v1[0] = matrix[0][0] / matrix[0][3];
+		v1[1] = matrix[0][1] / matrix[0][3];
+
+		v2[0] = matrix[last][0] / matrix[last][3];
+		v2[1] = matrix[last][1] / matrix[last][3];
+		DrawVector(v1, v2);
+	}
+
 }
 
 void Window::Draw(const Shape& shape)
@@ -36,7 +66,20 @@ void Window::Draw(const Shape& shape)
 	auto matrices = shape.projections();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)
 	{
-		Draw((*it).getMatrix());
+		auto k1 = (*it).getTranslatable();
+		//auto k2 = camera_.getTranformationMatrix();
+		auto k2 = camera_.getTranslationMatrix();
+		auto k3 = camera_.getPerspectiveMatrix();
+
+		//auto k3 = Matrix4x4f::getIdentityMatrix() * k2;
+		//auto k = camera_.getTranformationMatrix() * (*it).getTranslatable();
+		//auto k = (*it).getMatrix().getTranslatable();
+		//const auto ll = Vector3f(1, 1, 1);
+		//shape.translate(ll.getVector());
+		auto k4 = k2 * k1;
+		auto k5 = k3 * k4;
+
+		Draw(k3*k2*k1);
 	}
 }
 
@@ -102,7 +145,8 @@ void Window::render()
 		dt = deltaTime.count() / 1000000.f;
 		lastTime = startTime;
 		Vector vector;
-		vector.addNumber(1.f, -1.f, -0.f);
+		vector.addNumber(0.0f, 1.0f, 0.0f);
+		shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
 		//player.shape().rotate(vector);
 
 		//Handle events on queue
@@ -118,20 +162,32 @@ void Window::render()
 			else if (e.type == SDL_KEYDOWN)
 			{
 				auto moveVector = Vector3f();
+				auto rotateVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
-				case SDLK_s:
-					rotateShapes(Vector3f(0.f, 0.f, 0.5f));
-					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
+				case SDLK_DOWN:
+					//moveVector[1] -= .5;
+					rotateVector[0] -= 5;
+					break;
+				case SDLK_UP:
+					//moveVector[1] += .5;
+					rotateVector[0] += 5;
+					break;
+				case SDLK_LEFT:
+					//moveVector[0] -= .5;
+					rotateVector[1] -= 5;
+					break;
+				case SDLK_RIGHT:
+					//moveVector[0] += .5;
+					rotateVector[1] += 5;
 					break;
 				case SDLK_w:
-					rotateShapes(Vector3f(0.f, 0.f, -0.5f));
+					//todo movevecto = heading * acceleration
+					moveVector[2] += .5;
 					break;
-				case SDLK_a:
-					rotateShapes(Vector3f(0.5f, 0.f, 0.f));
-					break;
-				case SDLK_d:
-					rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
+				case SDLK_s:
+					//todo movevecto = heading * acceleration
+					moveVector[2] -= .5;
 					break;
 				case SDLK_q:
 					rotateShapes(Vector3f(0.f, -0.5f, 0.f));
@@ -143,7 +199,10 @@ void Window::render()
 					//addToShapes(player.shoot());
 					break;
 				}
-				//moveShapes(moveVector);
+				camera_.move(moveVector);
+				camera_.rotate2(rotateVector);
+				
+				//player.shape().translate(moveVector);
 			}
 		}
 
@@ -238,8 +297,11 @@ void Window::DrawPoint(Vector point)
 	int tempXsize = 20;
 	int tempYsize = 10;
 
-	float scaleX = SCREEN_WIDTH / tempXsize;
-	float scaleY = SCREEN_HEIGHT / tempYsize;
+	//float scaleX = SCREEN_WIDTH / tempXsize;
+	//float scaleY = SCREEN_HEIGHT / tempYsize;
+
+	float scaleX = 1;
+	float scaleY = 1;
 
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
@@ -259,6 +321,9 @@ void Window::DrawVector(Vector origin, Vector direction)
 	float scaleX = SCREEN_WIDTH / tempXsize;
 	float scaleY = SCREEN_HEIGHT / tempYsize;
 
+	//float scaleX = 1;
+	//float scaleY = 1;
+
 	auto centerX = SCREEN_WIDTH / 2;
 	auto centerY = SCREEN_HEIGHT / 2;
 
@@ -269,4 +334,5 @@ void Window::DrawVector(Vector origin, Vector direction)
 	auto directionY = direction[1] * -1 * scaleY + centerY;
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawLine(gRenderer, originX, originY, directionX, directionY);
+	//SDL_RenderDrawLine(gRenderer, origin[0], origin[1], direction[0], direction[1]);
 }

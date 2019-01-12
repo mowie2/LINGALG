@@ -5,6 +5,7 @@
 #include "Shape.h"
 #include "SpaceShip.h"
 #include <memory>
+#include "Camera.h"
 #include <chrono>
 
 class Window
@@ -62,6 +63,8 @@ private:
 
 	//The image we will load and show on the screen
 	SDL_Surface* gHelloWorld = NULL;
+
+	Camera camera_;
 
 	std::chrono::time_point<std::chrono::system_clock> lastTime;
 	std::chrono::time_point<std::chrono::system_clock> startTime;

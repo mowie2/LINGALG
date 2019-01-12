@@ -39,7 +39,7 @@ Vector3f Physics::calculateOutProduct(Vector3f& vec1, Vector3f& vec2)
 {
 	Vector3f newVec = Vector3f();
 
-	newVec[0] = (vec1[1] * vec2[2] - vec1[2] * vec2[2]);
+	newVec[0] = (vec1[1] * vec2[2] - vec1[2] * vec2[1]);
 	newVec[1] = (vec1[2] * vec2[0] - vec1[0] * vec2[2]);
 	newVec[2] = (vec1[0] * vec2[1] - vec1[1] * vec2[0]);
 
