@@ -59,10 +59,12 @@ Matrix4x4f Matrix4x4f::getIdentityMatrix()
 	return Matrix4x4f(Matrix::getIdentityMatrix(4));
 }
 
+///todo unstable because sin(pi)!=0
 Matrix4x4f Matrix4x4f::getXRotationMatrix(float degrees)
 {
 	auto rad = degrees / 180;
 	auto m = getIdentityMatrix();
+
 	if (degrees != 90 && degrees != -90) {
 		m[1][1] = std::cosf(degrees / 180 * M_PI);
 		m[1][2] = std::sinf(degrees / 180 * M_PI);
