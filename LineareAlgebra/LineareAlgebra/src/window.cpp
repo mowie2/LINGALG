@@ -169,11 +169,11 @@ void Window::rotateShapes(const Vector3f & rotateVector)
 
 void Window::Update(float dt)
 {
-	//auto& shapes = shapes_;
-	//for (auto it = shapes_.begin(); it != shapes_.end(); it++)
-	//{
-	//	(*it)->moveForward(dt);
-	//}
+	auto& shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->moveForward(dt);
+	}
 }
 
 void Window::render()
@@ -267,7 +267,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
 
-		Update(dt);
+		//Update(dt);
 		Draw(player.shape());
 
 		auto& shapes = shapes_;

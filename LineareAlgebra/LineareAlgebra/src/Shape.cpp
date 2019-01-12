@@ -71,13 +71,13 @@ void Shape::rotateAround(Shape const & object, Vector3f const & vec)
 
 Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const & vec)
 {
-	auto heading_2 = Vector3f(1,1,1);
+	auto heading_2 = Vector3f(1.f, 1.f, 1.f);
 	//auto heading_2 = position_;
 	///step 1
 	float zx = 90;
 	if (heading_2[0] != 0) {
 		zx = heading_2[2] / heading_2[0];
-		zx = atanf(zx) / M_PI * 180;
+		zx = atan(zx) / M_PI * 180;
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
@@ -85,7 +85,7 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	float yx = 90;
 	if (heading_2[0] != 0) {
 		yx = heading_2[1] / heading_2[0];
-		yx = atanf(yx) / M_PI * 180;
+		yx = atan(yx) / M_PI * 180;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
@@ -103,6 +103,7 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	auto step5M = step1M;
 	step5M[2][0] = step1M[2][0] * -1;
 	step5M[0][2] = step1M[0][2] * -1;
+
 
 	auto returnMatrix = object.getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * object.getToOrignMatrix() * transformationMatrix_;
 	return returnMatrix;

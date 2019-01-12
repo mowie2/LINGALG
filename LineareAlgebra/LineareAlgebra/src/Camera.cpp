@@ -111,10 +111,7 @@ void Camera::rotate2(Vector3f vec)
 	float zx = 90;
 	if (heading_2[0] != 0) {
 		zx = heading_2[2] / heading_2[0];
-		if(zx<0)
-		{
-			int kk = 0;
-		}
+
 		std::cout << zx<<"\n";
 		zx = atanf(zx) / M_PI * 180;
 	}
