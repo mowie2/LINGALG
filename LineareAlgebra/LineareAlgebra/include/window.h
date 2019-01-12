@@ -23,6 +23,7 @@ public:
 	void Draw(const Shape& shape);
 
 	void addToShapes(const Shape& shape);
+	void rotateShapes(const Vector3f& rotateVector);
 	void moveShapes(const Vector3f& moveVector);
 
 	void Update(float dt);
