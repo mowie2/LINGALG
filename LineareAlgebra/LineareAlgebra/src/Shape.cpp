@@ -7,12 +7,13 @@ Shape::Shape()
 	position_ = Vector3f();
 }
 
-Shape::Shape(std::vector<Matrix3f> m,const Vector3f& position)
+Shape::Shape(std::vector<Matrix3f> m,const Vector3f& position, const Vector3f& heading)
 {
 	position_ = position;
 	matrices_ = m;
 	projections_ = m;
 	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
+	heading_ = heading;
 }
 
 void Shape::translate(const Vector3f & vec)
@@ -66,7 +67,7 @@ void Shape::scale(const Vector3f & vec)
 
 void Shape::rotateOrigin(const Vector3f & vec)
 {
-	auto heading_2 = Vector3f(1.f, 1.f, 1.f);
+	auto heading_2 = Vector3f(0,0,1);
 	//auto heading_2 = position_;
 	///step 1
 	float zx = 90;
@@ -82,12 +83,17 @@ void Shape::rotateOrigin(const Vector3f & vec)
 		yx = heading_2[1] / heading_2[0];
 		yx = atan(yx) / M_PI * 180;
 	}
+	if(heading_2[1] == 0)
+	{
+		yx = 0;
+	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
 	///step3
-	auto step3M = Matrix4x4f::getXRotationMatrix(vec[0]);
+	///everything is now on axis x;
+	auto step3M = Matrix4x4f::getZRotationMatrix(vec[0]);
 	step3M = Matrix4x4f::getYRotationMatrix(vec[1]) * step3M;
-	step3M = Matrix4x4f::getZRotationMatrix(vec[2]) * step3M;
+	step3M = Matrix4x4f::getXRotationMatrix(vec[2]) * step3M;
 
 	///step4
 	auto step4M = step2M;
@@ -99,74 +105,17 @@ void Shape::rotateOrigin(const Vector3f & vec)
 	step5M[2][0] = step1M[2][0] * -1;
 	step5M[0][2] = step1M[0][2] * -1;
 
-
-	transformationMatrix_ = getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * getToOrignMatrix() * transformationMatrix_;
+	auto rotation = (step5M * step4M * step3M *step2M *step1M);
+	transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
+	
+	auto h2t = heading_2.getVector();
+	h2t.addNumber(1);
+	//heading_ = (step3M.getMatrix()*h2t).subset(0,3);
+	//heading_.normalize();
 	transform();
 
 
 
-	/*
-	///step 1 rotateY
-	heading_ = Vector3f(0.f, 5.f, 0.f);
-	float tanR1 = atan(heading_[2] - heading_[0]);
-	auto test = Matrix4x4f::getYRotationMatrix(tanR1);
-
-	///alternative rotateY
-	float cos = heading_[0] / 
-		(sqrt(pow(heading_[0], 2) + 
-			pow(heading_[2], 2)));
-
-	float sin = heading_[2]/ 
-		(sqrt(pow(heading_[0] , 2) + 
-			pow(heading_[2], 2)));
-	Matrix4x4f step1Matrix;
-	step1Matrix[0][0] = cos;
-	step1Matrix[0][2] = sin;
-	step1Matrix[1][1] = 1;
-	step1Matrix[2][2] = cos;
-	step1Matrix[2][0] = -sin;
-	step1Matrix[3][3] = 1;
-
-	float cos2 = sqrt(pow(heading_[0], 2) + 
-		pow(heading_[2], 2)) / 
-		sqrt(pow(heading_[0], 2) + 
-			pow(heading_[1] , 2) + 
-			pow(heading_[2] , 2));
-	float sin2 = heading_[1]/ 
-		sqrt(pow(heading_[0], 2) + 
-			pow(heading_[1] , 2) + 
-			pow(heading_[2] , 2));
-	Matrix4x4f step2Matrix;
-	step2Matrix[0][0] = cos2;
-	step2Matrix[0][1] = sin2;
-	step2Matrix[1][0] = -sin2;
-	step2Matrix[1][1] = cos2;
-	step2Matrix[2][2] = 1;
-	step2Matrix[3][3] = 1;
-
-	Matrix4x4f step3Matrix = Matrix4x4f::getXRotationMatrix(10.f);
-
-	Matrix4x4f step4Matrix;
-	step4Matrix[0][0] = cos2;
-	step4Matrix[0][1] = -sin2;
-	step4Matrix[1][0] = sin2;
-	step4Matrix[1][1] = cos2;
-	step4Matrix[2][2] = 1;
-	step4Matrix[3][3] = 1;
-
-
-	Matrix4x4f step5Matrix;
-	step5Matrix[0][0] = cos;
-	step5Matrix[0][2] = -sin;
-	step5Matrix[1][1] = 1;
-	step5Matrix[2][2] = cos;
-	step5Matrix[2][0] = sin;
-	step5Matrix[3][3] = 1;
-
-	Matrix4x4f total = (step5Matrix * step4Matrix*step3Matrix*step2Matrix*step1Matrix)*transformationMatrix_;
-	//auto pause = 0;
-	transformationMatrix_ = total;
-	transform();*/
 }
 
 std::vector<Matrix3f>& Shape::projections()

@@ -3,6 +3,7 @@
 #include <SDL_stdinc.h>
 #include "../include/Matrix3f.h"
 #include <iostream>
+#include <ratio>
 
 Camera::Camera(Vector3f position, Vector3f lookat, float nearPlane, float farPlane, float fovy)
 {
@@ -111,12 +112,8 @@ void Camera::rotate2(Vector3f vec)
 	float zx = 90;
 	if (heading_2[0] != 0) {
 		zx = heading_2[2] / heading_2[0];
-		if(zx<0)
-		{
-			int kk = 0;
-		}
-		std::cout << zx<<"\n";
 		zx = atanf(zx) / M_PI * 180;
+		std::cout << heading_2[2] << " " << heading_2[0] << " " << zx << "\n";
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
@@ -140,8 +137,6 @@ void Camera::rotate2(Vector3f vec)
 	returnMatrix[3][1] = lookat_[1];
 	returnMatrix[3][2] = lookat_[2];
 
-
-//	auto rotation = step5M * step3M *step1M;
 	auto rotation = step5M * step3M *step1M;
 
 	for(int i = 0 ; i<4;i++)
@@ -154,8 +149,8 @@ void Camera::rotate2(Vector3f vec)
 	}
 	std::cout << '\n';
 
-	auto k = rotation.getMatrix()*m[0];
-	position_ = ((returnMatrix * rotation * lookatToOrigin).getMatrix()*m[0]).subset(0, 3);//((returnMatrix *rotation*lookatToOrigin).getMatrix()*m[0]).subset(0,3);
+	position_ = ((returnMatrix * rotation * lookatToOrigin).getMatrix()*m[0]).subset(0, 3);
+	std::cout << position_[2] << " " << position_[0] << '\n';
 	right_ = (rotation.getMatrix()*m[1]).subset(0, 3);
 	up_ = (rotation.getMatrix()*m[2]).subset(0, 3);
 

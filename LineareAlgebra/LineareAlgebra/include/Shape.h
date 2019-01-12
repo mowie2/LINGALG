@@ -7,7 +7,7 @@ class Shape
 {
 public:
 	Shape();
-	Shape(std::vector<Matrix3f> m,const Vector3f& position);
+	Shape(std::vector<Matrix3f> m,const Vector3f& position,const Vector3f& heading);
 	~Shape() = default;
 	void translate(const Vector3f& vec);
 	

@@ -53,7 +53,7 @@ Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 
 	matrices.push_back(square4);
 	matrices.push_back(square5);
 	matrices.push_back(square6);
-	auto s = Shape(matrices, Vector3f(.5, .5, .5));
+	auto s = Shape(matrices, Vector3f(.5, .5, .5),Vector3f(1,1,1));
 	s.translate(Vector3f (-.5, -.5, -.5));
 	s.rotate(Vector3f(45, 0, 0));
 	s.rotate(Vector3f(0, 45, 0));
@@ -81,10 +81,10 @@ void Window::Draw(Matrix matrix)
 
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
 		if (matrix[r][3] > 0 && matrix[r+1][3] > 0) {
-			auto m1 = matrix[r];
+			//auto m1 = matrix[r];
 			auto v1 = matrix[r];
 
-			auto m2 = matrix[r + 1];
+			//auto m2 = matrix[r + 1];
 			auto v2 = matrix[r + 1];
 
 			v1[0] = matrix[r][0] / matrix[r][3];
@@ -165,7 +165,7 @@ void Window::render()
 	{
 		Vector vector;
 		vector.addNumber(0.0f, 1.0f, 0.0f);
-		shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
+		shapes_[0]->rotateOrigin(Vector3f(0, 0, 0));
 		//player.shape().rotate(vector);
 		//player.shape().rotateOrigin(vector);
 		//camera_.rotate(Vector3f(0, 1, 0));
@@ -183,23 +183,28 @@ void Window::render()
 			{
 				auto moveVector = Vector3f();
 				auto rotateVector = Vector3f();
+				auto playerRotate = Vector3f();
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_DOWN:
 					//moveVector[1] -= .5;
 					rotateVector[0] -= 5;
+					playerRotate[0] += 5;
 					break;
 				case SDLK_UP:
 					//moveVector[1] += .5;
 					rotateVector[0] += 5;
+					playerRotate[0] -= 5;
 					break;
 				case SDLK_LEFT:
 					//moveVector[0] -= .5;
 					rotateVector[1] -= 5;
+					playerRotate[1] += 5;
 					break;
 				case SDLK_RIGHT:
 					//moveVector[0] += .5;
 					rotateVector[1] += 5;
+					playerRotate[1] -= 5;
 					break;
 				case SDLK_w:
 					//todo movevecto = heading * acceleration
@@ -211,7 +216,11 @@ void Window::render()
 					break;
 				}
 				camera_.move(moveVector);
-				camera_.rotate2(rotateVector);
+				//camera_.rotate2(rotateVector);
+				
+				//shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
+				player.shape().rotateOrigin(rotateVector);
+				//player.shape().rotateOrigin(Vector3f(0,90,0));
 				
 				//player.shape().translate(moveVector);
 			}
