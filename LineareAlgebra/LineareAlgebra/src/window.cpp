@@ -102,23 +102,19 @@ void Window::render()
 					break;
 				case SDLK_w:
 					rotateShapes(Vector3f(0.f, 0.f, -0.5f));
-					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, -0.5f));
 					break;
 				case SDLK_a:
 					rotateShapes(Vector3f(0.5f, 0.f, 0.f));
-					//player.shape().rotateOrigin(Vector3f(0.5f, 0.f, 0.f));
 					break;
 				case SDLK_d:
 					rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
-					//player.shape().rotateOrigin(Vector3f(-0.5f, 0.f, 0.f));
 					break;
 				case SDLK_q:
 					rotateShapes(Vector3f(0.f, -0.5f, 0.f));
-					//player.shape().rotateOrigin(Vector3f(0.f, -0.5f, 0.f));
 					break;
 				case SDLK_e:
 					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
-					//player.shape().rotateOrigin(Vector3f(0.f, 0.5f, 0.f));
+					break;
 					break;
 				}
 				moveShapes(moveVector);
