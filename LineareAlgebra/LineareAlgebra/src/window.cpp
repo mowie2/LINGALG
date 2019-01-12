@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
+#include <iostream>
 
 Window::Window(const int width, const int height)
 {
@@ -54,8 +55,9 @@ Window::Window(const int width, const int height)
 	matrices.push_back(square5);
 	matrices.push_back(square6);*/
 	auto s = Shape(matrices, Vector3f(.5, .5, 0));
-	addToShapes(s);
+	//addToShapes(s);
 }
+
 
 Window::~Window()
 {
@@ -92,9 +94,15 @@ void Window::moveShapes(const Vector3f & moveVector)
 	}
 }
 
+void Window::Update(float dt)
+{
+	
+}
+
 void Window::render()
 {//Main loop flag
 	bool quit = false;
+	lastTime = std::chrono::system_clock::now();
 
 	//Event handler
 	SDL_Event e;
@@ -109,9 +117,15 @@ void Window::render()
 			//While application is running
 	while (!quit)
 	{
+		startTime = std::chrono::system_clock::now();
+		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(startTime - lastTime);
+
+		//deltaTime /= 10000.f;
+		dt = deltaTime.count() / 1000000.f;
+		lastTime = startTime;
 		Vector vector;
 		vector.addNumber(1.f, -1.f, -0.f);
-		player.shape().rotate(vector);
+		//player.shape().rotate(vector);
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -151,6 +165,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		DrawAxis();
 
+		Update(dt);
 		Draw(player.shape());
 
 		auto& shapes = shapes_;
