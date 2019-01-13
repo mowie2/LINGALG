@@ -11,17 +11,11 @@ float Physics::calculateAngle(Vector3f& vec1, Vector3f& vec2)
 		return -1;
 	}
 	const float x = vec1 * vec2;
-	float y =
-		((vec1[0] * vec1[0]) +
-		(vec1[1] * vec1[1]) +
-			(vec1[2] * vec1[2]))*
+	float y = sqrt((vec1[0] * vec1[0]) + (vec1[1] * vec1[1]) + (vec1[2] * vec1[2]));
 
-
-			((vec2[0] * vec2[0]) +
-		(vec2[1] * vec2[1]) +
-				(vec2[2] * vec2[2]))
-		;
-	return convertToDegrees(acos((x / sqrt(y))));
+	float z = sqrt((vec2[0] * vec2[0]) + (vec2[1] * vec2[1]) + (vec2[2] * vec2[2]));
+	auto returnvalue = acos((x / (z*y)));
+	return convertToDegrees(returnvalue);
 
 }
 
@@ -98,7 +92,6 @@ bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 			{
 				maxz = vec[2];
 			}
-
 		}
 	}
 	for (auto& p2 : shape2.getMatrix())
@@ -127,9 +120,75 @@ bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 		return  true;
 	}
 
-	if(calculateIntersection(shape2, shape1))
+	float minx2 = shape2.getMatrix()[0][0][0];
+	float maxx2 = shape2.getMatrix()[0][0][0];
+
+	float miny2 = shape2.getMatrix()[0][0][1];
+	float maxy2 = shape2.getMatrix()[0][0][1];
+
+	float minz2 = shape2.getMatrix()[0][0][2];
+	float maxz2 = shape2.getMatrix()[0][0][2];
+
+	bool x2 = false;
+	bool y2 = false;
+	bool z2 = false;
+	for (auto& p1 : shape2.getMatrix())
 	{
-		return true;
+		for (unsigned int i = 0; i < p1.getColumns(); i++)
+		{
+			auto vec = p1[i];
+			if (vec[0] < minx2)
+			{
+				minx2 = vec[0];
+			}
+			if (vec[0] > maxx2)
+			{
+				maxx2 = vec[0];
+			}
+
+			if (vec[1] < miny2)
+			{
+				miny2 = vec[1];
+			}
+			if (vec[1] > maxy2)
+			{
+				maxy2 = vec[1];
+			}
+
+			if (vec[2] < minz2)
+			{
+				minz2 = vec[2];
+			}
+			if (vec[2] > maxz2)
+			{
+				maxz2 = vec[2];
+			}
+		}
 	}
+	for (auto& p2 : shape1.getMatrix())
+	{
+		for (unsigned int i = 0; i < p2.getColumns(); i++)
+		{
+			auto vec = p2[i];
+
+			if (vec[0] >= minx2 && vec[0] <= maxx2)
+			{
+				x2 = true;
+			}
+			if (vec[1] >= miny2 && vec[1] <= maxy2)
+			{
+				y2 = true;
+			}
+			if (vec[2] >= minz2 && vec[2] <= maxz2)
+			{
+				z2 = true;
+			}
+		}
+	}
+	if (x2 && y2 && z2)
+	{
+		return  true;
+	}
+
 	return false;
 }

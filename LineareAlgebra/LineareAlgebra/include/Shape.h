@@ -11,7 +11,7 @@ public:
 	Shape(std::vector<Matrix3f> m,const Vector3f& position,const Vector3f& heading);
 	~Shape() = default;
 	void translate(const Vector3f& vec);
-	
+
 	Matrix4x4f getToOrignMatrix() const;
 	Matrix4x4f getToPositionMatrix() const;
 	Vector3f position() const { return position_; }
@@ -34,6 +34,7 @@ public:
 
 	Vector3f& heading();
 	void heading(Vector3f newHeading);
+	Vector3f getPosition() const { return position_; }
 private:
 	Vector3f heading_;
 	Vector3f position_;
