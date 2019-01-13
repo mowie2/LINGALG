@@ -111,12 +111,11 @@ void Camera::rotate2(Vector3f vec)
 	Matrix3f m2;
 	m2.AddVector(position_, right_, up_);
 	auto m = m2.getTranslatable();
-	///step 1
+	
 	float zx = 90;
-	if (heading_2[0] != 0) {
+	if (x != 0) {
 		zx = z / x;
-		zx = atanf(zx) / M_PI * 180;
-		//::cout << heading_2[2] << " " << heading_2[0] << " " << zx << "\n";
+		zx = atan(zx) / M_PI * 180;
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
@@ -125,15 +124,19 @@ void Camera::rotate2(Vector3f vec)
 	auto a = std::sqrt(x * x + z * z);
 	auto b = std::sqrt(x * x + y * y + z * z);
 	if (b != 0) {
-		yx = -1*a / b;
+		yx = -1 * a / b;
 		yx = acos(yx) / M_PI * 180;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
 	///step3
-	auto step3M = Matrix4x4f::getXRotationMatrix(vec[2]);
+	///everything is now on axis x;
+	//auto mX = Matrix4x4f::getXRotationMatrix(vec[0]);
+	//auto mY = Matrix4x4f::getYRotationMatrix(vec[1]);
+	//auto mZ = Matrix4x4f::getZRotationMatrix(vec[2]);
+	auto step3M = Matrix4x4f::getZRotationMatrix(vec[0]);
 	step3M = Matrix4x4f::getYRotationMatrix(vec[1]) * step3M;
-	step3M = Matrix4x4f::getZRotationMatrix(vec[0]) * step3M;
+	step3M = Matrix4x4f::getXRotationMatrix(vec[2]) * step3M;
 
 	///step4
 	auto step4M = step2M;

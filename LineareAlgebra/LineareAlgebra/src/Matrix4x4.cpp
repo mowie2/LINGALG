@@ -62,7 +62,6 @@ Matrix4x4f Matrix4x4f::getIdentityMatrix()
 ///todo unstable because sin(pi)!=0
 Matrix4x4f Matrix4x4f::getXRotationMatrix(float degrees)
 {
-	auto rad = degrees / 180;
 	auto m = getIdentityMatrix();
 
 	if (degrees != 90 && degrees != -90) {

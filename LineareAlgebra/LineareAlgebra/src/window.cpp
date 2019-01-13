@@ -5,16 +5,17 @@
 #include "../include/Physics.h"
 #include <iostream>
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 0, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f)),player(Vector3f(0,0,1))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 3, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f)),player(Vector3f(0,0,1))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
 	Init();
 
 	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 }));
-	//shapes_.at(0)->rotate(Vector3f{ 0,0,0 });
-	shapes_[0]->translate(Vector3f(0, 10, 0));
-
+	//shapes_.at(0)->rotate(Vector3f{ 0,1,0 });
+	shapes_[0]->translate(Vector3f(0, 1, 0));
+	//shapes_[0]->translate(Vector3f(0, 0, 0));
+	//shapes_[0]->scale(Vector3f(2,2,2));
 	//shapes_.push_back(std::make_unique<Shape>(Objects::cuboid(Vector3f{ -2,0,0 }), Vector3f{ -2,0,0 }));
 	//shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
@@ -137,8 +138,9 @@ void Window::render()
 
 	//While application is running
 			//While application is running
-	//player.shape().rotateOrigin(Vector3f(0, 90, 0));
-	//player.shape().rotateOrigin(Vector3f(0, 1, 0));
+	//player.shape().scale(Vector3f(2, 2, 2));
+	//player.shape().rotateOrigin(Vector3f(0, 45, 0));
+	//player.shape().rotateOrigin(Vector3f(0, 0, 0));
 	while (!quit)
 	{
 		startTime = std::chrono::system_clock::now();
@@ -149,9 +151,9 @@ void Window::render()
 		lastTime = startTime;
 		Vector vector;
 		vector.addNumber(0.f, -1.f, -0.f);
-		//player.shape().rotateOrigin(Vector3f(0, 1, 0));
+		//player.shape().rotate(Vector3f(0, 1, 0));
 		//player.shape().rotateOrigin(vector);
-		shapes_[0]->rotateOrigin(Vector3f(0, 1, 0));
+		//shapes_[0]->rotateOrigin(Vector3f(0, 1, 0));
 		
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -165,66 +167,72 @@ void Window::render()
 			}
 			else if (e.type == SDL_KEYDOWN)
 			{
+				float barrel = 0;
+				float updown = 0;
 				float accel = 0;
 				auto move = Matrix3f::getIdentityMatrix();
 				auto moveVector = Vector3f();
 				auto rotateVector = Vector3f();
-				auto playerVector = Vector3f();
+				auto turnVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_s:
 					//rotateShapes(Vector3f(0.f, 0.f, 0.5f));
-					
+					updown -= .5;
 					break;
 					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
 				case SDLK_DOWN:
-					playerVector[0] += 5;
-					rotateVector[0] -= 5;
-					break;
-				case SDLK_w:
-					//rotateShapes(Vector3f(0.f, 0.f, -0.5f));
-					break;
-				case SDLK_UP:
-					playerVector[0] -= 5;
+					//playerVector[0] += 5;
 					rotateVector[0] += 5;
 					break;
+				case SDLK_w:
+					updown += .5;
+					break;
+				case SDLK_UP:
+					//playerVector[0] -= 5;
+					rotateVector[0] -= 5;
+					break;
 				case SDLK_a:
+					turnVector[1] -= 5;
 					//rotateShapes(Vector3f(0.5f, 0.f, 0.f));
 					break;
 				case SDLK_LEFT:
-					playerVector[1] -= 5;
+					//playerVector[1] -= 5;
 					rotateVector[1] += 5;
 					break;
 				case SDLK_d:
+					turnVector[1] += 5;
 					//rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
 					break;
 				case SDLK_RIGHT:
-					playerVector[1] += 5;
+					//playerVector[1] += 5;
 					rotateVector[1] -= 5;
 					break;
 				case SDLK_q:
+					barrel -= 5;
 					//rotateShapes(Vector3f(0.f, -0.5f, 0.f));
 					break;
 				case SDLK_e:
+					barrel += 5;
 					//rotateShapes(Vector3f(0.f, 0.5f, 0.f));
 					break;
 				case SDLK_y:
 					addToShapes(player.shoot());
 					break;
-				case SDLK_i:
-					//todo movevecto = heading * acceleration
+				case SDLK_SPACE:
 					//move = 1;
 					accel = 1;
 					break;
-				case SDLK_k:
-					//todo movevecto = heading * acceleration
+				case SDLK_c:
 					accel = -1;
 					break;
 				}
 				moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
+				moveVector[1] += updown;
 				camera_.move(moveVector);
-				//player.shape().translate(moveVector);
-				player.shape().rotateOrigin(playerVector);
+				player.shape().translate(moveVector);
+				player.shape().rotate(turnVector);
+				player.shape().barrelrol(barrel);
 				camera_.rotate2(rotateVector);
 				
 				//shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
@@ -241,7 +249,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		//DrawAxis();
 
-		Update(dt);
+		//Update(dt);
 		Draw(player.shape());
 		auto k = player.shape().position();
 		auto kk = player.shape().heading();

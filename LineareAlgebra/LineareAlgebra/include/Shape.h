@@ -17,6 +17,7 @@ public:
 	Vector3f position() const { return position_; }
 	void rotate(const Vector3f& vec);
 	void rotateAround(Shape const & object, Vector3f const & vec);
+	void barrelrol(float degrees);
 	void scale(const Vector3f& vec);
 	void rotateOrigin(const Vector3f& vec);
 	void transform();
