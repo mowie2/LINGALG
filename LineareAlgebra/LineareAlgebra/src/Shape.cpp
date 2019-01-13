@@ -2,6 +2,8 @@
 
 #include <cmath>
 #include <SDL_stdinc.h>
+#include <iostream>
+
 Shape::Shape()
 {
 	position_ = Vector3f();
@@ -65,10 +67,10 @@ void Shape::scale(const Vector3f & vec)
 	transform();
 }
 
-void Shape::rotateOrigin(const Vector3f & vec)
+void Shape::rotateOrigin(const Vector3f & vec, const Vector3f& point)
 {
-	auto heading_2 = Vector3f(0,0,1);
-	//auto heading_2 = position_;
+	//auto heading_2 = Vector3f(0,0,1);
+	auto heading_2 = point;
 	///step 1
 	float zx = 90;
 	if (heading_2[0] != 0) {
@@ -107,11 +109,18 @@ void Shape::rotateOrigin(const Vector3f & vec)
 
 	auto rotation = (step5M * step4M * step3M *step2M *step1M);
 	transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
-	
-	auto h2t = heading_2.getVector();
-	h2t.addNumber(1);
-	//heading_ = (step3M.getMatrix()*h2t).subset(0,3);
-	//heading_.normalize();
+	/*
+	for (int i = 0; i < 4;i++)
+	{
+		for (int j = 0; j < 4;j++)
+		{
+			std::cout << rotation[j][i] << "           ";
+		}
+		std::cout << '\n';
+	}
+	std::cout << '\n';
+	*/
+
 	transform();
 
 

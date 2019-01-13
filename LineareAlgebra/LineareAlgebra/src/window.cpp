@@ -3,7 +3,7 @@
 #include "../include/CollisionDetector.h"
 #include "../include/Physics.h"
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 0, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 0, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f)),player(Vector3f(0,0,1))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
@@ -53,14 +53,14 @@ Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 
 	matrices.push_back(square4);
 	matrices.push_back(square5);
 	matrices.push_back(square6);
-	auto s = Shape(matrices, Vector3f(.5, .5, .5),Vector3f(1,1,1));
+	auto s = Shape(matrices, Vector3f(.5, .5, .5),Vector3f(0,0,1));
 	s.translate(Vector3f (-.5, -.5, -.5));
-	s.rotate(Vector3f(45, 0, 0));
-	s.rotate(Vector3f(0, 45, 0));
-	s.translate(Vector3f(1, 1, 1));
-	//s.translate(Vector3f(15,0,0));
+	//s.rotate(Vector3f(45, 0, 0));
+	//s.rotate(Vector3f(0, 45, 0));
+	s.translate(Vector3f(0, 0, 2));
+	s.translate(Vector3f(0,0,0));
 	addToShapes(s);
-
+	
 	//Vector3f ves = Vector3f(1, 1, 1);
 	//Vector3f veb = Vector3f(1, 1, 1);
 
@@ -165,7 +165,7 @@ void Window::render()
 	{
 		Vector vector;
 		vector.addNumber(0.0f, 1.0f, 0.0f);
-		shapes_[0]->rotateOrigin(Vector3f(0, 0, 0));
+		//shapes_[0]->rotateOrigin(Vector3f(0, 0, 1),Vector3f(1,0,0));
 		//player.shape().rotate(vector);
 		//player.shape().rotateOrigin(vector);
 		//camera_.rotate(Vector3f(0, 1, 0));
@@ -181,6 +181,8 @@ void Window::render()
 			}
 			else if (e.type == SDL_KEYDOWN)
 			{
+				float accel = 0;
+				auto move = Matrix3f::getIdentityMatrix();
 				auto moveVector = Vector3f();
 				auto rotateVector = Vector3f();
 				auto playerRotate = Vector3f();
@@ -208,18 +210,22 @@ void Window::render()
 					break;
 				case SDLK_w:
 					//todo movevecto = heading * acceleration
-					moveVector[2] += .5;
+					//move = 1;
+					accel = 1;
 					break;
 				case SDLK_s:
 					//todo movevecto = heading * acceleration
-					moveVector[2] -= .5;
+					accel = -1;
 					break;
 				}
+				moveVector = move.getMatrix() * accel * player.heading().getVector();
 				camera_.move(moveVector);
-				//camera_.rotate2(rotateVector);
+				player.shape().translate(moveVector);
+				player.rotate(rotateVector);
+				camera_.rotate2(rotateVector);
 				
 				//shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
-				player.shape().rotateOrigin(rotateVector);
+				
 				//player.shape().rotateOrigin(Vector3f(0,90,0));
 				
 				//player.shape().translate(moveVector);

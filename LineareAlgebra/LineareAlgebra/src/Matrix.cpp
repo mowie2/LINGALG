@@ -82,7 +82,7 @@ Vector Matrix::operator*(const Vector & other) const
 		Vector v2;
 		for(int c = 0;c < getColumns();c++)
 		{
-			v2.addNumber(matrix[r][c]);
+			v2.addNumber(matrix[c][r]);
 		}
 		v.addNumber(v2 * other);
 	}

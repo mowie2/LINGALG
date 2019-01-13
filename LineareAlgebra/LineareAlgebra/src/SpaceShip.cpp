@@ -2,7 +2,7 @@
 
 
 
-SpaceShip::SpaceShip()
+SpaceShip::SpaceShip(const Vector3f& heading) : heading_(heading)
 {
 	Matrix3f square;
 	square.AddVector(
@@ -50,6 +50,7 @@ SpaceShip::SpaceShip()
 	matrices.push_back(square6);
 	shape_ = Shape(matrices, Vector3f(.5, .5, .5), Vector3f(0, 0, 1));
 	shape_.translate(Vector3f(-.5, -.5, -.5));
+	
 	//shape_.rotate(Vector3f(45, 0, 0));
 	//shape_.rotate(Vector3f(0, 45, 0));
 	//shape_.translate(Vector3f(1, 1, 1));
@@ -59,3 +60,12 @@ SpaceShip::SpaceShip()
 
 SpaceShip::~SpaceShip()
 = default;
+
+void SpaceShip::rotate(const Vector3f & vec)
+{
+	shape_.rotateOrigin(vec, heading_);
+	auto h2t = heading_.getVector();
+	h2t.addNumber(1);
+	heading_ = ((Matrix4x4f::getXRotationMatrix(vec[0])*Matrix4x4f::getYRotationMatrix(vec[1])*Matrix4x4f::getZRotationMatrix(vec[2])).getMatrix()*h2t).subset(0,3);
+	heading_.normalize();
+}

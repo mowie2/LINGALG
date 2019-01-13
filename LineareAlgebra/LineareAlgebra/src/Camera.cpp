@@ -139,17 +139,9 @@ void Camera::rotate2(Vector3f vec)
 
 	auto rotation = step5M * step3M *step1M;
 
-	for(int i = 0 ; i<4;i++)
-	{
-		for (int j = 0; j < 4;j++)
-		{
-			std::cout << step1M[j][i] << "           ";
-		}
-		std::cout << '\n';
-	}
-	std::cout << '\n';
 
 	position_ = ((returnMatrix * rotation * lookatToOrigin).getMatrix()*m[0]).subset(0, 3);
+	std::cout << lookat_[2] << " " << lookat_[0] << '\n';
 	std::cout << position_[2] << " " << position_[0] << '\n';
 	right_ = (rotation.getMatrix()*m[1]).subset(0, 3);
 	up_ = (rotation.getMatrix()*m[2]).subset(0, 3);

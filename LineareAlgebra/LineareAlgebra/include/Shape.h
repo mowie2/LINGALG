@@ -13,10 +13,10 @@ public:
 	
 	Matrix4x4f getToOrignMatrix() const;
 	Matrix4x4f getToPositionMatrix() const;
-
+	Vector3f position() const { return position_; }
 	void rotate(const Vector3f& vec);
 	void scale(const Vector3f& vec);
-	void rotateOrigin(const Vector3f& vec);
+	void rotateOrigin(const Vector3f& vec,const Vector3f& point);
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
