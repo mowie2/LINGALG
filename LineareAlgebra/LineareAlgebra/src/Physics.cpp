@@ -11,17 +11,11 @@ float Physics::calculateAngle(Vector3f& vec1, Vector3f& vec2)
 		return -1;
 	}
 	const float x = vec1 * vec2;
-	float y =
-		((vec1[0] * vec1[0]) +
-		(vec1[1] * vec1[1]) +
-			(vec1[2] * vec1[2]))*
+	float y = sqrt((vec1[0] * vec1[0]) + (vec1[1] * vec1[1]) + (vec1[2] * vec1[2]));
 
-
-			((vec2[0] * vec2[0]) +
-		(vec2[1] * vec2[1]) +
-				(vec2[2] * vec2[2]))
-		;
-	return convertToDegrees(acos((x / sqrt(y))));
+	float z = sqrt((vec2[0] * vec2[0]) + (vec2[1] * vec2[1]) + (vec2[2] * vec2[2]));
+	auto returnvalue = acos((x / (z*y)));
+	return convertToDegrees(returnvalue);
 
 }
 
@@ -39,7 +33,7 @@ Vector3f Physics::calculateOutProduct(Vector3f& vec1, Vector3f& vec2)
 {
 	Vector3f newVec = Vector3f();
 
-	newVec[0] = (vec1[1] * vec2[2] - vec1[2] * vec2[2]);
+	newVec[0] = (vec1[1] * vec2[2] - vec1[2] * vec2[1]);
 	newVec[1] = (vec1[2] * vec2[0] - vec1[0] * vec2[2]);
 	newVec[2] = (vec1[0] * vec2[1] - vec1[1] * vec2[0]);
 
