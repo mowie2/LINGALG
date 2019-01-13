@@ -185,28 +185,23 @@ void Window::render()
 				auto move = Matrix3f::getIdentityMatrix();
 				auto moveVector = Vector3f();
 				auto rotateVector = Vector3f();
-				auto playerRotate = Vector3f();
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_DOWN:
 					//moveVector[1] -= .5;
 					rotateVector[0] -= 5;
-					playerRotate[0] += 5;
 					break;
 				case SDLK_UP:
 					//moveVector[1] += .5;
 					rotateVector[0] += 5;
-					playerRotate[0] -= 5;
 					break;
 				case SDLK_LEFT:
 					//moveVector[0] -= .5;
 					rotateVector[1] -= 5;
-					playerRotate[1] += 5;
 					break;
 				case SDLK_RIGHT:
 					//moveVector[0] += .5;
 					rotateVector[1] += 5;
-					playerRotate[1] -= 5;
 					break;
 				case SDLK_w:
 					//todo movevecto = heading * acceleration
@@ -218,7 +213,7 @@ void Window::render()
 					accel = -1;
 					break;
 				}
-				moveVector = move.getMatrix() * accel * player.heading().getVector();
+				moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
 				camera_.move(moveVector);
 				player.shape().translate(moveVector);
 				player.rotate(rotateVector);

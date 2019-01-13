@@ -70,7 +70,7 @@ void Shape::scale(const Vector3f & vec)
 void Shape::rotateOrigin(const Vector3f & vec, const Vector3f& point)
 {
 	//auto heading_2 = Vector3f(0,0,1);
-	auto heading_2 = point;
+	auto heading_2 = heading_;
 	///step 1
 	float zx = 90;
 	if (heading_2[0] != 0) {
@@ -109,6 +109,11 @@ void Shape::rotateOrigin(const Vector3f & vec, const Vector3f& point)
 
 	auto rotation = (step5M * step4M * step3M *step2M *step1M);
 	transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
+	auto ht2 = heading_.getVector();
+	ht2.addNumber(1);
+	std::cout << "LOOK AT ME\n";
+	heading_ = (rotation.getMatrix() * ht2).subset(0, 3);
+	std::cout << heading_[0] << " " << heading_[1] << " " << heading_[2] << '\n';
 	/*
 	for (int i = 0; i < 4;i++)
 	{

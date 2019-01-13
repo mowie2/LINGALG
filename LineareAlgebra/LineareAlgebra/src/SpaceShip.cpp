@@ -64,8 +64,8 @@ SpaceShip::~SpaceShip()
 void SpaceShip::rotate(const Vector3f & vec)
 {
 	shape_.rotateOrigin(vec, heading_);
-	auto h2t = heading_.getVector();
-	h2t.addNumber(1);
-	heading_ = ((Matrix4x4f::getXRotationMatrix(vec[0])*Matrix4x4f::getYRotationMatrix(vec[1])*Matrix4x4f::getZRotationMatrix(vec[2])).getMatrix()*h2t).subset(0,3);
-	heading_.normalize();
+	//auto h2t = heading_.getVector();
+	//h2t.addNumber(1);
+	//heading_ = ((Matrix4x4f::getXRotationMatrix(vec[0])*Matrix4x4f::getYRotationMatrix(vec[1])*Matrix4x4f::getZRotationMatrix(vec[2])).getMatrix()*h2t).subset(0,3);
+	//heading_.normalize();
 }

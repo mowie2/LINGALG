@@ -20,7 +20,8 @@ public:
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
-	
+	Vector3f heading() const { return heading_; }
+
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
 	void transform();
