@@ -74,6 +74,21 @@ Matrix Matrix::operator*(float scalar) const
 	return m;
 }
 
+Vector Matrix::operator*(const Vector & other) const
+{
+	Vector v;
+	for(int r = 0;r<getRows();r++)
+	{
+		Vector v2;
+		for(int c = 0;c < getColumns();c++)
+		{
+			v2.addNumber(matrix[c][r]);
+		}
+		v.addNumber(v2 * other);
+	}
+	return v;
+}
+
 Matrix Matrix::subSet(unsigned int rows, unsigned int columns) const
 {
 	if (rows > 0 && rows <= getRows() && columns > 0 && columns <= getColumns()) {
