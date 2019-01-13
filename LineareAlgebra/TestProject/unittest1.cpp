@@ -217,17 +217,17 @@ namespace TestProject
 		}
 		TEST_METHOD(Physics_true_calculateDirectionVector)
 		{
-			Vector3f v1 = Vector3f(4,6,4);
-			Vector3f v2 = Vector3f(5,6,2);
+			Vector3f v1 = Vector3f(4, 6, 4);
+			Vector3f v2 = Vector3f(5, 6, 2);
 
 			Vector3f v3 = Physics::calculateDirectionVector(v1, v2);
 			auto x = v3[0];
 			auto y = v3[1];
 			auto z = v3[2];
 
-			Assert::AreEqual(x , -1.f);
-			Assert::AreEqual(y , 0.f);
-			Assert::AreEqual(z , 2.f);
+			Assert::AreEqual(x, -1.f);
+			Assert::AreEqual(y, 0.f);
+			Assert::AreEqual(z, 2.f);
 		}
 		TEST_METHOD(Physics_false_calculateDirectionVector)
 		{
@@ -242,6 +242,106 @@ namespace TestProject
 			Assert::AreNotEqual(x, -2.f);
 			Assert::AreNotEqual(y, 5.f);
 			Assert::AreNotEqual(z, 21.f);
+		}
+		TEST_METHOD(Physics_true_calculateAngle)
+		{
+			Vector3f v1 = Vector3f(1, 0, 0);
+			Vector3f v2 = Vector3f(0, 1, 0);
+
+			float v3 = Physics::calculateAngle(v1, v2);
+
+
+			Assert::AreEqual(v3, 90.f);
+
+		}
+		TEST_METHOD(Physics_false_calculateAngle)
+		{
+			Vector3f v1 = Vector3f(1, 0, 0);
+			Vector3f v2 = Vector3f(1, 0, 0);
+
+			float v3 = Physics::calculateAngle(v1, v2);
+
+
+			Assert::AreNotEqual(v3, 90.f);
+
+		}
+
+		TEST_METHOD(Vector3F_true_operators_minus)
+		{
+			Vector3f v1 = Vector3f(9, 4, 1);
+			Vector3f v2 = Vector3f(5, 2, 7);
+
+			Vector3f v3 = v1 - v2;
+			float v3x = v3[0];
+			float v3y = v3[1];
+			float v3z = v3[2];
+
+			Assert::AreEqual(v3x, 4.f);
+			Assert::AreEqual(v3y, 2.f);
+			Assert::AreEqual(v3z, -6.f);
+		}
+		TEST_METHOD(Vector3F_false_operators_minus)
+		{
+			Vector3f v1 = Vector3f(9, 4, 1);
+			Vector3f v2 = Vector3f(5, 2, 7);
+
+			Vector3f v3 = v1 - v2;
+			float v3x = v3[0];
+			float v3y = v3[1];
+			float v3z = v3[2];
+
+			Assert::AreNotEqual(v3x, -3.f);
+			Assert::AreNotEqual(v3y, -2.f);
+			Assert::AreNotEqual(v3z, 6.f);
+		}
+		TEST_METHOD(Vector3F_true_operators_plus)
+		{
+			Vector3f v1 = Vector3f(9, 4, 1);
+			Vector3f v2 = Vector3f(5, 2, 7);
+
+			Vector3f v3 = v1 + v2;
+			float v3x = v3[0];
+			float v3y = v3[1];
+			float v3z = v3[2];
+
+			Assert::AreEqual(v3x, 14.f);
+			Assert::AreEqual(v3y, 6.f);
+			Assert::AreEqual(v3z, 8.f);
+		}
+		TEST_METHOD(Vector3F_false_operators_plus)
+		{
+			Vector3f v1 = Vector3f(9, 4, 1);
+			Vector3f v2 = Vector3f(5, 2, 7);
+
+			Vector3f v3 = v1 + v2;
+			float v3x = v3[0];
+			float v3y = v3[1];
+			float v3z = v3[2];
+
+			Assert::AreNotEqual(v3x, -3.f);
+			Assert::AreNotEqual(v3y, -2.f);
+			Assert::AreNotEqual(v3z, 6.f);
+		}
+		TEST_METHOD(Vector3F_true_operators_multiply)
+		{
+			Vector3f v1 = Vector3f(2, 2, 2);
+			Vector3f v2 = Vector3f(2, 2, 2);
+
+			float v3 = v1 * v2;
+
+
+			Assert::AreEqual(v3, 12.f);
+
+		}
+		TEST_METHOD(Vector3F_false_operators_multiply)
+		{
+			Vector3f v1 = Vector3f(9, 4, 1);
+			Vector3f v2 = Vector3f(5, 2, 7);
+
+			float v3 = v1 * v2;
+
+
+			Assert::AreNotEqual(v3, 59.f);
 		}
 	};
 }
