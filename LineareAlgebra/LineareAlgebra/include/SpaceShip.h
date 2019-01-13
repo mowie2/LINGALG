@@ -18,6 +18,6 @@ public:
 
 	Shape& const shape() { return shape_; }
 	void moveForward();
-	/*std::unique_ptr<Shape> shoot();*/
+	std::unique_ptr<Shape> shoot();
 };
 

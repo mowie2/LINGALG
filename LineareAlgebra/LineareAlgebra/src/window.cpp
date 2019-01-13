@@ -45,10 +45,10 @@ void Window::addToShapes(const Shape& shape)
 	shapes_.push_back(std::make_unique<Shape>(shape));
 }
 
-//void Window::addToShapes(std::unique_ptr<Shape> shape)
-//{
-//	shapes_.push_back(shape);
-//}
+void Window::addToShapes(std::unique_ptr<Shape> shape)
+{
+	shapes_.push_back(std::move(shape));
+}
 
 void Window::moveShapes(const Vector3f& movevector)
 {
@@ -140,7 +140,7 @@ void Window::render()
 					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
 					break;
 				case SDLK_y:
-					//addToShapes(player.shoot());
+					addToShapes(player.shoot());
 					break;
 				}
 				//moveShapes(moveVector);
