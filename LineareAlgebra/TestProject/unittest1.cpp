@@ -3,7 +3,7 @@
 #include "../LineareAlgebra/include/Vector3f.h"
 #include "../LineareAlgebra/include/Physics.h"
 #include "../LineareAlgebra/include/Objects.h"
-
+#include "../SDL2/include/SDL_stdinc.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -135,6 +135,113 @@ namespace TestProject
 			Assert::AreNotEqual(x, 1.0f);
 			Assert::AreNotEqual(y, 1.0f);
 			Assert::AreNotEqual(z, -1.0f);
+		}
+		TEST_METHOD(Physics_true_calculateOutProduct)
+		{
+			Vector3f v1 = Vector3f(1, 0, 0);
+			Vector3f v2 = Vector3f(0, 1, 0);
+
+			Vector3f v3 = Physics::calculateOutProduct(v1, v2);
+
+			auto x = v3[0];
+			auto y = v3[1];
+			auto z = v3[2];
+
+			Assert::AreEqual(x, 0.f);
+			Assert::AreEqual(y, 0.f);
+			Assert::AreEqual(z, 1.f);
+		}
+
+		TEST_METHOD(Physics_false_calculateOutProduct)
+		{
+			Vector3f v1 = Vector3f(1, 0, 0);
+			Vector3f v2 = Vector3f(1, 0, 0);
+
+			Vector3f v3 = Physics::calculateOutProduct(v1, v2);
+
+			auto x = v3[0];
+			auto y = v3[1];
+			auto z = v3[2];
+
+			Assert::AreNotEqual(x, 1.f);
+			Assert::AreNotEqual(y, 1.f);
+			Assert::AreNotEqual(z, 1.f);
+		}
+		TEST_METHOD(Shape_true_translate)
+		{
+			Shape shape = Shape(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 });
+			shape.translate(Vector3f(1, 3, 18));
+			auto v3 = shape.getPosition();
+			auto x = v3[0];
+			auto y = v3[1];
+			auto z = v3[2];
+			Assert::AreEqual(1.f, x);
+			Assert::AreEqual(3.f, y);
+			Assert::AreEqual(18.f, z);
+		}
+		TEST_METHOD(Shape_false_translate)
+		{
+			Shape shape = Shape(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 });
+			shape.translate(Vector3f(2, 3, 18));
+			auto v3 = shape.getPosition();
+			auto x = v3[0];
+			auto y = v3[1];
+			auto z = v3[2];
+			Assert::AreNotEqual(1.f, x);
+			Assert::AreNotEqual(1.f, y);
+			Assert::AreNotEqual(1.f, z);
+		}
+		TEST_METHOD(Physics_true_convertToRadials)
+		{
+			auto r = Physics::convertToRadials(180);
+
+			Assert::AreEqual((float)M_PI, r);
+		}
+		TEST_METHOD(Physics_false_convertToRadials)
+		{
+			auto r = Physics::convertToRadials(180);
+
+			Assert::AreNotEqual(2.15f, r);
+		}
+		TEST_METHOD(Physics_true_convertTodegrees)
+		{
+			auto r = Physics::convertToDegrees((float)M_PI);
+
+			Assert::AreEqual(180.f, r);
+		}
+		TEST_METHOD(Physics_false_convertTodegrees)
+		{
+			auto r = Physics::convertToDegrees(16);
+
+			Assert::AreNotEqual(0.0215f, r);
+		}
+		TEST_METHOD(Physics_true_calculateDirectionVector)
+		{
+			Vector3f v1 = Vector3f(4,6,4);
+			Vector3f v2 = Vector3f(5,6,2);
+
+			Vector3f v3 = Physics::calculateDirectionVector(v1, v2);
+			auto x = v3[0];
+			auto y = v3[1];
+			auto z = v3[2];
+
+			Assert::AreEqual(x , -1.f);
+			Assert::AreEqual(y , 0.f);
+			Assert::AreEqual(z , 2.f);
+		}
+		TEST_METHOD(Physics_false_calculateDirectionVector)
+		{
+			Vector3f v1 = Vector3f(4, 6, 4);
+			Vector3f v2 = Vector3f(5, 6, 2);
+
+			Vector3f v3 = Physics::calculateDirectionVector(v1, v2);
+			auto x = v3[0];
+			auto y = v3[1];
+			auto z = v3[2];
+
+			Assert::AreNotEqual(x, -2.f);
+			Assert::AreNotEqual(y, 5.f);
+			Assert::AreNotEqual(z, 21.f);
 		}
 	};
 }
