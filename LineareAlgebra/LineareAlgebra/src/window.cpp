@@ -14,7 +14,7 @@ Window::Window(const int width, const int height)
 	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 3,3,3 }), Vector3f{ 3,3,3 }));
 	shapes_.at(0)->rotate(Vector3f{ 0,0,45 });
 
-	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
+	shapes_.push_back(std::make_unique<Shape>(Objects::cuboid(Vector3f{ -2,-2,-2 }), Vector3f{ -2,-2,-2 }));
 	shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
 
