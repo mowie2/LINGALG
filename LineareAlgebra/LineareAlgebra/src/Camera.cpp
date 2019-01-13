@@ -114,9 +114,9 @@ void Camera::rotate2(Vector3f vec)
 	///step 1
 	float zx = 90;
 	if (heading_2[0] != 0) {
-		zx = heading_2[2] / heading_2[0];
+		zx = z / x;
 		zx = atanf(zx) / M_PI * 180;
-		std::cout << heading_2[2] << " " << heading_2[0] << " " << zx << "\n";
+		//::cout << heading_2[2] << " " << heading_2[0] << " " << zx << "\n";
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
@@ -124,9 +124,9 @@ void Camera::rotate2(Vector3f vec)
 	float yx = 0;
 	auto a = std::sqrt(x * x + z * z);
 	auto b = std::sqrt(x * x + y * y + z * z);
-	if (b == 0) {
+	if (b != 0) {
 		yx = -1*a / b;
-		yx = atan(yx) / M_PI * 180;
+		yx = acos(yx) / M_PI * 180;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
@@ -159,8 +159,9 @@ void Camera::rotate2(Vector3f vec)
 
 
 	position_ = ((returnMatrix * rotation * lookatToOrigin).getMatrix()*m[0]).subset(0, 3);
-	std::cout << lookat_[2] << " " << lookat_[0] << '\n';
-	std::cout << position_[2] << " " << position_[0] << '\n';
+	std::cout << zx << " " << yx << '\n';
+	//std::cout << lookat_[2] << " " << lookat_[0] << '\n';
+	//std::cout << position_[2] << " " << position_[0] << '\n';
 	right_ = (rotation.getMatrix()*m[1]).subset(0, 3);
 	up_ = (rotation.getMatrix()*m[2]).subset(0, 3);
 

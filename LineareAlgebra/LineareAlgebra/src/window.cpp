@@ -11,11 +11,12 @@ Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 
 	this->SCREEN_HEIGHT = height;
 	Init();
 
-	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 0,2,0 }), Vector3f{ 0,2,0 }));
-	shapes_.at(0)->rotate(Vector3f{ 0,0,45 });
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 }));
+	//shapes_.at(0)->rotate(Vector3f{ 0,0,0 });
+	shapes_[0]->translate(Vector3f(0, 10, 0));
 
-	shapes_.push_back(std::make_unique<Shape>(Objects::cuboid(Vector3f{ -2,0,0 }), Vector3f{ -2,0,0 }));
-	shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
+	//shapes_.push_back(std::make_unique<Shape>(Objects::cuboid(Vector3f{ -2,0,0 }), Vector3f{ -2,0,0 }));
+	//shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
 
 
@@ -136,6 +137,8 @@ void Window::render()
 
 	//While application is running
 			//While application is running
+	//player.shape().rotateOrigin(Vector3f(0, 90, 0));
+	//player.shape().rotateOrigin(Vector3f(0, 1, 0));
 	while (!quit)
 	{
 		startTime = std::chrono::system_clock::now();
@@ -145,9 +148,11 @@ void Window::render()
 		dt = deltaTime.count() / 1000000.f;
 		lastTime = startTime;
 		Vector vector;
-		vector.addNumber(1.f, -1.f, -0.f);
-		//player.shape().rotate(vector);
-
+		vector.addNumber(0.f, -1.f, -0.f);
+		//player.shape().rotateOrigin(Vector3f(0, 1, 0));
+		//player.shape().rotateOrigin(vector);
+		shapes_[0]->rotateOrigin(Vector3f(0, 1, 0));
+		
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -218,8 +223,8 @@ void Window::render()
 				}
 				moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
 				camera_.move(moveVector);
-				player.shape().translate(moveVector);
-				player.shape().rotateOrigin(rotateVector);
+				//player.shape().translate(moveVector);
+				player.shape().rotateOrigin(playerVector);
 				camera_.rotate2(rotateVector);
 				
 				//shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
@@ -234,10 +239,17 @@ void Window::render()
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
 		SDL_RenderClear(gRenderer);
-		DrawAxis();
+		//DrawAxis();
 
 		Update(dt);
 		Draw(player.shape());
+		auto k = player.shape().position();
+		auto kk = player.shape().heading();
+		Matrix3f m;
+		Shape s;
+		m.AddVector(k,kk);
+		s.addMatix(m);
+		Draw(s);
 
 		auto& shapes = shapes_;
 		for (auto it = shapes.begin(); it != shapes.end(); it++)

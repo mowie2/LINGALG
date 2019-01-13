@@ -89,8 +89,8 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	auto z = heading_[2];
 	///step 1
 	float zx = 90;
-	if (heading_2[0] != 0) {
-		zx = heading_2[2] / heading_2[0];
+	if (x != 0) {
+		zx = z / x;
 		zx = atan(zx) / M_PI * 180;
 	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
@@ -99,9 +99,9 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	float yx = 0;
 	auto a = std::sqrt(x * x + z * z);
 	auto b = std::sqrt(x * x + y * y + z * z);
-	if (b == 0) {
-		yx = -1 * a / b;
-		yx = atan(yx) / M_PI * 180;
+	if (b != 0) {
+		yx = -1*a / b;
+		yx = acos(yx) / M_PI * 180;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
@@ -121,30 +121,20 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	step5M[2][0] = step1M[2][0] * -1;
 	step5M[0][2] = step1M[0][2] * -1;
 
-	auto rotation = (step5M * step4M * step3M *step2M *step1M);
+	auto rotation = (step5M *step4M * step3M * step2M * step1M);
 	transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
 	auto ht2 = heading_.getVector();
 	ht2.addNumber(1);
 	std::cout << "LOOK AT ME\n";
-	heading_ = (rotation.getMatrix() * ht2).subset(0, 3);
-	std::cout << heading_[0] << " " << heading_[1] << " " << heading_[2] << '\n';
-	/*
-	for (int i = 0; i < 4;i++)
-	{
-		for (int j = 0; j < 4;j++)
-		{
-			std::cout << rotation[j][i] << "           ";
-		}
-		std::cout << '\n';
-	}
-	std::cout << '\n';
-	*/
+	std::cout << zx << " " << yx << '\n';
+	heading_ = ((getToPositionMatrix() * rotation * getToOrignMatrix()).getMatrix() * ht2).subset(0, 3);
+	heading_.normalize();
+	
 
 	auto returnMatrix = object.getToPositionMatrix() * rotation * object.getToOrignMatrix() * transformationMatrix_;
 	return returnMatrix;
 }
-//transformationMatrix_ =
-//transform();
+
 void Shape::rotateOrigin(const Vector3f & vec)
 {
 	transformationMatrix_ = get7RotationMatrix(*this, vec);
@@ -153,6 +143,7 @@ void Shape::rotateOrigin(const Vector3f & vec)
 
 std::vector<Matrix3f>& Shape::projections()
 {
+	transform();
 	return projections_;
 }
 
@@ -164,6 +155,7 @@ std::vector<Matrix3f> Shape::projections() const
 void Shape::addMatix(Matrix3f matrix)
 {
 	matrices_.push_back(matrix);
+	projections_.push_back(matrix);
 }
 
 void Shape::setPos(const Vector3f & pos)
