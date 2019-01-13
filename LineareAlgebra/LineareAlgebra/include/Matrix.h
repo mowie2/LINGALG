@@ -40,6 +40,7 @@ public:
 	Matrix operator- (const Matrix &other) const;
 	Matrix operator* (const Matrix &other) const;
 	Matrix operator* (float scalar) const;
+	Vector operator* (const Vector &other) const;
 	Matrix subSet(unsigned int rows, unsigned int columns) const;
 	Matrix getTranslatable() const;
 

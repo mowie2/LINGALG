@@ -8,12 +8,13 @@ class Shape
 public:
 	Shape();
 	Shape(std::vector<Matrix3f> m, const Vector3f& position);
+	Shape(std::vector<Matrix3f> m,const Vector3f& position,const Vector3f& heading);
 	~Shape() = default;
 	void translate(const Vector3f& vec);
 
 	Matrix4x4f getToOrignMatrix() const;
 	Matrix4x4f getToPositionMatrix() const;
-
+	Vector3f position() const { return position_; }
 	void rotate(const Vector3f& vec);
 	void rotateAround(Shape const & object, Vector3f const & vec);
 	void scale(const Vector3f& vec);
@@ -22,12 +23,15 @@ public:
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
+	Vector3f heading() const { return heading_; }
 
 	void addMatix(Matrix3f matrix);
 	void setPos(const Vector3f& pos);
 	std::vector<Matrix3f> getMatrix() const { return matrices_; }
 
 	void pulseSize(float dt, float speed, float size);
+	void moveForward(float dt);
+
 	Vector3f& heading();
 	void heading(Vector3f newHeading);
 	Vector3f getPosition() const { return position_; }

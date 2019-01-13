@@ -2,17 +2,28 @@
 
 #include <cmath>
 #include <SDL_stdinc.h>
+#include <iostream>
+
 Shape::Shape()
 {
 	position_ = Vector3f();
 }
 
-Shape::Shape(std::vector<Matrix3f> m,const Vector3f& position)
+Shape::Shape(std::vector<Matrix3f> m, const Vector3f& position)
 {
 	position_ = position;
 	matrices_ = m;
 	projections_ = m;
 	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
+}
+
+Shape::Shape(std::vector<Matrix3f> m,const Vector3f& position, const Vector3f& heading)
+{
+	position_ = position;
+	matrices_ = m;
+	projections_ = m;
+	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
+	heading_ = heading;
 }
 
 void Shape::translate(const Vector3f & vec)
@@ -71,30 +82,62 @@ void Shape::rotateAround(Shape const & object, Vector3f const & vec)
 
 Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const & vec)
 {
-	auto heading_2 = Vector3f(0.f, 1.f, 2.f);
 	//auto heading_2 = position_;
+	auto heading_2 = heading_;
 	///step 1
-	auto zx = heading_2[2] / heading_2[0];
-	zx = atan(zx) / M_PI * 180;
+	float zx = 90;
+	if (heading_2[0] != 0) {
+		zx = heading_2[2] / heading_2[0];
+		zx = atan(zx) / M_PI * 180;
+	}
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
-	auto yx = heading_2[1] / heading_2[0];
-	yx = atan(yx) / M_PI * 180;
+	///step2
+	float yx = 90;
+	if (heading_2[0] != 0) {
+		yx = heading_2[1] / heading_2[0];
+		yx = atan(yx) / M_PI * 180;
+	}
+	if(heading_2[1] == 0)
+	{
+		yx = 0;
+	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
+	///step3
+	///everything is now on axis x;
+	auto step3M = Matrix4x4f::getZRotationMatrix(vec[0]);
+	step3M = Matrix4x4f::getYRotationMatrix(vec[1]) * step3M;
+	step3M = Matrix4x4f::getXRotationMatrix(vec[2]) * step3M;
 
-	auto step3M = Matrix4x4f::getXRotationMatrix(vec[0] * M_PI);
-	step3M = step3M * Matrix4x4f::getYRotationMatrix(vec[1] * M_PI);
-	step3M = step3M * Matrix4x4f::getZRotationMatrix(vec[2] * M_PI);
-
-
+	///step4
 	auto step4M = step2M;
 	step4M[1][0] = step2M[1][0] * -1;
 	step4M[0][1] = step2M[0][1] * -1;
 
+	///step5
 	auto step5M = step1M;
 	step5M[2][0] = step1M[2][0] * -1;
 	step5M[0][2] = step1M[0][2] * -1;
+
+	auto rotation = (step5M * step4M * step3M *step2M *step1M);
+	transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
+	auto ht2 = heading_.getVector();
+	ht2.addNumber(1);
+	std::cout << "LOOK AT ME\n";
+	heading_ = (rotation.getMatrix() * ht2).subset(0, 3);
+	std::cout << heading_[0] << " " << heading_[1] << " " << heading_[2] << '\n';
+	/*
+	for (int i = 0; i < 4;i++)
+	{
+		for (int j = 0; j < 4;j++)
+		{
+			std::cout << rotation[j][i] << "           ";
+		}
+		std::cout << '\n';
+	}
+	std::cout << '\n';
+	*/
 
 	auto returnMatrix = object.getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * object.getToOrignMatrix() * transformationMatrix_;
 	return returnMatrix;
@@ -135,10 +178,17 @@ void Shape::pulseSize(float dt, float speed, float size)
 	this->scale(pulsVec);
 }
 
+void Shape::moveForward(float dt)
+{
+	if (heading_[0] == 0 && heading_[1] == 0 && heading_[2] == 0)
+		return;
+	translate(Vector3f(heading_[0]*dt, heading_[1]*dt, heading_[2]*dt));
+}
+
 void Shape::transform()
 {
 	for (auto i = 0;i < projections_.size();i++) {
-		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).getMatrix().subSet(3, matrices_[i].getColumns());
+		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).subSet(3, matrices_[i].getColumns());
 		projections_[i] = k;
 	}
 }

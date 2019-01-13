@@ -5,6 +5,7 @@
 #include "Shape.h"
 #include "SpaceShip.h"
 #include <memory>
+#include "Camera.h"
 #include <chrono>
 
 class Window
@@ -23,6 +24,7 @@ public:
 	void Draw(const Shape& shape);
 
 	void addToShapes(const Shape& shape);
+	void addToShapes(std::unique_ptr<Shape> shape);
 	void rotateShapes(const Vector3f& rotateVector);
 	void moveShapes(const Vector3f& moveVector);
 
@@ -67,5 +69,7 @@ private:
 	std::chrono::duration<long long, std::ratio<1, 1000000>> deltaTime;
 	float dt;
 	double sinValue = 0;
+
+	Camera camera_;
 };
 

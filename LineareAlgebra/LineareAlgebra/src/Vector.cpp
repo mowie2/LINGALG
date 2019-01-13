@@ -111,3 +111,15 @@ Vector Vector::operator*(float number) const
 	}
 	return newVector;
 }
+
+Vector Vector::subset(unsigned int from, unsigned int to) const
+{
+	if (from >= 0 && from <= getRows() && to >= 0 && to <= getRows()) {
+		Vector v;
+		for (unsigned int r = 0; r < to; r++) {
+			v.addNumber(vector_[r]);
+		}
+		return v;
+	}
+	throw std::out_of_range("Out of range fuckhead");
+}
