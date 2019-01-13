@@ -84,6 +84,9 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 {
 	//auto heading_2 = position_;
 	auto heading_2 = heading_;
+	auto x = heading_[0];
+	auto y = heading_[1];
+	auto z = heading_[2];
 	///step 1
 	float zx = 90;
 	if (heading_2[0] != 0) {
@@ -93,14 +96,12 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	auto step1M = Matrix4x4f::getYRotationMatrix(zx);
 
 	///step2
-	float yx = 90;
-	if (heading_2[0] != 0) {
-		yx = heading_2[1] / heading_2[0];
+	float yx = 0;
+	auto a = std::sqrt(x * x + z * z);
+	auto b = std::sqrt(x * x + y * y + z * z);
+	if (b == 0) {
+		yx = -1 * a / b;
 		yx = atan(yx) / M_PI * 180;
-	}
-	if(heading_2[1] == 0)
-	{
-		yx = 0;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
 
@@ -139,7 +140,7 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	std::cout << '\n';
 	*/
 
-	auto returnMatrix = object.getToPositionMatrix() * (step5M * step4M * step3M *step2M *step1M) * object.getToOrignMatrix() * transformationMatrix_;
+	auto returnMatrix = object.getToPositionMatrix() * rotation * object.getToOrignMatrix() * transformationMatrix_;
 	return returnMatrix;
 }
 //transformationMatrix_ =

@@ -164,41 +164,44 @@ void Window::render()
 				auto move = Matrix3f::getIdentityMatrix();
 				auto moveVector = Vector3f();
 				auto rotateVector = Vector3f();
+				auto playerVector = Vector3f();
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_s:
-					rotateShapes(Vector3f(0.f, 0.f, 0.5f));
+					//rotateShapes(Vector3f(0.f, 0.f, 0.5f));
+					
 					break;
 					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
 				case SDLK_DOWN:
+					playerVector[0] += 5;
 					rotateVector[0] -= 5;
 					break;
 				case SDLK_w:
-					rotateShapes(Vector3f(0.f, 0.f, -0.5f));
+					//rotateShapes(Vector3f(0.f, 0.f, -0.5f));
 					break;
 				case SDLK_UP:
-					//moveVector[1] += .5;
+					playerVector[0] -= 5;
 					rotateVector[0] += 5;
 					break;
 				case SDLK_a:
-					rotateShapes(Vector3f(0.5f, 0.f, 0.f));
+					//rotateShapes(Vector3f(0.5f, 0.f, 0.f));
 					break;
 				case SDLK_LEFT:
-					//moveVector[0] -= .5;
-					rotateVector[1] -= 5;
-					break;
-				case SDLK_d:
-					rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
-					break;
-				case SDLK_RIGHT:
-					//moveVector[0] += .5;
+					playerVector[1] -= 5;
 					rotateVector[1] += 5;
 					break;
+				case SDLK_d:
+					//rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
+					break;
+				case SDLK_RIGHT:
+					playerVector[1] += 5;
+					rotateVector[1] -= 5;
+					break;
 				case SDLK_q:
-					rotateShapes(Vector3f(0.f, -0.5f, 0.f));
+					//rotateShapes(Vector3f(0.f, -0.5f, 0.f));
 					break;
 				case SDLK_e:
-					rotateShapes(Vector3f(0.f, 0.5f, 0.f));
+					//rotateShapes(Vector3f(0.f, 0.5f, 0.f));
 					break;
 				case SDLK_y:
 					addToShapes(player.shoot());
@@ -216,7 +219,7 @@ void Window::render()
 				moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
 				camera_.move(moveVector);
 				player.shape().translate(moveVector);
-				player.rotate(rotateVector);
+				player.shape().rotateOrigin(rotateVector);
 				camera_.rotate2(rotateVector);
 				
 				//shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));

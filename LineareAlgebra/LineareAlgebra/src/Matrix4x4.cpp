@@ -78,7 +78,16 @@ Matrix4x4f Matrix4x4f::getXRotationMatrix(float degrees)
 			m[1][2] = 1;
 			m[2][1] = -1;
 			m[2][2] = 0;
+		} 
+		else
+		{
+			m[1][1] = 0;
+			m[1][2] = -1;
+			m[2][1] = 1;
+			m[2][2] = 0;
 		}
+			
+		
 	}
 	return m;
 }
@@ -125,6 +134,13 @@ Matrix4x4f Matrix4x4f::getZRotationMatrix(float degrees)
 			m[0][0] = 0;
 			m[0][1] = -1;
 			m[1][0] = 1;
+			m[1][1] = 0;
+		}
+		else
+		{
+			m[0][0] = 0;
+			m[0][1] = 1;
+			m[1][0] = -1;
 			m[1][1] = 0;
 		}
 	}
