@@ -2,7 +2,7 @@
 
 std::vector<Matrix3f> Objects::cube(const Vector3f& vec)
 {
-	//TODO: Objectem worden niet goed gemaakt. De normaal vector staat de verkeerde kant op.
+	//TODO: Objecte worden niet goed gemaakt. De normaal vector staat de verkeerde kant op.
 	Matrix3f square;
 	square.AddVector(
 		Vector3f(-0.5 + vec[0], -0.5 + vec[1], 0.5 + vec[2]),
