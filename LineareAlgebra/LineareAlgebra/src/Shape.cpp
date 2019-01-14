@@ -122,7 +122,7 @@ void Shape::barrelrol(float degrees)
 	step5M[0][2] = step1M[0][2] * -1;
 
 	auto rotation = (step5M*step4M*step3M*step2M*step1M);
-	transformationMatrix_ = rotation * transformationMatrix_;
+	transformationMatrix_ = this->getToPositionMatrix() * rotation * this->getToOrignMatrix() * transformationMatrix_;
 	transform();
 }
 
