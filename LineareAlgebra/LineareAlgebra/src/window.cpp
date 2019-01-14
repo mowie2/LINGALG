@@ -97,7 +97,6 @@ void Window::addToShapes(std::unique_ptr<Shape> shape)
 
 void Window::moveShapes(const Vector3f& movevector)
 {
-	auto& shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
 		(*it)->translate(movevector);
@@ -111,7 +110,6 @@ void Window::addToBullets(std::unique_ptr<Shape> shape)
 
 void Window::moveMoveBullets(const Vector3f & moveVector)
 {
-	auto& shapes = bullets_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
 		(*it)->translate(moveVector);
@@ -120,7 +118,6 @@ void Window::moveMoveBullets(const Vector3f & moveVector)
 
 void Window::rotateBullets(const Vector3f & rotateVector)
 {
-	auto& shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
 		(*it)->rotateAround(player.shape(), rotateVector);
@@ -129,7 +126,6 @@ void Window::rotateBullets(const Vector3f & rotateVector)
 
 void Window::rotateShapes(const Vector3f & rotateVector)
 {
-	auto& shapes = shapes_;
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
 		(*it)->rotateAround(player.shape(), rotateVector);
@@ -138,11 +134,16 @@ void Window::rotateShapes(const Vector3f & rotateVector)
 
 void Window::Update(float dt)
 {
-	auto& shapes = shapes_;
+	
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
 		(*it)->moveForward(dt);
+	}	
+	for (auto it = bullets_.begin(); it != bullets_.end(); it++)
+	{
+		(*it)->translate(Vector3f((*it)->heading()[0]*dt , (*it)->heading()[1] * dt , (*it)->heading()[2] * dt));
 	}
+
 }
 
 void Window::render()
@@ -272,7 +273,7 @@ void Window::render()
 		SDL_RenderClear(gRenderer);
 		//DrawAxis();
 
-		//Update(dt);
+		Update(dt);
 		Draw(player.shape());
 		auto k = player.shape().position();
 		auto kk = player.shape().heading();
