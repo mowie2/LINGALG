@@ -28,6 +28,10 @@ public:
 	void rotateShapes(const Vector3f& rotateVector);
 	void moveShapes(const Vector3f& moveVector);
 
+	void addToBullets(std::unique_ptr<Shape> shape);
+	void moveMoveBullets(const Vector3f& moveVector);
+	void rotateBullets(const Vector3f& rotateVector);
+
 	void Update(float dt);
 	void render();
 
@@ -42,6 +46,7 @@ private:
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
 	std::vector<std::unique_ptr<Shape>> shapes_;
+	std::vector<std::unique_ptr<Shape>> bullets_;
 
 	//std::vector<Shape*> shapes_;
 

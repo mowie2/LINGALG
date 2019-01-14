@@ -104,6 +104,29 @@ void Window::moveShapes(const Vector3f& movevector)
 	}
 }
 
+void Window::addToBullets(std::unique_ptr<Shape> shape)
+{
+	bullets_.push_back(std::move(shape));
+}
+
+void Window::moveMoveBullets(const Vector3f & moveVector)
+{
+	auto& shapes = bullets_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->translate(moveVector);
+	}
+}
+
+void Window::rotateBullets(const Vector3f & rotateVector)
+{
+	auto& shapes = shapes_;
+	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
+	{
+		(*it)->rotateAround(player.shape(), rotateVector);
+	}
+}
+
 void Window::rotateShapes(const Vector3f & rotateVector)
 {
 	auto& shapes = shapes_;
@@ -217,7 +240,7 @@ void Window::render()
 					//rotateShapes(Vector3f(0.f, 0.5f, 0.f));
 					break;
 				case SDLK_y:
-					addToShapes(player.shoot());
+					addToBullets(player.shoot());
 					break;
 				case SDLK_SPACE:
 					//move = 1;
@@ -261,6 +284,12 @@ void Window::render()
 
 		auto& shapes = shapes_;
 		for (auto it = shapes.begin(); it != shapes.end(); it++)
+		{
+			Draw(*(*it));
+		}
+
+		auto& bullets = bullets_;
+		for (auto it = bullets.begin(); it != bullets.end(); it++)
 		{
 			Draw(*(*it));
 		}

@@ -16,7 +16,8 @@ void SpaceShip::moveForward()
 
 std::unique_ptr<Shape> SpaceShip::shoot()
 {
-	auto bullet = std::make_unique<Shape>(Objects::cuboid(Vector3f{ 0,-1,2 }), Vector3f{ 0,-1,2 });
+	auto pos = shape_.getPosition();
+	auto bullet = std::make_unique<Shape>(Objects::cuboid(Vector3f{ pos[0] + 0,pos[1] + -1,pos[0] + 2 }), Vector3f{ pos[0] + 0,pos[1] + -1,pos[0] + 2 });
 	bullet->heading(Vector3f(0, 0, 1));
 	return bullet;
 }
