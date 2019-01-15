@@ -22,7 +22,7 @@ public:
 
 	~Window();
 	void Draw(Matrix matrix);
-	void Draw(const Shape& shape);
+	void Draw(Shape& shape);
 
 	void addToShapes(const Shape& shape);
 	void addToShapes(std::unique_ptr<Shape> shape);

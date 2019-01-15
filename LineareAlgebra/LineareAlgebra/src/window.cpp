@@ -69,7 +69,7 @@ void Window::Draw(Matrix matrix)
 
 }
 
-void Window::Draw(const Shape& shape)
+void Window::Draw(Shape& shape)
 {
 	auto matrices = shape.projections();
 	for (auto it = matrices.begin(); it != matrices.end(); it++)

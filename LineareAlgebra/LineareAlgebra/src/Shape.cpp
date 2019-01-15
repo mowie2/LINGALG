@@ -46,15 +46,11 @@ Matrix4x4f Shape::getTransformationMatrix()
 	translate[3][1] = translationVector_[1];
 	translate[3][2] = translationVector_[2];
 
+
 	auto transformationMatrix = getToPositionMatrix()*scaler*translate*getToOrignMatrix();
-	
+
 	position_ = translationVector_;
 	return transformationMatrix;
-}
-
-void Shape::newTranslate(const Vector3f& vec)
-{
-	translationVector_ = vec;
 }
 
 void Shape::translate(const Vector3f & vec)
@@ -237,7 +233,7 @@ void Shape::rotateOrigin(const Vector3f & vec)
 //	return projections_;
 //}
 
-std::vector<Matrix3f> Shape::projections() const
+std::vector<Matrix3f> Shape::projections()
 {
 	std::vector<Matrix3f> list;
 	auto transformationMatrix = getTransformationMatrix();
