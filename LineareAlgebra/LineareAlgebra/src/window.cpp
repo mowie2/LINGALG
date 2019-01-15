@@ -244,11 +244,11 @@ void Window::render()
 
 		if (state[SDL_SCANCODE_SPACE])
 		{
-			accel += speed / 5 * dt;
+			movingForward = true;
 		}
 		if (state[SDL_SCANCODE_C])
 		{
-			accel -= speed / 5 * dt;
+			movingForward = false;
 		}
 
 		if (state[SDL_SCANCODE_UP])
@@ -279,6 +279,10 @@ void Window::render()
 			{
 				quit = true;
 			}
+		}
+
+		if (movingForward) {
+			accel += speed / 5 * dt;
 		}
 		moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
 		moveVector[1] += updown;

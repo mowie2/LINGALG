@@ -33,6 +33,8 @@ public:
 	void moveMoveBullets(const Vector3f& moveVector);
 	void rotateBullets(const Vector3f& rotateVector);
 
+	bool movingForward = false;
+
 	void Update(float dt);
 	void render();
 
