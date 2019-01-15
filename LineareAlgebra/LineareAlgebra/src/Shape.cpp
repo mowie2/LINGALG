@@ -207,6 +207,12 @@ void Shape::addMatix(Matrix3f matrix)
 	projections_.push_back(matrix);
 }
 
+void Shape::addMatix(std::vector<Matrix3f> matrix)
+{
+	matrices_.insert(matrices_.end(), matrix.begin(), matrix.end());
+	projections_.insert(projections_.end(), matrix.begin(), matrix.end());
+}
+
 void Shape::setPos(const Vector3f & pos)
 {
 	position_ = pos;

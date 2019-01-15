@@ -6,6 +6,7 @@
 SpaceShip::SpaceShip(const Vector3f& heading)
 {
 	shape_ = Shape(Objects::pentagon(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 }, heading);
+
 	Matrix3f m;
 }
 
