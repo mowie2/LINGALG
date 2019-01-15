@@ -149,22 +149,22 @@ void Window::Update(float dt)
 			std::cout << "Game over\n";
 		}
 	}
-	for (auto it = bullets_.begin(); it != bullets_.end(); it++)
-	{
-		(*it)->translate(Vector3f((*it)->heading()[0] * dt, (*it)->heading()[1] * dt, (*it)->heading()[2] * dt));
-	}
-	for (auto shape = shapes_.begin(); shape != shapes_.end(); shape++)
-	{
-		for (auto bullet = bullets_.begin(); bullet != bullets_.end(); bullet++)
-		{
-			auto& x = *(*bullet);
-			auto& y = *(*shape);
-			if (Physics::calculateIntersection(x, y))
-			{
-				std::cout << "you won the game\n";
-			}
-		}
-	}
+	//for (auto it = bullets_.begin(); it != bullets_.end(); it++)
+	//{
+	//	(*it)->newTranslate(Vector3f((*it)->heading()[0] * dt, (*it)->heading()[1] * dt, (*it)->heading()[2] * dt));
+	//}
+	//for (auto shape = shapes_.begin(); shape != shapes_.end(); shape++)
+	//{
+	//	for (auto bullet = bullets_.begin(); bullet != bullets_.end(); bullet++)
+	//	{
+	//		auto& x = *(*bullet);
+	//		auto& y = *(*shape);
+	//		if (Physics::calculateIntersection(x, y))
+	//		{
+	//			std::cout << "you won the game\n";
+	//		}
+	//	}
+	//}
 
 }
 

@@ -244,6 +244,11 @@ std::vector<Matrix3f> Shape::projections()
 	return list;
 }
 
+void Shape::newTranslate(const Vector3f & vec)
+{
+	translationVector_ = vec;
+}
+
 void Shape::addMatix(Matrix3f matrix)
 {
 	matrices_.push_back(matrix);

@@ -23,8 +23,9 @@ public:
 	void scale(const Vector3f& vec);
 	void rotateOrigin(const Vector3f& vec);
 	std::vector<Matrix3f> projections();
+	void newTranslate(const Vector3f& vec);
 	//void transform();
-
+	
 	//std::vector<Matrix3f>& projections();
 	//std::vector<Matrix3f> projections() const;
 	std::vector<Matrix3f> newGetProjections() const;
