@@ -162,7 +162,6 @@ void Camera::rotate2(Vector3f vec)
 
 
 	position_ = ((returnMatrix * rotation * lookatToOrigin).getMatrix()*m[0]).subset(0, 3);
-	std::cout << zx << " " << yx << '\n';
 	//std::cout << lookat_[2] << " " << lookat_[0] << '\n';
 	//std::cout << position_[2] << " " << position_[0] << '\n';
 	right_ = (rotation.getMatrix()*m[1]).subset(0, 3);

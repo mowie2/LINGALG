@@ -163,3 +163,68 @@ std::vector<Matrix3f> Objects::pentagon(const Vector3f & vec)
 	matrices.push_back(bottem);
 	return matrices;
 }
+
+std::vector<Matrix3f> Objects::louis(const Vector3f & vec)
+{
+	Matrix3f front;
+	front.AddVector(
+		Vector3f(0.5, -1, 2),
+		Vector3f(1, 0, 2),
+		Vector3f(0, 1, 2),
+		Vector3f(-1, 0, 2),
+		Vector3f(-0.5, -1, 2)
+	);
+	Matrix3f back;
+	back.AddVector(
+		Vector3f(0.5, -1, -2),
+		Vector3f(-0.5, -1, -2),
+		Vector3f(-1, 0, -2),
+		Vector3f(0, 1, -2),
+		Vector3f(1, 0, -2)
+	);
+	Matrix3f bottemRight;
+	bottemRight.AddVector(
+		Vector3f(0.5, -1, 2),
+		Vector3f(0.5, -1, -2),
+		Vector3f(1, 0, -2),
+		Vector3f(1, 0, 2)
+	);
+	Matrix3f topRight;
+	topRight.AddVector(
+		Vector3f(1, 0, 2),
+		Vector3f(1, 0, -2),
+		Vector3f(0, 1, -2),
+		Vector3f(0, 1, 2)
+	);
+	Matrix3f topLeft;
+	topLeft.AddVector(
+		Vector3f(0, 1, 2),
+		Vector3f(0, 1, -2),
+		Vector3f(-1, 0, -2),
+		Vector3f(-1, 0, 2)
+	);
+	Matrix3f bottemLeft;
+	bottemLeft.AddVector(
+		Vector3f(-1, 0, 2),
+		Vector3f(-1, 0, -2),
+		Vector3f(-0.5, -1, -2),
+		Vector3f(-0.5, -1, 2)
+	);
+	Matrix3f bottem;
+	bottem.AddVector(
+		Vector3f(0.5, -1, 2),
+		Vector3f(0.5, -1, -2),
+		Vector3f(-0.5, -1, -2),
+		Vector3f(-0.5, -1, 2)
+	);
+
+	std::vector<Matrix3f> matrices;
+	matrices.push_back(front);
+	matrices.push_back(back);
+	matrices.push_back(bottemRight);
+	matrices.push_back(topRight);
+	matrices.push_back(topLeft);
+	matrices.push_back(topRight);
+	matrices.push_back(bottem);
+	return matrices;
+}

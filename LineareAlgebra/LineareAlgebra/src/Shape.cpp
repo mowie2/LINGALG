@@ -174,8 +174,6 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	//transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
 	auto ht2 = heading_.getVector();
 	ht2.addNumber(1);
-	std::cout << "LOOK AT ME\n";
-	std::cout << zx << " " << yx << '\n';
 	//heading_ = ((getToPositionMatrix() * rotation * getToOrignMatrix()).getMatrix() * ht2).subset(0, 3);
 	//heading_.normalize();
 	

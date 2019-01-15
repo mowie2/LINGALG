@@ -6,8 +6,8 @@
 SpaceShip::SpaceShip(const Vector3f& heading)
 {
 	shape_ = Shape(Objects::pentagon(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 }, heading);
-
-	Matrix3f m;
+	shape_.addMatix(Objects::cube(Vector3f{ 0,1,2 }));
+	shape_.translate(Vector3f(0, 0, -1));
 }
 
 void SpaceShip::moveForward()
