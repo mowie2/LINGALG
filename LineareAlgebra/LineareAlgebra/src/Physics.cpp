@@ -49,19 +49,19 @@ Vector3f Physics::calculateDirectionVector(Vector3f& vec1, Vector3f& vec2)
 
 bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 {
-	float minx = shape1.getMatrix()[0][0][0];
-	float maxx = shape1.getMatrix()[0][0][0];
+	float minx = shape1.projections()[0][0][0];
+	float maxx = shape1.projections()[0][0][0];
 
-	float miny = shape1.getMatrix()[0][0][1];
-	float maxy = shape1.getMatrix()[0][0][1];
+	float miny = shape1.projections()[0][0][1];
+	float maxy = shape1.projections()[0][0][1];
 
-	float minz = shape1.getMatrix()[0][0][2];
-	float maxz = shape1.getMatrix()[0][0][2];
+	float minz = shape1.projections()[0][0][2];
+	float maxz = shape1.projections()[0][0][2];
 
 	bool x = false;
 	bool y = false;
 	bool z = false;
-	for (auto& p1 : shape1.getMatrix())
+	for (auto& p1 : shape1.projections())
 	{
 		for (unsigned int i = 0; i < p1.getColumns(); i++)
 		{
@@ -94,7 +94,7 @@ bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 			}
 		}
 	}
-	for (auto& p2 : shape2.getMatrix())
+	for (auto& p2 : shape2.projections())
 	{
 		for (unsigned int i = 0; i < p2.getColumns(); i++)
 		{
@@ -120,19 +120,19 @@ bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 		return  true;
 	}
 
-	float minx2 = shape2.getMatrix()[0][0][0];
-	float maxx2 = shape2.getMatrix()[0][0][0];
+	float minx2 = shape2.projections()[0][0][0];
+	float maxx2 = shape2.projections()[0][0][0];
 
-	float miny2 = shape2.getMatrix()[0][0][1];
-	float maxy2 = shape2.getMatrix()[0][0][1];
+	float miny2 = shape2.projections()[0][0][1];
+	float maxy2 = shape2.projections()[0][0][1];
 
-	float minz2 = shape2.getMatrix()[0][0][2];
-	float maxz2 = shape2.getMatrix()[0][0][2];
+	float minz2 = shape2.projections()[0][0][2];
+	float maxz2 = shape2.projections()[0][0][2];
 
 	bool x2 = false;
 	bool y2 = false;
 	bool z2 = false;
-	for (auto& p1 : shape2.getMatrix())
+	for (auto& p1 : shape2.projections())
 	{
 		for (unsigned int i = 0; i < p1.getColumns(); i++)
 		{
@@ -165,7 +165,7 @@ bool Physics::calculateIntersection(Shape& shape1, Shape& shape2)
 			}
 		}
 	}
-	for (auto& p2 : shape1.getMatrix())
+	for (auto& p2 : shape1.projections())
 	{
 		for (unsigned int i = 0; i < p2.getColumns(); i++)
 		{

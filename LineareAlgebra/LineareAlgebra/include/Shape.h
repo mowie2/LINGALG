@@ -9,6 +9,8 @@ public:
 	Shape();
 	Shape(std::vector<Matrix3f> m, const Vector3f& position);
 	Shape(std::vector<Matrix3f> m,const Vector3f& position,const Vector3f& heading);
+	void newScale(Vector3f vec);
+	Matrix4x4f getTransformationMatrix() const;
 	~Shape() = default;
 	void translate(const Vector3f& vec);
 
@@ -24,6 +26,7 @@ public:
 
 	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
+	std::vector<Matrix3f> newGetProjections() const;
 	Vector3f heading() const { return heading_; }
 
 	void addMatix(Matrix3f matrix);
@@ -45,4 +48,5 @@ private:
 
 	Matrix4x4f const get7RotationMatrix(Shape const & object, Vector3f const & vec);
 	float sinValue = 0;
+	Vector3f scaleVector_;
 };

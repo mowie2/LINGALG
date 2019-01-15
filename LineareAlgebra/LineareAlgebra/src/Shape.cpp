@@ -7,6 +7,7 @@
 Shape::Shape()
 {
 	position_ = Vector3f();
+	scaleVector_ = Vector3f(1, 1, 1);
 }
 
 Shape::Shape(std::vector<Matrix3f> m, const Vector3f& position)
@@ -15,15 +16,32 @@ Shape::Shape(std::vector<Matrix3f> m, const Vector3f& position)
 	matrices_ = m;
 	projections_ = m;
 	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
+	scaleVector_ = Vector3f(1, 1, 1);
 }
 
-Shape::Shape(std::vector<Matrix3f> m,const Vector3f& position, const Vector3f& heading)
+Shape::Shape(std::vector<Matrix3f> m, const Vector3f& position, const Vector3f& heading)
 {
 	position_ = position;
 	matrices_ = m;
 	projections_ = m;
 	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
 	heading_ = heading;
+	scaleVector_ = Vector3f(1, 1, 1);
+}
+
+void Shape::newScale(Vector3f vec)
+{
+	scaleVector_ = vec;
+}
+
+Matrix4x4f Shape::getTransformationMatrix() const
+{
+	auto scaler = Matrix4x4f::getIdentityMatrix();
+	scaler[0][0] = scaleVector_[0];
+	scaler[1][1] = scaleVector_[1];
+	scaler[2][2] = scaleVector_[2];
+
+	return getToPositionMatrix()*scaler*getToOrignMatrix();
 }
 
 void Shape::translate(const Vector3f & vec)
@@ -41,9 +59,9 @@ void Shape::translate(const Vector3f & vec)
 Matrix4x4f Shape::getToOrignMatrix() const
 {
 	auto m = Matrix4x4f::getIdentityMatrix();
-	m[3][0] = -1*position_[0];
-	m[3][1] = -1*position_[1];
-	m[3][2] = -1*position_[2];
+	m[3][0] = -1 * position_[0];
+	m[3][1] = -1 * position_[1];
+	m[3][2] = -1 * position_[2];
 	return m;
 }
 
@@ -63,7 +81,7 @@ void Shape::rotate(const Vector3f & vec)
 	const auto z = Matrix4x4f::getZRotationMatrix(vec[2]);
 	auto v = heading_.getVector();
 	v.addNumber(1);
-	heading_ = ((x * y * z).getMatrix() * v).subset(0,3);
+	heading_ = ((x * y * z).getMatrix() * v).subset(0, 3);
 	transformationMatrix_ = getToPositionMatrix()*x*y*z*getToOrignMatrix()*transformationMatrix_;
 	transform();
 }
@@ -146,7 +164,7 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	auto a = std::sqrt(x * x + z * z);
 	auto b = std::sqrt(x * x + y * y + z * z);
 	if (b != 0) {
-		yx = -1*a / b;
+		yx = -1 * a / b;
 		yx = acos(yx) / M_PI * 180;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
@@ -178,7 +196,7 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	std::cout << zx << " " << yx << '\n';
 	//heading_ = ((getToPositionMatrix() * rotation * getToOrignMatrix()).getMatrix() * ht2).subset(0, 3);
 	//heading_.normalize();
-	
+
 
 	auto returnMatrix = object.getToPositionMatrix() * rotation * object.getToOrignMatrix() * transformationMatrix_;
 	return returnMatrix;
@@ -201,6 +219,17 @@ std::vector<Matrix3f> Shape::projections() const
 	return projections_;
 }
 
+std::vector<Matrix3f> Shape::newGetProjections() const
+{
+	std::vector<Matrix3f> list;
+	auto transformationMatrix = getTransformationMatrix();
+	for (auto& m : matrices_)
+	{
+		list.emplace_back((transformationMatrix.getMatrix() * m.getTranslatable()).subSet(3,m.getColumns()));
+	}
+	return list;
+}
+
 void Shape::addMatix(Matrix3f matrix)
 {
 	matrices_.push_back(matrix);
@@ -216,7 +245,7 @@ void Shape::pulseSize(float dt, float speed, float size)
 {
 	sinValue += dt * speed;
 
-	Vector3f pulsVec = Vector3f(sin(sinValue) / (100 * size) +1, sin(sinValue) / (100 * size) + 1, sin(sinValue) / (100 * size) + 1);
+	Vector3f pulsVec = Vector3f(sin(sinValue) / (100 * size) + 1, sin(sinValue) / (100 * size) + 1, sin(sinValue) / (100 * size) + 1);
 	this->scale(pulsVec);
 }
 
@@ -224,7 +253,7 @@ void Shape::moveForward(float dt)
 {
 	if (heading_[0] == 0 && heading_[1] == 0 && heading_[2] == 0)
 		return;
-	translate(Vector3f(heading_[0]*dt, heading_[1]*dt, heading_[2]*dt));
+	translate(Vector3f(heading_[0] * dt, heading_[1] * dt, heading_[2] * dt));
 }
 
 void Shape::transform()
@@ -232,7 +261,7 @@ void Shape::transform()
 	//auto v = heading_.getVector();
 	//v.addNumber(1);
 	//heading_ = (transformationMatrix_.getMatrix() * v).subset(0,3);
-	for (auto i = 0;i < projections_.size();i++) {
+	for (auto i = 0; i < projections_.size(); i++) {
 		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).subSet(3, matrices_[i].getColumns());
 		projections_[i] = k;
 	}
