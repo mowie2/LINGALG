@@ -113,20 +113,20 @@ namespace TestProject
 		TEST_METHOD(Shape_true_scale)
 		{
 			Shape cube1 = Shape(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 });
-			cube1.scale(Vector3f(2, 2, 2));
+			cube1.newScale(Vector3f(2,2,2));
 
 			auto v = cube1.projections()[0].getMatrix()[0];
 			auto x = v[0];
 			auto y = v[1];
 			auto z = v[2];
-			Assert::AreEqual(x, -1.0f);
-			Assert::AreEqual(y, -1.0f);
-			Assert::AreEqual(z, 1.0f);
+			Assert::AreEqual(x, -1.f);
+			Assert::AreEqual(y, -1.f);
+			Assert::AreEqual(z, 1.f);
 		}
 		TEST_METHOD(Shape_false_scale)
 		{
 			Shape cube1 = Shape(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 });
-			cube1.scale(Vector3f(2, 2, 2));
+			cube1.newScale(Vector3f(2, 2, 2));
 
 			auto v = cube1.projections()[0].getMatrix()[0];
 			auto x = v[0];

@@ -22,10 +22,11 @@ public:
 	void barrelrol(float degrees);
 	void scale(const Vector3f& vec);
 	void rotateOrigin(const Vector3f& vec);
-	void transform();
-
-	std::vector<Matrix3f>& projections();
 	std::vector<Matrix3f> projections() const;
+	//void transform();
+
+	//std::vector<Matrix3f>& projections();
+	//std::vector<Matrix3f> projections() const;
 	std::vector<Matrix3f> newGetProjections() const;
 	Vector3f heading() const { return heading_; }
 
@@ -43,8 +44,8 @@ private:
 	Vector3f heading_;
 	Vector3f position_;
 	std::vector<Matrix3f> matrices_;
-	std::vector<Matrix3f> projections_;
-	Matrix4x4f transformationMatrix_;
+	//std::vector<Matrix3f> projections_;
+	//Matrix4x4f transformationMatrix_;
 
 	Matrix4x4f const get7RotationMatrix(Shape const & object, Vector3f const & vec);
 	float sinValue = 0;

@@ -14,8 +14,8 @@ Shape::Shape(std::vector<Matrix3f> m, const Vector3f& position)
 {
 	position_ = position;
 	matrices_ = m;
-	projections_ = m;
-	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
+	//projections_ = m;
+	//transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
 	scaleVector_ = Vector3f(1, 1, 1);
 }
 
@@ -23,8 +23,8 @@ Shape::Shape(std::vector<Matrix3f> m, const Vector3f& position, const Vector3f& 
 {
 	position_ = position;
 	matrices_ = m;
-	projections_ = m;
-	transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
+	//projections_ = m;
+	//transformationMatrix_ = Matrix4x4f::getIdentityMatrix();
 	heading_ = heading;
 	scaleVector_ = Vector3f(1, 1, 1);
 }
@@ -46,14 +46,15 @@ Matrix4x4f Shape::getTransformationMatrix() const
 
 void Shape::translate(const Vector3f & vec)
 {
+	//TODO: dit moet zo anders gescherven worden.
 	position_ = position_ + vec;
 	//heading_ = heading_ + vec;
 	Matrix4x4f translateMatrix = Matrix4x4f::getIdentityMatrix();
 	translateMatrix[3][0] = vec[0];
 	translateMatrix[3][1] = vec[1];
 	translateMatrix[3][2] = vec[2];
-	transformationMatrix_ = translateMatrix * transformationMatrix_;
-	transform();
+	//transformationMatrix_ = translateMatrix * transformationMatrix_;
+	//transform();
 }
 
 Matrix4x4f Shape::getToOrignMatrix() const
@@ -82,8 +83,8 @@ void Shape::rotate(const Vector3f & vec)
 	auto v = heading_.getVector();
 	v.addNumber(1);
 	heading_ = ((x * y * z).getMatrix() * v).subset(0, 3);
-	transformationMatrix_ = getToPositionMatrix()*x*y*z*getToOrignMatrix()*transformationMatrix_;
-	transform();
+	//transformationMatrix_ = getToPositionMatrix()*x*y*z*getToOrignMatrix()*transformationMatrix_;
+	//transform();
 }
 
 void Shape::scale(const Vector3f & vec)
@@ -92,14 +93,16 @@ void Shape::scale(const Vector3f & vec)
 	scalar[0][0] = vec[0];
 	scalar[1][1] = vec[1];
 	scalar[2][2] = vec[2];
-	transformationMatrix_ = getToPositionMatrix()*scalar*getToOrignMatrix()*transformationMatrix_;
-	transform();
+
+
+	//transformationMatrix_ = getToPositionMatrix()*scalar*getToOrignMatrix()*transformationMatrix_;
+	//transform();
 }
 
 void Shape::rotateAround(Shape const & object, Vector3f const & vec)
 {
-	transformationMatrix_ = get7RotationMatrix(object, vec);
-	transform();
+	//transformationMatrix_ = get7RotationMatrix(object, vec);
+	//();
 }
 
 void Shape::barrelrol(float degrees)
@@ -140,8 +143,9 @@ void Shape::barrelrol(float degrees)
 	step5M[0][2] = step1M[0][2] * -1;
 
 	auto rotation = (step5M*step4M*step3M*step2M*step1M);
-	transformationMatrix_ = this->getToPositionMatrix() * rotation * this->getToOrignMatrix() * transformationMatrix_;
-	transform();
+	//TODO: 
+	//transformationMatrix_ = this->getToPositionMatrix() * rotation * this->getToOrignMatrix() * transformationMatrix_;
+	//transform();
 }
 
 Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const & vec)
@@ -198,28 +202,29 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	//heading_.normalize();
 
 
-	auto returnMatrix = object.getToPositionMatrix() * rotation * object.getToOrignMatrix() * transformationMatrix_;
+	auto returnMatrix = object.getToPositionMatrix() * rotation * object.getToOrignMatrix() /* *transformationMatrix_*/;
 	return returnMatrix;
 }
 
 void Shape::rotateOrigin(const Vector3f & vec)
 {
-	transformationMatrix_ = get7RotationMatrix(*this, vec);
-	transform();
+	//TODO:
+	//transformationMatrix_ = get7RotationMatrix(*this, vec);
+	//transform();
 }
 
-std::vector<Matrix3f>& Shape::projections()
-{
-	//transform();
-	return projections_;
-}
+//std::vector<Matrix3f>& Shape::projections()
+//{
+//	transform();
+//	return projections_;
+//}
+
+//std::vector<Matrix3f> Shape::projections() const
+//{
+//	return projections_;
+//}
 
 std::vector<Matrix3f> Shape::projections() const
-{
-	return projections_;
-}
-
-std::vector<Matrix3f> Shape::newGetProjections() const
 {
 	std::vector<Matrix3f> list;
 	auto transformationMatrix = getTransformationMatrix();
@@ -233,7 +238,8 @@ std::vector<Matrix3f> Shape::newGetProjections() const
 void Shape::addMatix(Matrix3f matrix)
 {
 	matrices_.push_back(matrix);
-	projections_.push_back(matrix);
+	//TODO:
+	//projections_.push_back(matrix);
 }
 
 void Shape::setPos(const Vector3f & pos)
@@ -256,16 +262,16 @@ void Shape::moveForward(float dt)
 	translate(Vector3f(heading_[0] * dt, heading_[1] * dt, heading_[2] * dt));
 }
 
-void Shape::transform()
-{
-	//auto v = heading_.getVector();
-	//v.addNumber(1);
-	//heading_ = (transformationMatrix_.getMatrix() * v).subset(0,3);
-	for (auto i = 0; i < projections_.size(); i++) {
-		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).subSet(3, matrices_[i].getColumns());
-		projections_[i] = k;
-	}
-}
+//void Shape::transform()
+//{
+//	//auto v = heading_.getVector();
+//	//v.addNumber(1);
+//	//heading_ = (transformationMatrix_.getMatrix() * v).subset(0,3);
+//	for (auto i = 0; i < projections_.size(); i++) {
+//		const auto k = (transformationMatrix_*matrices_[i].getTranslatable()).subSet(3, matrices_[i].getColumns());
+//		projections_[i] = k;
+//	}
+//}
 
 Vector3f& Shape::heading()
 {
