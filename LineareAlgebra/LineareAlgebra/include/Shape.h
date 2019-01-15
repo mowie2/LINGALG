@@ -47,6 +47,7 @@ private:
 	//std::vector<Matrix3f> projections_;
 	//Matrix4x4f transformationMatrix_;
 
+
 	Matrix4x4f const get7RotationMatrix(Shape const & object, Vector3f const & vec);
 	float sinValue = 0;
 	Vector3f scaleVector_;

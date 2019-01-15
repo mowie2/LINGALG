@@ -34,14 +34,27 @@ void Shape::newScale(Vector3f vec)
 	scaleVector_ = vec;
 }
 
-Matrix4x4f Shape::getTransformationMatrix() const
+Matrix4x4f Shape::getTransformationMatrix()
 {
 	auto scaler = Matrix4x4f::getIdentityMatrix();
 	scaler[0][0] = scaleVector_[0];
 	scaler[1][1] = scaleVector_[1];
 	scaler[2][2] = scaleVector_[2];
 
-	return getToPositionMatrix()*scaler*getToOrignMatrix();
+	auto translate = Matrix4x4f::getIdentityMatrix();
+	translate[3][0] = translationVector_[0];
+	translate[3][1] = translationVector_[1];
+	translate[3][2] = translationVector_[2];
+
+	auto transformationMatrix = getToPositionMatrix()*scaler*translate*getToOrignMatrix();
+	
+	position_ = translationVector_;
+	return transformationMatrix;
+}
+
+void Shape::newTranslate(const Vector3f& vec)
+{
+	translationVector_ = vec;
 }
 
 void Shape::translate(const Vector3f & vec)
