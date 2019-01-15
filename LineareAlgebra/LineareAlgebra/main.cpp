@@ -4,7 +4,7 @@
 #include "include/window.h"
 #include "../LineareAlgebra/include/Matrix.h"
 #include <vector>
-
+#include "../../SDL2/include/SDL_stdinc.h"
 
 #ifdef main
 #undef main

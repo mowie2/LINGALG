@@ -1,5 +1,6 @@
-#include <SDL_stdinc.h>
+
 #include "../include/Matrix4x4.h"
+#include "../../SDL2/include/SDL_stdinc.h"
 
 
 Matrix4x4f::Matrix4x4f(const Matrix & original)

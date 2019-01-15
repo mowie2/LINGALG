@@ -1,6 +1,7 @@
 #include "../include/Physics.h"
 #include <math.h>
-#include <SDL_stdinc.h>
+//#include <SDL_stdinc.h>
+#include "../../SDL2/include/SDL_stdinc.h"
 
 
 float Physics::calculateAngle(Vector3f& vec1, Vector3f& vec2)

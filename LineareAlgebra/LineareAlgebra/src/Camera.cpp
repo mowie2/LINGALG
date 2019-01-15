@@ -1,9 +1,10 @@
 #include "..\include\Camera.h"
 #include "../include/Physics.h"
-#include <SDL_stdinc.h>
+//#include <SDL_stdinc.h>
 #include "../include/Matrix3f.h"
 #include <iostream>
 #include <ratio>
+#include "../../SDL2/include/SDL_stdinc.h"
 
 Camera::Camera(Vector3f position, Vector3f lookat, float nearPlane, float farPlane, float fovy)
 {
