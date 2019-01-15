@@ -5,21 +5,27 @@
 #include "../include/Physics.h"
 #include <iostream>
 
-Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 3, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f)),player(Vector3f(0,0,1))
+Window::Window(const int width, const int height) : camera_(Camera(Vector3f(-0, 3, -3), Vector3f(0, 0, 0), 1.0f, 20.0f, 160.f)), player(Vector3f(0, 0, 1))
 {
 	this->SCREEN_WIDTH = width;
 	this->SCREEN_HEIGHT = height;
 	Init();
+	generateLevel();
 
-	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 0,0,0 }), Vector3f{ 0,0,0 }));
 	//shapes_.at(0)->rotate(Vector3f{ 0,1,0 });
-	shapes_[0]->translate(Vector3f(0, 1, 0));
+	//shapes_[0]->translate(Vector3f(0, 0, 0));
 	//shapes_[0]->translate(Vector3f(0, 0, 0));
 	//shapes_[0]->scale(Vector3f(2,2,2));
 	//shapes_.push_back(std::make_unique<Shape>(Objects::cuboid(Vector3f{ -2,0,0 }), Vector3f{ -2,0,0 }));
 	//shapes_.at(1)->rotate(Vector3f{ 0,35,0 });
 }
 
+void Window::generateLevel()
+{
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 0,0,3 }), Vector3f{ 0,0,3 }));
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 5,6,-3 }), Vector3f{ 5,6,-3 }));
+	shapes_.push_back(std::make_unique<Shape>(Objects::cube(Vector3f{ 10,0,3 }), Vector3f{ 10,0,3 }));
+}
 
 Window::~Window()
 {
@@ -33,7 +39,7 @@ void Window::Draw(Matrix matrix)
 	auto y = 1;
 
 	for (int r = 0; r < matrix.getColumns() - 1; r++) {
-		if (matrix[r][3] > 0 && matrix[r+1][3] > 0) {
+		if (matrix[r][3] > 0 && matrix[r + 1][3] > 0) {
 			//auto m1 = matrix[r];
 			auto v1 = matrix[r];
 
@@ -134,14 +140,30 @@ void Window::rotateShapes(const Vector3f & rotateVector)
 
 void Window::Update(float dt)
 {
-	
+
 	for (auto it = shapes_.begin(); it != shapes_.end(); it++)
 	{
-		(*it)->moveForward(dt);
-	}	
+		(*it)->pulseSize(dt, 1.0f, 1.0f);
+		if (Physics::calculateIntersection(*(*it), player.shape()))
+		{
+			std::cout << "Game over\n";
+		}
+	}
 	for (auto it = bullets_.begin(); it != bullets_.end(); it++)
 	{
-		(*it)->translate(Vector3f((*it)->heading()[0]*dt , (*it)->heading()[1] * dt , (*it)->heading()[2] * dt));
+		(*it)->translate(Vector3f((*it)->heading()[0] * dt, (*it)->heading()[1] * dt, (*it)->heading()[2] * dt));
+	}
+	for (auto shape = shapes_.begin(); shape != shapes_.end(); shape++)
+	{
+		for (auto bullet = bullets_.begin(); bullet != bullets_.end(); bullet++)
+		{
+			auto& x = *(*bullet);
+			auto& y = *(*shape);
+			if (Physics::calculateIntersection(x, y))
+			{
+				std::cout << "you won the game\n";
+			}
+		}
 	}
 
 }
@@ -159,7 +181,7 @@ void Window::render()
 
 	//Update the surface
 	SDL_UpdateWindowSurface(window);
-
+	const int speed = 30;
 	//While application is running
 			//While application is running
 	//player.shape().scale(Vector3f(2, 2, 2));
@@ -178,95 +200,93 @@ void Window::render()
 		//player.shape().rotate(Vector3f(0, 1, 0));
 		//player.shape().rotateOrigin(vector);
 		//shapes_[0]->rotateOrigin(Vector3f(0, 1, 0));
-		
+
+		float barrel = 0;
+		float updown = 0;
+		float accel = 0;
+		auto move = Matrix3f::getIdentityMatrix();
+		auto moveVector = Vector3f();
+		auto rotateVector = Vector3f();
+		auto turnVector = Vector3f();
+
+		//catch input
+		const Uint8 *state = SDL_GetKeyboardState(NULL);
+		if (state[SDL_SCANCODE_RETURN]) {
+			printf("<RETURN> is pressed.\n");
+		}
+		if (state[SDL_SCANCODE_RIGHT] && state[SDL_SCANCODE_UP]) {
+			printf("Right and Up Keys Pressed.\n");
+		}
+		if (state[SDL_SCANCODE_S])
+		{
+			updown -= speed / 5 * dt;
+		}
+		if (state[SDL_SCANCODE_W])
+		{
+			updown += speed / 5 * dt;
+		}
+		if (state[SDL_SCANCODE_D])
+		{
+			turnVector[1] += speed * dt;
+		}
+		if (state[SDL_SCANCODE_A])
+		{
+			turnVector[1] -= speed * dt;
+		}
+		if (state[SDL_SCANCODE_Q])
+		{
+			barrel -= speed * dt;
+		}
+		if (state[SDL_SCANCODE_E])
+		{
+			barrel += speed * dt;
+		}
+
+		if (state[SDL_SCANCODE_SPACE])
+		{
+			accel += speed / 5 * dt;
+		}
+		if (state[SDL_SCANCODE_C])
+		{
+			accel -= speed / 5 * dt;
+		}
+
+		if (state[SDL_SCANCODE_UP])
+		{
+			rotateVector[0] += 15 * dt;
+		}
+		if (state[SDL_SCANCODE_DOWN])
+		{
+			rotateVector[0] -= 15 * dt;
+		}
+		if (state[SDL_SCANCODE_LEFT])
+		{
+			rotateVector[1] += 15 * dt;
+		}
+		if (state[SDL_SCANCODE_RIGHT])
+		{
+			rotateVector[1] -= 15 * dt;
+		}
+		if (state[SDL_SCANCODE_Y])
+		{
+			addToBullets(player.shoot());
+		}
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
-			//catch input
-
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
 			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				float barrel = 0;
-				float updown = 0;
-				float accel = 0;
-				auto move = Matrix3f::getIdentityMatrix();
-				auto moveVector = Vector3f();
-				auto rotateVector = Vector3f();
-				auto turnVector = Vector3f();
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_s:
-					//rotateShapes(Vector3f(0.f, 0.f, 0.5f));
-					updown -= .5;
-					break;
-					//player.shape().rotateOrigin(Vector3f(0.f, 0.f, 0.5f));
-				case SDLK_DOWN:
-					//playerVector[0] += 5;
-					rotateVector[0] += 5;
-					break;
-				case SDLK_w:
-					updown += .5;
-					break;
-				case SDLK_UP:
-					//playerVector[0] -= 5;
-					rotateVector[0] -= 5;
-					break;
-				case SDLK_a:
-					turnVector[1] -= 5;
-					//rotateShapes(Vector3f(0.5f, 0.f, 0.f));
-					break;
-				case SDLK_LEFT:
-					//playerVector[1] -= 5;
-					rotateVector[1] += 5;
-					break;
-				case SDLK_d:
-					turnVector[1] += 5;
-					//rotateShapes(Vector3f(-0.5f, 0.f, 0.f));
-					break;
-				case SDLK_RIGHT:
-					//playerVector[1] += 5;
-					rotateVector[1] -= 5;
-					break;
-				case SDLK_q:
-					barrel -= 5;
-					//rotateShapes(Vector3f(0.f, -0.5f, 0.f));
-					break;
-				case SDLK_e:
-					barrel += 5;
-					//rotateShapes(Vector3f(0.f, 0.5f, 0.f));
-					break;
-				case SDLK_y:
-					addToBullets(player.shoot());
-					break;
-				case SDLK_SPACE:
-					//move = 1;
-					accel = 1;
-					break;
-				case SDLK_c:
-					accel = -1;
-					break;
-				}
-				moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
-				moveVector[1] += updown;
-				camera_.move(moveVector);
-				player.shape().translate(moveVector);
-				player.shape().rotate(turnVector);
-				player.shape().barrelrol(barrel);
-				camera_.rotate2(rotateVector);
-				
-				//shapes_[0]->rotateOrigin(Vector3f(0, -1, 0));
-				
-				//player.shape().rotateOrigin(Vector3f(0,90,0));
-				
-				//player.shape().translate(moveVector);
-				//moveShapes(moveVector);
-			}
 		}
+		moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
+		moveVector[1] += updown;
+		camera_.move(moveVector);
+		player.shape().translate(moveVector);
+		player.shape().rotate(turnVector);
+		player.shape().barrelrol(barrel);
+		camera_.rotate2(rotateVector);
 
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 1, 1, 1, 255); // background color
@@ -279,7 +299,7 @@ void Window::render()
 		auto kk = player.shape().heading();
 		Matrix3f m;
 		Shape s;
-		m.AddVector(k,kk);
+		m.AddVector(k, kk);
 		s.addMatix(m);
 		Draw(s);
 

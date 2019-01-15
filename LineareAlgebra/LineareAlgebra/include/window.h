@@ -11,6 +11,7 @@
 class Window
 {
 public:
+	void generateLevel();
 	Window(const int width, const int height);
 	Window(const Window& other) = delete;
 	Window& operator=(const Window& other) = delete;

@@ -214,10 +214,26 @@ void Shape::setPos(const Vector3f & pos)
 
 void Shape::pulseSize(float dt, float speed, float size)
 {
-	sinValue += dt * speed;
+	sinValue++;
+	if(sinValue>=100)
+	{
+		sinValue = 0;
+	} 
+	else
+	{
+		if(sinValue<=50)
+		{
+			scale(Vector3f(1.01, 1.01, 1.01));
+		} else
+		{
+			scale(Vector3f(1/1.01, 1/1.01, 1/1.01));
+		}
+	}
+
+	/*sinValue += dt * speed;
 
 	Vector3f pulsVec = Vector3f(sin(sinValue) / (100 * size) +1, sin(sinValue) / (100 * size) + 1, sin(sinValue) / (100 * size) + 1);
-	this->scale(pulsVec);
+	this->scale(pulsVec);*/
 }
 
 void Shape::moveForward(float dt)
