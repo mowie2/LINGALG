@@ -27,6 +27,7 @@ public:
 	Vector3f heading() const { return heading_; }
 
 	void addMatix(Matrix3f matrix);
+	void addMatix(std::vector<Matrix3f> matrix);
 	void setPos(const Vector3f& pos);
 	std::vector<Matrix3f> getMatrix() const { return matrices_; }
 

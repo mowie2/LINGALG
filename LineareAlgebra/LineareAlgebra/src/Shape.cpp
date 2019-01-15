@@ -174,8 +174,6 @@ Matrix4x4f const Shape::get7RotationMatrix(Shape const & object, Vector3f const 
 	//transformationMatrix_ = getToPositionMatrix() * rotation * getToOrignMatrix() * transformationMatrix_;
 	auto ht2 = heading_.getVector();
 	ht2.addNumber(1);
-	std::cout << "LOOK AT ME\n";
-	std::cout << zx << " " << yx << '\n';
 	//heading_ = ((getToPositionMatrix() * rotation * getToOrignMatrix()).getMatrix() * ht2).subset(0, 3);
 	//heading_.normalize();
 	
@@ -205,6 +203,12 @@ void Shape::addMatix(Matrix3f matrix)
 {
 	matrices_.push_back(matrix);
 	projections_.push_back(matrix);
+}
+
+void Shape::addMatix(std::vector<Matrix3f> matrix)
+{
+	matrices_.insert(matrices_.end(), matrix.begin(), matrix.end());
+	projections_.insert(projections_.end(), matrix.begin(), matrix.end());
 }
 
 void Shape::setPos(const Vector3f & pos)

@@ -244,11 +244,11 @@ void Window::render()
 
 		if (state[SDL_SCANCODE_SPACE])
 		{
-			accel += speed / 5 * dt;
+			movingForward = true;
 		}
 		if (state[SDL_SCANCODE_C])
 		{
-			accel -= speed / 5 * dt;
+			movingForward = false;
 		}
 
 		if (state[SDL_SCANCODE_UP])
@@ -280,6 +280,10 @@ void Window::render()
 				quit = true;
 			}
 		}
+
+		if (movingForward) {
+			accel += speed / 5 * dt;
+		}
 		moveVector = move.getMatrix() * accel * player.shape().heading().getVector();
 		moveVector[1] += updown;
 		camera_.move(moveVector);
@@ -295,13 +299,6 @@ void Window::render()
 
 		Update(dt);
 		Draw(player.shape());
-		auto k = player.shape().position();
-		auto kk = player.shape().heading();
-		Matrix3f m;
-		Shape s;
-		m.AddVector(k, kk);
-		s.addMatix(m);
-		Draw(s);
 
 		auto& shapes = shapes_;
 		for (auto it = shapes.begin(); it != shapes.end(); it++)
