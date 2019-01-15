@@ -65,10 +65,10 @@ Matrix4x4f Matrix4x4f::getXRotationMatrix(float degrees)
 	auto m = getIdentityMatrix();
 
 	if (degrees != 90 && degrees != -90) {
-		m[1][1] = std::cosf(degrees / 180 * M_PI);
-		m[1][2] = std::sinf(degrees / 180 * M_PI);
-		m[2][1] = -1 * std::sinf(degrees / 180 * M_PI);
-		m[2][2] = std::cosf(degrees / 180 * M_PI);
+		m[1][1] = std::cos(degrees / 180 * M_PI);
+		m[1][2] = std::sin(degrees / 180 * M_PI);
+		m[2][1] = -1 * std::sin(degrees / 180 * M_PI);
+		m[2][2] = std::cos(degrees / 180 * M_PI);
 	} else
 	{
 		if(degrees > 0)
@@ -95,10 +95,10 @@ Matrix4x4f Matrix4x4f::getYRotationMatrix(float degrees)
 {
 	auto m = getIdentityMatrix();
 	if (degrees != 90 && degrees != -90) {
-		m[0][0] = std::cosf(degrees / 180 * M_PI);
-		m[2][0] = std::sinf(degrees / 180 * M_PI);
-		m[0][2] = -1 * std::sinf(degrees / 180 * M_PI);
-		m[2][2] = std::cosf(degrees / 180 * M_PI);
+		m[0][0] = std::cos(degrees / 180 * M_PI);
+		m[2][0] = std::sin(degrees / 180 * M_PI);
+		m[0][2] = -1 * std::sin(degrees / 180 * M_PI);
+		m[2][2] = std::cos(degrees / 180 * M_PI);
 	} else
 	{
 		if(degrees>0)
@@ -122,10 +122,10 @@ Matrix4x4f Matrix4x4f::getZRotationMatrix(float degrees)
 {
 	auto m = getIdentityMatrix();
 	if (degrees != 90 && degrees != -90) {
-		m[0][0] = std::cosf(degrees / 180 * M_PI);
-		m[0][1] = -1 * std::sinf(degrees / 180 * M_PI);
-		m[1][0] = std::sinf(degrees / 180 * M_PI);
-		m[1][1] = std::cosf(degrees / 180 * M_PI);
+		m[0][0] = std::cos(degrees / 180 * M_PI);
+		m[1][0] = -1 * std::sin(degrees / 180 * M_PI);
+		m[0][1] = std::sin(degrees / 180 * M_PI);
+		m[1][1] = std::cos(degrees / 180 * M_PI);
 	} else
 	{
 		if(degrees > 0)

@@ -123,8 +123,8 @@ void Camera::rotate2(Vector3f vec)
 	float yx = 0;
 	auto a = std::sqrt(x * x + z * z);
 	auto b = std::sqrt(x * x + y * y + z * z);
-	if (b != 0) {
-		yx = -1 * a / b;
+	if (b != 0 && heading_2[1] != 0) {
+		yx = a / b;
 		yx = acos(yx) / M_PI * 180;
 	}
 	auto step2M = Matrix4x4f::getZRotationMatrix(yx);
